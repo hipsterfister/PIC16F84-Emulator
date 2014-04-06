@@ -17,9 +17,21 @@ namespace PIC16F84_Emulator.PIC.Register
             {
                 Data[X] = new DataAdapter<byte>();
             }
-            Data[3].Value = 1 << 3 & 1 << 4;
-            Data[0x83].Value = Data[3].Value;
-            Data[0x81].Value = 255;
+            // initialize Special Function Registers
+            // Bank 0
+            Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;
+            Data[RegisterConstants.STATUS_ADDRESS].Value = RegisterConstants.STATUS_INITIAL_VALUE;
+            Data[RegisterConstants.PCLATH_ADDRESS].Value = RegisterConstants.PCLATH_INITIAL_VALUE;
+            Data[RegisterConstants.INTCON_ADDRESS].Value = RegisterConstants.INTCON_INITIAL_VALUE;
+            // Bank 1
+            Data[RegisterConstants.OPTION_REG_BANK1_ADDRESS].Value = RegisterConstants.OPTION_REG_INITIAL_VALUE;
+            Data[RegisterConstants.PCL_BANK1_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;
+            Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = RegisterConstants.STATUS_INITIAL_VALUE;
+            Data[RegisterConstants.TRISA_BANK1_ADDRESS].Value = RegisterConstants.TRISA_INITIAL_VALUE;
+            Data[RegisterConstants.TRISB_BANK1_ADDRESS].Value = RegisterConstants.TRISB_INITIAL_VALUE;
+            Data[RegisterConstants.EECON1_BANK1_ADDRESS].Value = RegisterConstants.EECON1_INITIAL_VALUE;
+            Data[RegisterConstants.PCLATH_BANK1_ADDRESS].Value = RegisterConstants.PCLATH_INITIAL_VALUE;
+            Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = RegisterConstants.INTCON_INITIAL_VALUE;
         }
 
         public void Set(byte Data, int Position)
@@ -28,13 +40,14 @@ namespace PIC16F84_Emulator.PIC.Register
                 Position += 0x80;
             this.Data[Position].Value = Data;
 
-            switch (Position)
+            // TODO: Überarbeiten (hinter if stecken, prüfen ob für weitere Register notwendig...)
+            switch (Position) // STATUS-Register spiegeln
             {
-                case 0x03:
-                    this.Data[0x83].Value = Data;
+                case RegisterConstants.STATUS_ADDRESS:
+                    this.Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = Data;
                     break;
-                case 0x83:
-                    this.Data[0x03].Value = Data;
+                case RegisterConstants.STATUS_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.STATUS_ADDRESS].Value = Data;
                     break;
             }
         }
@@ -52,3 +65,4 @@ namespace PIC16F84_Emulator.PIC.Register
         }
     }
 }
+
