@@ -44,6 +44,10 @@ namespace PIC16F84_Emulator.PIC.Register
         public const byte TRISB_INITIAL_VALUE = 0xFF;
         public const byte EECON1_INITIAL_VALUE = 0x00;
 
+        // STATUS Flags (read as bit-mask)
+        public const byte STATUS_CARRY_MASK = 0x01;
+        public const byte STATUS_DIGIT_CARRY_MASK = 0x02;
+        public const byte STATUS_ZERO_MASK = 0x04;
         // Source: page 8-9 (pdf pages, not page numbers)
     }
 

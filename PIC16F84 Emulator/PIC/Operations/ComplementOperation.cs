@@ -31,19 +31,17 @@ namespace PIC16F84_Emulator.PIC.Operations
         public void execute()
         {
             byte result = (byte) (~data);
-            byte statusRegister = registerFileMap.Get(Register.RegisterConstants.STATUS_ADDRESS);
 
             if (result == 0)
             {
-                statusRegister = (byte)(statusRegister | 0x04); // set Z (Zero)
+                registerFileMap.setZeroFlag();
             }
             else
             {
-                statusRegister = (byte)(statusRegister & 0xFB); // clear Z (Zero)
+                registerFileMap.clearZeroFlag();
             }
 
             registerFileMap.Set(result, targetAddress);
-            registerFileMap.Set(statusRegister, Register.RegisterConstants.STATUS_ADDRESS);
         }
     }
 }

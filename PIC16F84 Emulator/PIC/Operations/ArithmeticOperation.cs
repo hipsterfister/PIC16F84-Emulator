@@ -59,75 +59,81 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public void executeAdd()
         {
-            byte statusRegister = registerFileMap.Get(RegisterConstants.STATUS_ADDRESS);
+            int temp;
             byte result;
-            try
-            {
-                result = (byte) (arg1 + arg2);
-                statusRegister = (byte)(statusRegister & 0xFE); // clear C (Carry) 
-            }
-            catch (OverflowException)
-            {
-                result = (byte) (arg1 + arg2 - 0x100);
-                statusRegister = (byte)(statusRegister | 0x01); // set C (Carry)
-            }
 
+            temp = arg1 + arg2; // needed if temp > 0xFF to set carry flag
+            result = (byte)temp;
+
+
+            if (temp > 0xFF) // overflow
+            {
+                registerFileMap.setCarryFlag();
+            }
+            else
+            {
+                registerFileMap.clearCarryFlag();
+            }
+            
             if (result == 0)
             {
-                statusRegister = (byte)(statusRegister | 0x04); // set Z (Zero)
+                registerFileMap.setZeroFlag();
             }
             else
             {
-                statusRegister = (byte)(statusRegister & 0xFB); // clear Z (Zero)
+                registerFileMap.clearZeroFlag();
             }
 
 
-            if( (arg1 % 0x10) + (arg2 % 0x10) > 0xF )
+            if( (arg1 % 0x10) + (arg2 % 0x10) > 0xF )   // byte % 0x10 cuts off the 4 most significant bits. If the sum of these is still greater then 0000 1111 (0x0F), a carry out on the lower bits happened
             {
-                statusRegister = (byte)(statusRegister | 0x02); // set DigitCarry
+                registerFileMap.setDigitCarry();
             }
             else
             {
-                statusRegister = (byte)(statusRegister & 0xFD); // clear DigitCarry
+                registerFileMap.clearDigitCarry();
             }
 
-            registerFileMap.Set(statusRegister, RegisterConstants.STATUS_ADDRESS);
             registerFileMap.Set(result, targetAddress);
         }
 
         public void executeSubtract()
         {
-            byte statusRegister = registerFileMap.Get(RegisterConstants.STATUS_ADDRESS);
             byte result;
             try
             {
-                result = (byte)(arg1 - arg2);
-                statusRegister = (byte)(statusRegister & 0xFE); // set C (Carry) 
+                checked
+                {
+                    result = (byte)(arg1 - arg2);
+                }
+                // No exception occured -> result is in range of 1 byte.
+                registerFileMap.setCarryFlag(); // for subtraction carry-bit is inverted.
             }
             catch (OverflowException)
             {
-                result = (byte)(arg1 - arg2 + 0x100); // TODO: Ist das so?
-                statusRegister = (byte)(statusRegister | 0x01); // set C (Carry)
+                result = (byte)(~(arg1 - arg2) + 1); // 2er Komplement
+                registerFileMap.clearCarryFlag();
             }
 
             if (result == 0)
             {
-                statusRegister = (byte)(statusRegister | 0x04); // set Z (Zero)
+                registerFileMap.setZeroFlag();
             }
             else
             {
-                statusRegister = (byte)(statusRegister & 0xFB); // clear Z (Zero)
+                registerFileMap.clearZeroFlag();
             }
 
             if ((arg1 % 0x10) > (arg2 % 0x10))
             {
-                statusRegister = (byte)(statusRegister | 0x02); // set DigitCarry
+                registerFileMap.setDigitCarry();
             }
             else
             {
-                statusRegister = (byte)(statusRegister & 0xFD); // clear DigitCarry
+                registerFileMap.clearDigitCarry();
             }
 
+            registerFileMap.Set(result, targetAddress);
         }
     }
 

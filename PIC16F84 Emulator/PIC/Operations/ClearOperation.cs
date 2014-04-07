@@ -17,7 +17,7 @@ namespace PIC16F84_Emulator.PIC.Operations
          */
 
         private short targetAddress;
-        private const short WDT_ADDRESS = 0x00;
+        // private const short WDT_ADDRESS = 0x00; TODO: implement WDT
 
         public ClearOperation(short _targetAddress, RegisterFileMap _registerFileMap) :
             base(_registerFileMap)
@@ -29,19 +29,14 @@ namespace PIC16F84_Emulator.PIC.Operations
         {
             registerFileMap.Set(0x00, targetAddress);
             
-            byte statusRegister = registerFileMap.Get(RegisterConstants.STATUS_ADDRESS);
+            registerFileMap.setZeroFlag();
 
-            if (targetAddress != WDT_ADDRESS)
-            {
-                statusRegister = (byte)(statusRegister | 0x04); // set Z (Zero)
-            }
-            else
-            {
-                statusRegister = (byte)(statusRegister | 0x1C); // set Z, PD, TO
-                // TODO: WDT Prescaler -> 0 (CLRWDT instruction)
-            }
+            // Note: WDT is not part of the SFRs and has yet to be implemented
+           // if (targetAddress == WDT_ADDRESS)
+          //  {
+           //     registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, 0x18); // set PD, TO
+           // }
 
-            registerFileMap.Set(statusRegister, RegisterConstants.STATUS_ADDRESS);
         }
     }
 }

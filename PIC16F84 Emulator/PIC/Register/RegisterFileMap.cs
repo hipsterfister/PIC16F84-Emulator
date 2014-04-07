@@ -63,6 +63,65 @@ namespace PIC16F84_Emulator.PIC.Register
         {
             return (Data[2].Value & (1 << 5)) != 0;
         }
+
+        /// <summary>
+        /// Sets the specified bits.
+        /// </summary>
+        /// <param name="_targetAddress"></param>
+        /// <param name="_bitMask">Bitmask, selected bits == 1</param>
+        public void setBit(short _targetAddress, short _bitMask) {
+            this.Data[_targetAddress].Value = (byte)(this.Data[_targetAddress].Value | _bitMask);
+        }
+
+        /// <summary>
+        /// Clears the specified bits.
+        /// </summary>
+        /// <param name="_targetAddress"></param>
+        /// <param name="_bitMask">Bitmask, selected bits == 1</param>
+        public void clearBit(short _targetAddress, short _bitMask) {
+            this.Data[_targetAddress].Value = (byte)(this.Data[_targetAddress].Value & ~_bitMask);
+        }
+
+        /// <summary>
+        /// Sets the Carry bit of STATUS register
+        /// </summary>
+        public void setCarryFlag() {
+            this.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_CARRY_MASK);
+        }
+
+        /// <summary>
+        /// Clears the Carry bit of STATUS register
+        /// </summary>
+        public void clearCarryFlag() {
+           this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_CARRY_MASK);
+        }
+
+        /// <summary>
+        /// Sets the Zero bit of STATUS register
+        /// </summary>
+        public void setZeroFlag() {
+            this.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_ZERO_MASK);
+        }
+
+        /// <summary>
+        /// Clears the Zero bit of STATUS register
+        /// </summary>
+        public void clearZeroFlag() {
+            this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_ZERO_MASK);
+        }
+
+        /// <summary>
+        /// Sets the Digit Carry (DC) bit of STATUS register
+        /// </summary>
+        public void setDigitCarry() {
+            this.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_DIGIT_CARRY_MASK);
+        }
+
+        /// <summary>
+        /// Clears the Digit Carry (DC) bit of STATUS register
+        /// </summary>
+        public void clearDigitCarry() {
+            this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_DIGIT_CARRY_MASK);
+        }
     }
 }
-

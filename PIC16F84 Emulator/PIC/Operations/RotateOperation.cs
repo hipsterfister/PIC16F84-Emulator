@@ -51,14 +51,13 @@ namespace PIC16F84_Emulator.PIC.Operations
 
             if (carry == 0)
             {
-                statusRegister = (byte)(statusRegister & 0xFE); // clear C (Carry) 
+                registerFileMap.clearCarryFlag();
             }
             else
             {
-                statusRegister = (byte)(statusRegister | 0x01); // set C (Carry)
+                registerFileMap.setCarryFlag();
             }
 
-            registerFileMap.Set(statusRegister, Register.RegisterConstants.STATUS_ADDRESS);
             registerFileMap.Set(result, targetAddress);
         }
 

@@ -10,7 +10,6 @@ namespace PIC16F84_Emulator.PIC
     public class PIC
     {
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
-        protected byte[] memory = new byte[114688]; // ???? WTF
         protected Stack<BitArray> pcStack = new Stack<BitArray>(8);
 
     }
