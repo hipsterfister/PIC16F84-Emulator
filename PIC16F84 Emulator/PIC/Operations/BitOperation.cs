@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class BitOperation : BaseOperation
+    public class BitOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following instructions:
@@ -26,7 +26,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.op = _op;
         }
 
-        public void execute()
+        public override void execute()
         {
             byte result = registerFileMap.Get(targetAddress);
             byte modifyByte = (byte) (1 << bitNumber); // 0001.0000
@@ -44,7 +44,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         }
     }
 
-    enum BitOperator
+    public enum BitOperator
     {
         BITSET,
         BITCLEAR

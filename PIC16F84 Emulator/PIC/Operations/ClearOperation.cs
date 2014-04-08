@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class ClearOperation : BaseOperation
+    public class ClearOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following instructions:
@@ -26,7 +26,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.targetAddress = _targetAddress;
         }
 
-        public void execute()
+        public override void execute()
         {
             registerFileMap.Set(0x00, targetAddress);
             

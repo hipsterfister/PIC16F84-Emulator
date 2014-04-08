@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class ComplementOperation : BaseOperation
+    public class ComplementOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the followin instruction:
@@ -29,7 +29,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.data = _registerFileMap.Get(_sourceAddress);
         }
 
-        public void execute()
+        public override void execute()
         {
             byte result = (byte) (~data);
             registerFileMap.updateZeroFlag(result == 0);

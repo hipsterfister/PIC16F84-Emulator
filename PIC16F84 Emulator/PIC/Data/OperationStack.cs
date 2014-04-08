@@ -7,7 +7,7 @@ using PIC16F84_Emulator.PIC.Operations;
 
 namespace PIC16F84_Emulator.PIC.Data
 {
-    class OperationStack
+    public class OperationStack
     {
         private DataAdapter<BaseOperation>[] stack;
         private const short STACK_SIZE = 8;

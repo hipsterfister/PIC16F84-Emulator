@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class LogicOperation : BaseOperation
+    public class LogicOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following (logical) Instructions: 
@@ -30,7 +30,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.targetAddress = _targetAddress;
         }
 
-        public void execute()
+        public override void execute()
         {
             byte result = 0x0;
             switch (op)
@@ -52,7 +52,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         }
     }
 
-    enum LogicOperator
+    public enum LogicOperator
     {
         AND,
         IOR,

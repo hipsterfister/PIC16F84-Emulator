@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class RotateOperation : BaseOperation
+    public class RotateOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following operations:
@@ -28,7 +28,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.direction = _direction;
         }
 
-        public void execute()
+        public override void execute()
         {
             int temp;
             byte result = 0x00;
@@ -57,7 +57,7 @@ namespace PIC16F84_Emulator.PIC.Operations
 
     }
 
-    enum RotationDirection {
+    public enum RotationDirection {
         LEFT,
         RIGHT
     }

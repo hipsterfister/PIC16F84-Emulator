@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class ArithmeticOperation : BaseOperation
+    public class ArithmeticOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following (arithmetic) Instructions: 
@@ -45,7 +45,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             //this.conditional = _conditional;
         }
 
-        public void execute()
+        public override void execute()
         {
             // TODO: events?
             switch (op)
@@ -99,7 +99,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         }
     }
 
-    enum ArithmeticOperator
+    public enum ArithmeticOperator
     {
         PLUS,
         MINUS

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class MoveOperation : BaseOperation
+    public class MoveOperation : BaseOperation
     {
         /*
          *  This OperationClass covers the following (Move) Operations:
@@ -33,7 +33,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.targetAddress = _targetAddress;
         }
 
-        public void execute()
+        public override void execute()
         {
             registerFileMap.Set(data, targetAddress);
         }

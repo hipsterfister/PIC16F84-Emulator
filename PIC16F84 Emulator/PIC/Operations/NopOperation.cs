@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    class NopOperation : BaseOperation
+    public class NopOperation : BaseOperation
     {
         private const short CYCLES = 1;
 
@@ -15,9 +15,9 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         }
 
-        public void execute()
+        public override void execute()
         {
-
+            System.Console.WriteLine("NOP executed");
         }
     }
 }

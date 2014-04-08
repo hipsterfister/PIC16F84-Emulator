@@ -24,7 +24,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.operationStack = _operationStack;
         }
 
-        public void execute()
+        public override void execute()
         {
             this.operationStack.push(this.followingOperation);
             // TODO: PC

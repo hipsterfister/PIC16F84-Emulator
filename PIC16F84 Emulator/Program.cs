@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PIC16F84_Emulator.PIC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;

@@ -69,7 +69,7 @@ namespace PIC16F84_Emulator.PIC.Register
         /// </summary>
         /// <param name="_targetAddress"></param>
         /// <param name="_bitMask">Bitmask, selected bits == 1</param>
-        public void setBit(short _targetAddress, short _bitMask) {
+        public void setBit(short _targetAddress, byte _bitMask) {
             this.Data[_targetAddress].Value = (byte)(this.Data[_targetAddress].Value | _bitMask);
         }
 
@@ -78,7 +78,8 @@ namespace PIC16F84_Emulator.PIC.Register
         /// </summary>
         /// <param name="_targetAddress"></param>
         /// <param name="_bitMask">Bitmask, selected bits == 1</param>
-        public void clearBit(short _targetAddress, short _bitMask) {
+        public void clearBit(short _targetAddress, byte _bitMask)
+        {
             this.Data[_targetAddress].Value = (byte)(this.Data[_targetAddress].Value & ~_bitMask);
         }
 
