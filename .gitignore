@@ -22,3 +22,8 @@
 obj/
 [Rr]elease*/
 _ReSharper*/
+
+VS2010.csproj
+VS2010.sln
+VS2010Projekt.csproj
+VS2010Projekt.sln

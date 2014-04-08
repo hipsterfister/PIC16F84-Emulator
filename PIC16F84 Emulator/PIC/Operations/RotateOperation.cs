@@ -49,15 +49,7 @@ namespace PIC16F84_Emulator.PIC.Operations
                     break;
             }
 
-            if (carry == 0)
-            {
-                registerFileMap.clearCarryFlag();
-            }
-            else
-            {
-                registerFileMap.setCarryFlag();
-            }
-
+            registerFileMap.updateCarryFlag(carry == 0);
             registerFileMap.Set(result, targetAddress);
         }
 

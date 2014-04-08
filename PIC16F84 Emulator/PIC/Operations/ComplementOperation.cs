@@ -31,16 +31,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         public void execute()
         {
             byte result = (byte) (~data);
-
-            if (result == 0)
-            {
-                registerFileMap.setZeroFlag();
-            }
-            else
-            {
-                registerFileMap.clearZeroFlag();
-            }
-
+            registerFileMap.updateZeroFlag(result == 0);
             registerFileMap.Set(result, targetAddress);
         }
     }

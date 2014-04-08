@@ -83,6 +83,21 @@ namespace PIC16F84_Emulator.PIC.Register
         }
 
         /// <summary>
+        /// Updates the Carry bit of STATUS register
+        /// </summary>
+        /// <param name="_value">value to write (1=true, 0=false)</param>
+        public void updateCarryFlag(bool _value) {
+            if (_value)
+            {
+                this.setCarryFlag();
+            }
+            else
+            {
+                this.clearCarryFlag();
+            }
+        }
+		
+        /// <summary>
         /// Sets the Carry bit of STATUS register
         /// </summary>
         public void setCarryFlag() {
@@ -97,6 +112,22 @@ namespace PIC16F84_Emulator.PIC.Register
         }
 
         /// <summary>
+        /// Updates the Zero bit of STATUS register
+        /// </summary>
+        /// <param name="_value">value to write (1=true, 0=false)</param>
+        public void updateZeroFlag(bool _value)
+        {
+            if (_value)
+            {
+                this.setZeroFlag();
+            }
+            else
+            {
+                this.clearZeroFlag();
+            }
+        }
+		
+        /// <summary>
         /// Sets the Zero bit of STATUS register
         /// </summary>
         public void setZeroFlag() {
@@ -110,6 +141,22 @@ namespace PIC16F84_Emulator.PIC.Register
             this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_ZERO_MASK);
         }
 
+        /// <summary>
+        /// Updates the Digit Carry bit (DC) of STATUS register
+        /// </summary>
+        /// <param name="_value">value to write (1=true, 0=false)</param>
+        public void updateDigitCarry(bool _value)
+        {
+            if (_value)
+            {
+                this.setDigitCarry();
+            }
+            else
+            {
+                this.clearDigitCarry();
+            }
+        }
+		
         /// <summary>
         /// Sets the Digit Carry (DC) bit of STATUS register
         /// </summary>

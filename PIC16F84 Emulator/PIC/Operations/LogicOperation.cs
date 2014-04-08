@@ -44,14 +44,7 @@ namespace PIC16F84_Emulator.PIC.Operations
                     break;
             }
 
-            if (result == 0)
-            {
-                registerFileMap.setZeroFlag();
-            }
-            else
-            {
-                registerFileMap.clearZeroFlag();
-            }
+            registerFileMap.updateZeroFlag(result == 0);
 
             registerFileMap.Set(result, targetAddress);
         }

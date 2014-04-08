@@ -65,35 +65,10 @@ namespace PIC16F84_Emulator.PIC.Operations
             temp = arg1 + arg2; // needed if temp > 0xFF to set carry flag
             result = (byte)temp;
 
-
-            if (temp > 0xFF) // overflow
-            {
-                registerFileMap.setCarryFlag();
-            }
-            else
-            {
-                registerFileMap.clearCarryFlag();
-            }
+            registerFileMap.updateCarryFlag(temp > 0xFF);
+            registerFileMap.updateZeroFlag(result == 0);
+            registerFileMap.updateDigitCarry((arg1 % 0x10) + (arg2 % 0x10) > 0xF); // byte % 0x10 cuts off the 4 most significant bits. If the sum of these is still greater then 0000 1111 (0x0F), a carry out on the lower bits happened
             
-            if (result == 0)
-            {
-                registerFileMap.setZeroFlag();
-            }
-            else
-            {
-                registerFileMap.clearZeroFlag();
-            }
-
-
-            if( (arg1 % 0x10) + (arg2 % 0x10) > 0xF )   // byte % 0x10 cuts off the 4 most significant bits. If the sum of these is still greater then 0000 1111 (0x0F), a carry out on the lower bits happened
-            {
-                registerFileMap.setDigitCarry();
-            }
-            else
-            {
-                registerFileMap.clearDigitCarry();
-            }
-
             registerFileMap.Set(result, targetAddress);
         }
 
@@ -107,31 +82,16 @@ namespace PIC16F84_Emulator.PIC.Operations
                     result = (byte)(arg1 - arg2);
                 }
                 // No exception occured -> result is in range of 1 byte.
-                registerFileMap.setCarryFlag(); // for subtraction carry-bit is inverted.
+                registerFileMap.setCarryFlag(); // meaning of carry bit is inverted for subtraction
             }
             catch (OverflowException)
             {
-                result = (byte)(~(arg1 - arg2) + 1); // 2er Komplement
+                result = (byte)(~(arg1 - arg2) + 1); // 2s-complement
                 registerFileMap.clearCarryFlag();
             }
 
-            if (result == 0)
-            {
-                registerFileMap.setZeroFlag();
-            }
-            else
-            {
-                registerFileMap.clearZeroFlag();
-            }
-
-            if ((arg1 % 0x10) > (arg2 % 0x10))
-            {
-                registerFileMap.setDigitCarry();
-            }
-            else
-            {
-                registerFileMap.clearDigitCarry();
-            }
+            registerFileMap.updateZeroFlag(result == 0);
+            registerFileMap.updateDigitCarry((arg1 % 0x10) > (arg2 % 0x10)); // meaning of digit carry bit is inverted for subtraction (like the carry bit)
 
             registerFileMap.Set(result, targetAddress);
         }
