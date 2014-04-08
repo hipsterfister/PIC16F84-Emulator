@@ -11,11 +11,13 @@ namespace PIC16F84_Emulator.PIC.Operations
          *  This OperationClass covers the following instruction:
          *      > SWAPF
          */ 
-        short targetAddress;
-        byte data;
+        private short targetAddress;
+        private byte data;
 
-        public SwapOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public SwapOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.data = _registerFileMap.Get(_sourceAddress);
             this.targetAddress = _targetAddress;

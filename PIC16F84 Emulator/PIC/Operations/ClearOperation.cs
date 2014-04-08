@@ -17,10 +17,11 @@ namespace PIC16F84_Emulator.PIC.Operations
          */
 
         private short targetAddress;
+        private const short CYCLES = 1;
         // private const short WDT_ADDRESS = 0x00; TODO: implement WDT
 
-        public ClearOperation(short _targetAddress, RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        public ClearOperation(short _targetAddress, RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.targetAddress = _targetAddress;
         }

@@ -14,12 +14,14 @@ namespace PIC16F84_Emulator.PIC.Operations
          *  Simply create a new instance and call execute()
          */
 
-        byte data;
-        short targetAddress;
-        RotationDirection direction;
+        private byte data;
+        private short targetAddress;
+        private RotationDirection direction;
 
-        public RotateOperation(short _sourceAddress, short _targetAddress, RotationDirection _direction, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public RotateOperation(short _sourceAddress, short _targetAddress, RotationDirection _direction, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.data = _registerFileMap.Get(_sourceAddress);
             this.targetAddress = _targetAddress;

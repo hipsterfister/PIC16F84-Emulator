@@ -18,13 +18,15 @@ namespace PIC16F84_Emulator.PIC.Operations
          *  Simply create a new instance and call execute() 
          */
 
-        byte arg1, arg2;
-        ArithmeticOperator op;
-        short targetAddress;
+        private byte arg1, arg2;
+        private ArithmeticOperator op;
+        private short targetAddress;
+
+        private const short CYCLES = 1;
        // currently not in use... tbi bool conditional;
 
-        ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        public ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.arg1 = _arg1;
             this.arg2 = _arg2;
@@ -33,8 +35,8 @@ namespace PIC16F84_Emulator.PIC.Operations
             //this.conditional = false;
         }
 
-        ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap, bool _conditional) :
-            base(_registerFileMap)
+        public ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap, bool _conditional, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.arg1 = _arg1;
             this.arg2 = _arg2;

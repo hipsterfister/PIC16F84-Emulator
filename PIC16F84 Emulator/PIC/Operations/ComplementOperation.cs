@@ -11,18 +11,19 @@ namespace PIC16F84_Emulator.PIC.Operations
          *  This OperationClass covers the followin instruction:
          *      > COMF
          */
-        short targetAddress;
-        byte data; // needed because targetAddress can differ from sourceAddress....
+        private short targetAddress;
+        private byte data; // needed because targetAddress can differ from sourceAddress....
+        private const short CYCLES = 1;
 
-        ComplementOperation(short _targetAddress, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        public ComplementOperation(short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.targetAddress = _targetAddress;
             this.data = _registerFileMap.Get(_targetAddress);
         }
 
-        ComplementOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        public ComplementOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.targetAddress = _targetAddress;
             this.data = _registerFileMap.Get(_sourceAddress);

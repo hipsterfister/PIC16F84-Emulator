@@ -15,12 +15,14 @@ namespace PIC16F84_Emulator.PIC.Operations
          *      > XORWF, XORLW
          *  Simply create a new instance and call execute() 
          */
-        byte arg1, arg2;
-        LogicOperator op;
-        short targetAddress;
+        private byte arg1, arg2;
+        private LogicOperator op;
+        private short targetAddress;
 
-        public LogicOperation(byte _arg1, byte _arg2, LogicOperator _op, short _targetAddress, RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public LogicOperation(byte _arg1, byte _arg2, LogicOperator _op, short _targetAddress, RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.arg1 = _arg1;
             this.arg2 = _arg2;

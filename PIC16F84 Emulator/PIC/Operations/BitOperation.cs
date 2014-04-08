@@ -12,12 +12,14 @@ namespace PIC16F84_Emulator.PIC.Operations
          *      > BSF
          *      > BCF
          */
-        short targetAddress;
-        short bitNumber; // [0,7]
-        BitOperator op;
+        private short targetAddress;
+        private short bitNumber; // [0,7]
+        private BitOperator op;
 
-        public BitOperation(short _targetAddress, short _bitNumber, BitOperator _op, Register.RegisterFileMap _registerFileMap):
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public BitOperation(short _targetAddress, short _bitNumber, BitOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.targetAddress = _targetAddress;
             this.bitNumber = _bitNumber;

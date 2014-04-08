@@ -7,8 +7,10 @@ namespace PIC16F84_Emulator.PIC.Operations
 {
     class NopOperation : BaseOperation
     {
-        public NopOperation(Register.RegisterFileMap _registerFileMap):
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public NopOperation(Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
 
         }

@@ -14,18 +14,20 @@ namespace PIC16F84_Emulator.PIC.Operations
          *      > MOVLW
          *  Simply create a new instance and call execute();
          */
-        byte data;
-        short targetAddress;
+        private byte data;
+        private short targetAddress;
 
-        public MoveOperation(byte _data, short _targetAddress, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        private const short CYCLES = 1;
+
+        public MoveOperation(byte _data, short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.data = _data;
             this.targetAddress = _targetAddress;
         }
 
-        public MoveOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap) :
-            base(_registerFileMap)
+        public MoveOperation(short _sourceAddress, short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+            base(_registerFileMap, CYCLES, _address)
         {
             this.data = _registerFileMap.Get(_sourceAddress);
             this.targetAddress = _targetAddress;
