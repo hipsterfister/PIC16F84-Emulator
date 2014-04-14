@@ -65,6 +65,7 @@
     <Compile Include="PIC\Operations\NopOperation.cs" />
     <Compile Include="PIC\Operations\RotateOperation.cs" />
     <Compile Include="PIC\Operations\SwapOperation.cs" />
+    <Compile Include="PIC\Parser.cs" />
     <Compile Include="PIC\PIC.cs" />
     <Compile Include="PIC\Register\ProgramCounter.cs" />
     <Compile Include="PIC\Register\Register.cs" />
