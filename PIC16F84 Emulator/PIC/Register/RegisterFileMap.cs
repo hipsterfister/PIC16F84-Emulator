@@ -9,14 +9,18 @@ namespace PIC16F84_Emulator.PIC.Register
     public class RegisterFileMap
     {
         protected DataAdapter<byte>[] Data;
+        protected Data.OperationStack operationStack = new Data.OperationStack();
+        protected ProgramCounter programCounter;
 
         public RegisterFileMap()
         {
-            Data = new DataAdapter<byte>[256];
+            Data = new DataAdapter<byte>[257];  // Data[256] <= Working Register
             for (int X = 0; X < Data.Length; X++)
             {
                 Data[X] = new DataAdapter<byte>();
             }
+            programCounter = new ProgramCounter(this);
+
             // initialize Special Function Registers
             // Bank 0
             Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;
@@ -170,6 +174,50 @@ namespace PIC16F84_Emulator.PIC.Register
         /// </summary>
         public void clearDigitCarry() {
             this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_DIGIT_CARRY_MASK);
+        }
+
+        /// <summary>
+        /// Sets the Program Counter's value to _value
+        /// </summary>
+        /// <param name="_value"></param>
+        public void setProgramCounter(short _value)
+        {
+            this.programCounter.value = _value;
+        }
+
+        /// <summary>
+        /// Increments the Program Counter's value by 1
+        /// </summary>
+        public void incrementProgramCounter()
+        {
+            this.programCounter.value++;
+        }
+
+        /// <summary>
+        /// Returns the Program Counter's value
+        /// </summary>
+        /// <returns></returns>
+        public short getProgramCounter()
+        {
+            return this.programCounter.value;
+        }
+
+        /// <summary>
+        /// Pops the first element of the stack
+        /// </summary>
+        /// <returns></returns>
+        public short popStack()
+        {
+            return operationStack.pop();
+        }
+
+        /// <summary>
+        /// Pushes _value on top of the stack
+        /// </summary>
+        /// <param name="_value"></param>
+        public void pushStack(short _value)
+        {
+            operationStack.push(_value);
         }
     }
 }

@@ -9,22 +9,22 @@ namespace PIC16F84_Emulator.PIC.Data
 {
     public class OperationStack
     {
-        private DataAdapter<BaseOperation>[] stack;
+        private DataAdapter<short>[] stack;
         private const short STACK_SIZE = 8;
         private short currentTopIndex = 0;
 
         public OperationStack()
         {
-            this.stack = new DataAdapter<BaseOperation>[STACK_SIZE];
+            this.stack = new DataAdapter<short>[STACK_SIZE];
             for (int i = 0; i< STACK_SIZE; i++)
             {
-                this.stack[i] = new DataAdapter<BaseOperation>();
+                this.stack[i] = new DataAdapter<short>();
             }
         }
 
-        public BaseOperation pop()
+        public short pop()
         {
-            BaseOperation result = this.stack[currentTopIndex].Value;
+            short result = this.stack[currentTopIndex].Value;
             if (currentTopIndex == 0)
             {
                 currentTopIndex = STACK_SIZE - 1;
@@ -36,7 +36,7 @@ namespace PIC16F84_Emulator.PIC.Data
             return result;
         }
 
-        public void push(BaseOperation _operation)
+        public void push(short _operation)
         {
             if (currentTopIndex == STACK_SIZE - 1)
             {

@@ -12,22 +12,22 @@ namespace PIC16F84_Emulator.PIC.Operations
     {
         private const short CYCLES = 2;
 
-        private BaseOperation targetOperation;
-        private BaseOperation followingOperation;
+        private short targetOperationAddress;
+        private short followingOperationAddress;
         private OperationStack operationStack;
 
-        public CallOperation(BaseOperation _targetOperation, BaseOperation _followingOperation, OperationStack _operationStack, RegisterFileMap _registerFileMap, short _address) :
+        public CallOperation(short _targetOperationAddress, short _followingOperationAddress, OperationStack _operationStack, RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
-            this.targetOperation = _targetOperation;
-            this.followingOperation = _followingOperation;
+            this.targetOperationAddress = _targetOperationAddress;
+            this.followingOperationAddress = _followingOperationAddress;
             this.operationStack = _operationStack;
         }
 
         public override void execute()
         {
-            this.operationStack.push(this.followingOperation);
-            // TODO: PC
+            this.operationStack.push(this.followingOperationAddress);
+            registerFileMap.setProgramCounter(this.targetOperationAddress);
         }
     }
 }
