@@ -34,6 +34,7 @@ namespace PIC16F84_Emulator.PIC.Register
         public const short INTCON_BANK1_ADDRESS = 0x8B;
         // Special
         public const short WORKING_REGISTER_ADDRESS = 0x100;
+        public const short WDT_REGISTER_ADDRESS = 0x101;
 
         // Initial Values
         // Note: These are not organized by Banks, because mirrored Registers share their initial value.
@@ -50,6 +51,8 @@ namespace PIC16F84_Emulator.PIC.Register
         public const byte STATUS_CARRY_MASK = 0x01;
         public const byte STATUS_DIGIT_CARRY_MASK = 0x02;
         public const byte STATUS_ZERO_MASK = 0x04;
+        public const byte STATUS_PD_MASK = 0x08;
+        public const byte STATUS_TO_MASK = 0x10;
 
         // INTON Flags (read as bit-mask)
         public const byte INTCON_GIE_MASK = 0x80;

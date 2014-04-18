@@ -57,6 +57,7 @@
     <Compile Include="PIC\Operations\ArithmeticOperation.cs" />
     <Compile Include="PIC\Operations\BaseOperation.cs" />
     <Compile Include="PIC\Operations\BitOperation.cs" />
+    <Compile Include="PIC\Operations\BitTestOperation.cs" />
     <Compile Include="PIC\Operations\CallOperation.cs" />
     <Compile Include="PIC\Operations\ClearOperation.cs" />
     <Compile Include="PIC\Operations\ComplementOperation.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="PIC\Operations\NopOperation.cs" />
     <Compile Include="PIC\Operations\ReturnOperation.cs" />
     <Compile Include="PIC\Operations\RotateOperation.cs" />
+    <Compile Include="PIC\Operations\SleepOperation.cs" />
     <Compile Include="PIC\Operations\SwapOperation.cs" />
     <Compile Include="PIC\Parser.cs" />
     <Compile Include="PIC\PIC.cs" />
