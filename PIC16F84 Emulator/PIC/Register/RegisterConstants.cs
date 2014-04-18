@@ -36,6 +36,9 @@ namespace PIC16F84_Emulator.PIC.Register
         public const short WORKING_REGISTER_ADDRESS = 0x100;
         public const short WDT_REGISTER_ADDRESS = 0x101;
 
+        // Notable Addresses
+        public const short INTERRUPT_VECTOR_ADDRESS = 0x4;
+
         // Initial Values
         // Note: These are not organized by Banks, because mirrored Registers share their initial value.
         public const byte PCL_INITIAL_VALUE = 0x00;

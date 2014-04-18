@@ -219,5 +219,24 @@ namespace PIC16F84_Emulator.PIC.Register
         {
             operationStack.push(_value);
         }
+
+        /// <summary>
+        /// Register a listener with the DataAdapter of the corresponding address
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <param name="address"></param>
+        public void registerDataListener(DataAdapter<byte>.OnDataChanged listener, short address) {
+            Data[address].DataChanged += listener;
+        }
+
+        /// <summary>
+        /// Unregister a listener with the DataAdapter of the corresponding address
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <param name="address"></param>
+        public void unregisterDataListener(DataAdapter<byte>.OnDataChanged listener, short address)
+        {
+            Data[address].DataChanged -= listener;
+        }
     }
 }

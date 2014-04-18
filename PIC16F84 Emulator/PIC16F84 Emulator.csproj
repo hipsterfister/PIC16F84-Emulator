@@ -54,6 +54,7 @@
     <Compile Include="PIC\Data\DataAdapter.cs" />
     <Compile Include="PIC\Data\Helper.cs" />
     <Compile Include="PIC\Data\OperationStack.cs" />
+    <Compile Include="PIC\Interrupts\InterruptHandler.cs" />
     <Compile Include="PIC\Operations\ArithmeticOperation.cs" />
     <Compile Include="PIC\Operations\BaseOperation.cs" />
     <Compile Include="PIC\Operations\BitOperation.cs" />
@@ -108,6 +109,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

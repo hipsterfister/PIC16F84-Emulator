@@ -13,16 +13,20 @@ namespace PIC16F84_Emulator.PIC
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
         protected Data.OperationStack operationStack = new Data.OperationStack();
         protected Register.ProgramCounter programCounter;
+        protected Interrupts.InterruptHandler interruptHandler;
         protected short cyclesLeftToExecute = 1;
         protected Clock clock;
 
         private bool isReady = true;
         private Object isReadyLock = new Object();
 
+        private bool interruptIsNext = false;
+
         public PIC()
         {
             programCounter = new Register.ProgramCounter(registerMap);
             clock = new Clock(this, INTERVAL);
+            interruptHandler = new Interrupts.InterruptHandler(this, registerMap);
         }
 
         public void beginExecution()
@@ -37,9 +41,16 @@ namespace PIC16F84_Emulator.PIC
 
         /// <summary>
         /// Executes the next (means: the operation referenced in programmCounter) operation
+        /// 
+        /// Not thread safe!
         /// </summary>
         protected bool executeNextOperation()
         {
+            if (interruptIsNext)
+            {
+                // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
+                interruptHandler.triggerInterrupt(operationStack, programCounter);
+            }
             Operations.BaseOperation operation = new Operations.NopOperation(registerMap, programCounter.value); // to be replaced by parser call (fetchOperation(programCounter.value))
             cyclesLeftToExecute = operation.cycles;
             operation.execute();
@@ -68,6 +79,15 @@ namespace PIC16F84_Emulator.PIC
                     isReady = executeNextOperation();
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets/Clears the interruptIsNext-Flag
+        /// </summary>
+        /// <param name="_value"></param>
+        public void setInterruptIsNext(bool _value)
+        {
+            interruptIsNext = _value;
         }
     }
 }
