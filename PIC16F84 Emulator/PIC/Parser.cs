@@ -52,6 +52,10 @@ namespace PIC16F84_Emulator.PIC.Parser
         private const int SWAPF         = 0x0E00;
         private const int CLRWDT        = 0x0064;
         private const int RETFIE        = 0x0009;
+        private const int RETLW_1       = 0x3400;
+        private const int RETLW_2       = 0x3500;
+        private const int RETLW_3       = 0x3600;
+        private const int RETLW_4       = 0x3700;
         private const int RETURN        = 0x0008;
         private const int SLEEP         = 0x0063;
         private const int NOP_1         = 0x0000;
@@ -85,6 +89,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 BitOperator BitOp = 0;
                 LogicOperator LogOp = 0;
                 TestOperator TestOp = 0;
+                ReturnOperator RetOp = 0;
                 RotationDirection RotDir = 0;
 
                 // mask Operation-Byte --> xxxx xxxx 0000 0000
@@ -103,7 +108,6 @@ namespace PIC16F84_Emulator.PIC.Parser
                         // arithmetical operator
                         ArithOp = ArithmeticOperator.PLUS;
                         // target address
-                        // parameter > 127 ? => F-Register Address = Parameter
                         target = checkDValue(parameter);
                         // operating bytes
                         byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
@@ -168,7 +172,7 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- CALL OPERATIONS ----------------------------- */
-
+                        // TODO: CALL OPERATIONS
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
@@ -277,11 +281,24 @@ namespace PIC16F84_Emulator.PIC.Parser
                     case BTFSC_2:
                     case BTFSC_3:
                     case BTFSC_4:
+                        // TODO: BTFSC OPERATION
                     case BTFSS_1:
                     case BTFSS_2:
                     case BTFSS_3:
                     case BTFSS_4:
+                        // TODO: BTFSS OPERATION
                         break;
+                    /* ------------------------------------------------------ */
+
+                    /* ------------------------------------------------------ */
+                    /* -------- RETURN OPERATIONS --------------------------- */
+                    case RETLW_1:
+                    case RETLW_2:
+                    case RETLW_3:
+                    case RETLW_4:
+                        RetOp = ReturnOperator.RETLW;
+                        byte1 = getLiteralFromParameter(parameter);
+                        return new ReturnOperation(RetOp, byte1, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     case 0x0000:
@@ -295,15 +312,14 @@ namespace PIC16F84_Emulator.PIC.Parser
                         switch (parameter)
                         {
                             case CLRWDT:
-                                // TODO: CLRWDT ADDRESS
-                                /* target == CLRWDT_ADDRESS
-                                 * return new ClearOperation(target, registerFileMap, address);
-                                 */
-                                break;
+                                target = RegisterConstants.WDT_REGISTER_ADDRESS;
+                                return new ClearOperation(target, registerFileMap, address);
                             case RETFIE:
-                                break;
+                                RetOp = ReturnOperator.RETFIE;
+                                return new ReturnOperation(RetOp, registerFileMap, address);
                             case RETURN:
-                                break;
+                                RetOp = ReturnOperator.RETURN;
+                                return new ReturnOperation(RetOp, registerFileMap, address);
                             case SLEEP:
                                 break;
                             case NOP_1:
@@ -318,9 +334,12 @@ namespace PIC16F84_Emulator.PIC.Parser
                         throw new Exception("unknown operation");
                 }
 
+                throw new Exception("unknown error");
+
             }
             catch (Exception ex)
             {
+                return null;
             }
         }
 
@@ -328,7 +347,7 @@ namespace PIC16F84_Emulator.PIC.Parser
         {
             // CHECK IF D VALUE = 1 (p = DFFF FFFF => IF D = 1 => p > 127)
             // IF D = 1 => target = parameter | IF D = 0 => target = W-REG
-            short target = _parameter > 127 ? (short)(_parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+            short target = _parameter > 127 ? getAddressFromParameter(_parameter) : RegisterConstants.WORKING_REGISTER_ADDRESS;
             return target;
         }
 
