@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PIC16F84_Emulator.PIC.Register;
 using PIC16F84_Emulator.PIC.Operations;
 
 namespace PIC16F84_Emulator.PIC.Parser
@@ -65,8 +66,6 @@ namespace PIC16F84_Emulator.PIC.Parser
             {
                 // TODO: obligatorischen Programmspeicher durch den richtigen ersetzen
                 Data.DataAdapter<short>[] Pr0gramStorage;
-                // TODO: obligatorisches W-Register durch das richtige ersetzen
-                byte wreg = 0x00;
                 
                 short target = 0;
                 short source = 0;
@@ -95,9 +94,9 @@ namespace PIC16F84_Emulator.PIC.Parser
                         ArithOp = ArithmeticOperator.PLUS;
                         // target address
                         // parameter > 127 ? => F-Register Address = Parameter
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         // operating bytes
-                        byte1 = wreg;
+                        byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         byte2 = registerFileMap.Get(parameter);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case ADDWL_1:
@@ -105,34 +104,34 @@ namespace PIC16F84_Emulator.PIC.Parser
                         ArithOp = ArithmeticOperator.PLUS;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
-                        target = wreg;
-                        byte1 = wreg;
+                        target = RegisterConstants.WORKING_REGISTER_ADDRESS;
+                        byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         byte2 = (byte)parameter;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case INCF:
                         ArithOp = ArithmeticOperator.PLUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = 0x01;
                         byte2 = registerFileMap.Get(parameter);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case SUBWF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(parameter);
-                        byte2 = wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case SUBLW_1:
                     case SUBLW_2:
                         ArithOp = ArithmeticOperator.MINUS;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
-                        target = wreg;
+                        target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = (byte)parameter;
-                        byte2 = wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case DECF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(parameter);
                         byte2 = 0x01;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
@@ -169,14 +168,14 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- CLEAR OPERATIONS ---------------------------- */
                     case CLRF_CLRW:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         return new ClearOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- COMPLEMENT OPERATIONS ----------------------- */
                     case COMF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         return new ComplementOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
@@ -184,52 +183,52 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- LOGIC OPERATIONS ---------------------------- */
                     case ANDWF:
                         LogOp = LogicOperator.AND;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(parameter);
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case ANDWL:
                         LogOp = LogicOperator.AND;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
-                        target = wreg;
+                        target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = (byte)parameter;
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case IORWF:
                         LogOp = LogicOperator.IOR;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(parameter);
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case IORLW:
                         LogOp = LogicOperator.IOR;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
-                        target = wreg;
+                        target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = (byte)parameter;
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case XORWF:
                         LogOp = LogicOperator.XOR;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(parameter);
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case XORLW:
                         LogOp = LogicOperator.XOR;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
-                        target = wreg;
+                        target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = (byte)parameter;
-                        byte2 = (byte)wreg;
+                        byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- MOVE OPERATIONS ----------------------------- */
                     case MOVF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         source = (short)(parameter & 0x007F);
                         return new MoveOperation(source, target, registerFileMap, address);
                     case MOVLW_1:
@@ -246,12 +245,12 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- ROTATE OPERATIONS --------------------------- */
                     case RLF:
                         RotDir = RotationDirection.LEFT;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         source = (short)(parameter & 0x007F);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     case RRF:
                         RotDir = RotationDirection.RIGHT;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         source = (short)(parameter & 0x007F);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -259,7 +258,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- SWAP OPERATIONS ----------------------------- */
                     case SWAPF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
+                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
                         source = (short)(parameter & 0x007F);
                         return new SwapOperation(source, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -269,8 +268,8 @@ namespace PIC16F84_Emulator.PIC.Parser
                         {
                             // MOVWF
                             target = (short)(parameter & 0x007F);
-                            byte1 = wreg;
-                            return new MoveOperation(wreg, target, registerFileMap, address);
+                            byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
+                            return new MoveOperation(byte1, target, registerFileMap, address);
                         }
                         switch (parameter)
                         {
