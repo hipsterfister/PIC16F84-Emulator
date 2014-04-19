@@ -79,6 +79,8 @@ namespace PIC16F84_Emulator.PIC.Parser
             {
                 // TODO: obligatorischen Programmspeicher durch den richtigen ersetzen
                 Data.DataAdapter<short>[] Pr0gramStorage;
+                Pr0gramStorage = new Data.DataAdapter<short>[1];
+                Pr0gramStorage[0] = new Data.DataAdapter<short>();
                 
                 short target = 0;
                 short source = 0;
