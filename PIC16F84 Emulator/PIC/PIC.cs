@@ -10,6 +10,7 @@ namespace PIC16F84_Emulator.PIC
     {
         private const short INTERVAL = 1000; // clock interval [ms]
 
+        protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
         protected Data.OperationStack operationStack = new Data.OperationStack();
         protected Register.ProgramCounter programCounter;
