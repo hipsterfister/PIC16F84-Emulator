@@ -54,6 +54,7 @@
     <Compile Include="PIC\Data\DataAdapter.cs" />
     <Compile Include="PIC\Data\Helper.cs" />
     <Compile Include="PIC\Data\OperationStack.cs" />
+    <Compile Include="PIC\Data\ProgamMemory.cs" />
     <Compile Include="PIC\Interrupts\InterruptHandler.cs" />
     <Compile Include="PIC\Operations\ArithmeticOperation.cs" />
     <Compile Include="PIC\Operations\BaseOperation.cs" />

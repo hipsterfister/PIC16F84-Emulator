@@ -29,7 +29,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         }
 
         /// <summary>
-        /// Creates a new instance of ReturnOperation with an argument. Use this for RETFIE.
+        /// Creates a new instance of ReturnOperation with an argument. Use this for RETLW.
         /// </summary>
         /// <param name="_op"></param>
         /// <param name="_arg"></param>
