@@ -13,7 +13,7 @@ namespace PIC16F84_Emulator.PIC.Parser
          *  This Class parses a 14-bit PIC-command, splitted in two bytes:
          *      > xx11 1111   2222 2222
          *        OPERATION   PARAMETER
-         *  Create a new instance and call nextCmd(OPERATION,PARAMETERS)
+         *  Create a new instance and call getNextOperation(codeAddress)
          *  The correct BaseOperation gets returned
          */
         
@@ -58,7 +58,16 @@ namespace PIC16F84_Emulator.PIC.Parser
         private const int NOP_2         = 0x0020;
         private const int NOP_3         = 0x0040;
         private const int NOP_4         = 0x0060;
-
+        private const int BTFSC_1       = 0x1800;
+        private const int BTFSC_2       = 0x1900;
+        private const int BTFSC_3       = 0x1A00;
+        private const int BTFSC_4       = 0x1B00;
+        private const int BTFSS_1       = 0x1C00;
+        private const int BTFSS_2       = 0x1D00;
+        private const int BTFSS_3       = 0x1E00;
+        private const int BTFSS_4       = 0x1F00;
+        private const int DECFSZ        = 0x0B00;
+        private const int INCFSZ        = 0x0F00;
 
         public BaseOperation getNextOperation(short _codeAdress)
         {
@@ -75,6 +84,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 ArithmeticOperator ArithOp = 0;
                 BitOperator BitOp = 0;
                 LogicOperator LogOp = 0;
+                TestOperator TestOp = 0;
                 RotationDirection RotDir = 0;
 
                 // mask Operation-Byte --> xxxx xxxx 0000 0000
@@ -94,45 +104,41 @@ namespace PIC16F84_Emulator.PIC.Parser
                         ArithOp = ArithmeticOperator.PLUS;
                         // target address
                         // parameter > 127 ? => F-Register Address = Parameter
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+                        target = checkDValue(parameter);
                         // operating bytes
                         byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
-                        byte2 = registerFileMap.Get(parameter);
+                        byte2 = registerFileMap.Get(getAddressFromParameter(parameter));
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case ADDWL_1:
                     case ADDWL_2:
                         ArithOp = ArithmeticOperator.PLUS;
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
-                        byte2 = (byte)parameter;
+                        byte2 = getLiteralFromParameter(parameter);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case INCF:
                         ArithOp = ArithmeticOperator.PLUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+                        target = checkDValue(parameter);
                         byte1 = 0x01;
-                        byte2 = registerFileMap.Get(parameter);
+                        byte2 = registerFileMap.Get(getAddressFromParameter(parameter));
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case SUBWF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = registerFileMap.Get(parameter);
+                        target = checkDValue(parameter);
+                        byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case SUBLW_1:
                     case SUBLW_2:
                         ArithOp = ArithmeticOperator.MINUS;
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = (byte)parameter;
+                        byte1 = getLiteralFromParameter(parameter);
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case DECF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = registerFileMap.Get(parameter);
+                        target = checkDValue(parameter);
+                        byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = 0x01;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -146,16 +152,16 @@ namespace PIC16F84_Emulator.PIC.Parser
                         // bit operator
                         BitOp = BitOperator.BITCLEAR;
                         // target address
-                        target = (short)(parameter & 0x007F);
+                        target = getAddressFromParameter(parameter);
                         // bit-number
-                        bit = (short)(operation+parameter & 0x0380);
+                        bit = (short)(operation + parameter & 0x0380); // xxxx xxBB Bxxx xxxx => 0000 00xx x000 0000
                         return new BitOperation(target, bit, BitOp, registerFileMap, address);
                     case BSF_1:
                     case BSF_2:
                     case BSF_3:
                     case BSF_4:
                         BitOp = BitOperator.BITSET;
-                        target = (short)(parameter & 0x007F);
+                        target = getAddressFromParameter(parameter);
                         bit = (short)(operation + parameter & 0x0380);
                         return new BitOperation(target, bit, BitOp, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -168,14 +174,14 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- CLEAR OPERATIONS ---------------------------- */
                     case CLRF_CLRW:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+                        target = checkDValue(parameter);
                         return new ClearOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- COMPLEMENT OPERATIONS ----------------------- */
                     case COMF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+                        target = checkDValue(parameter);
                         return new ComplementOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
@@ -183,44 +189,38 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- LOGIC OPERATIONS ---------------------------- */
                     case ANDWF:
                         LogOp = LogicOperator.AND;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = registerFileMap.Get(parameter);
+                        target = checkDValue(parameter);
+                        byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case ANDWL:
                         LogOp = LogicOperator.AND;
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = (byte)parameter;
+                        byte1 = getLiteralFromParameter(parameter);
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case IORWF:
                         LogOp = LogicOperator.IOR;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = registerFileMap.Get(parameter);
+                        target = checkDValue(parameter);
+                        byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case IORLW:
                         LogOp = LogicOperator.IOR;
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = (byte)parameter;
+                        byte1 = getLiteralFromParameter(parameter);
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case XORWF:
                         LogOp = LogicOperator.XOR;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = registerFileMap.Get(parameter);
+                        target = checkDValue(parameter);
+                        byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case XORLW:
                         LogOp = LogicOperator.XOR;
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        byte1 = (byte)parameter;
+                        byte1 = getLiteralFromParameter(parameter);
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -228,16 +228,14 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- MOVE OPERATIONS ----------------------------- */
                     case MOVF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        source = (short)(parameter & 0x007F);
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
                         return new MoveOperation(source, target, registerFileMap, address);
                     case MOVLW_1:
                     case MOVLW_2:
                     case MOVLW_3:
                     case MOVLW_4:
-                        if (parameter > 255)
-                            throw new Exception("too long, too large, too big");
-                        byte1 = (byte)parameter;
+                        byte1 = getLiteralFromParameter(parameter);
                         return new MoveOperation(byte1, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
@@ -245,29 +243,52 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- ROTATE OPERATIONS --------------------------- */
                     case RLF:
                         RotDir = RotationDirection.LEFT;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        source = (short)(parameter & 0x007F);
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     case RRF:
                         RotDir = RotationDirection.RIGHT;
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        source = (short)(parameter & 0x007F);
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- SWAP OPERATIONS ----------------------------- */
                     case SWAPF:
-                        target = parameter > 127 ? (short)(parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
-                        source = (short)(parameter & 0x007F);
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
                         return new SwapOperation(source, target, registerFileMap, address);
+                    /* ------------------------------------------------------ */
+
+                    /* ------------------------------------------------------ */
+                    /* -------- BIT TEST OPERATIONS ----------------------------- */
+                    case DECFSZ:
+                        TestOp = TestOperator.DECFSZ;
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
+                        return new TestOperation(source, TestOp, registerFileMap, address);
+                    case INCFSZ:
+                        TestOp = TestOperator.INCFSZ;
+                        target = checkDValue(parameter);
+                        source = getAddressFromParameter(parameter);
+                        return new TestOperation(source, TestOp, registerFileMap, address);
+                    case BTFSC_1:
+                    case BTFSC_2:
+                    case BTFSC_3:
+                    case BTFSC_4:
+                    case BTFSS_1:
+                    case BTFSS_2:
+                    case BTFSS_3:
+                    case BTFSS_4:
+                        break;
                     /* ------------------------------------------------------ */
 
                     case 0x0000:
                         if(parameter > 127)
                         {
                             // MOVWF
-                            target = (short)(parameter & 0x007F);
+                            target = getAddressFromParameter(parameter);
                             byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                             return new MoveOperation(byte1, target, registerFileMap, address);
                         }
@@ -301,6 +322,27 @@ namespace PIC16F84_Emulator.PIC.Parser
             catch (Exception ex)
             {
             }
+        }
+
+        private short checkDValue(short _parameter)
+        {
+            // CHECK IF D VALUE = 1 (p = DFFF FFFF => IF D = 1 => p > 127)
+            // IF D = 1 => target = parameter | IF D = 0 => target = W-REG
+            short target = _parameter > 127 ? (short)(_parameter & 0x007F) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+            return target;
+        }
+
+        private short getAddressFromParameter(short _parameter)
+        {
+            // xxxx xxxx DFFF FFFF & 0000 0000 0111 1111 => ADDRESS (0000 0000 0xxx xxxx)
+            return (short)(_parameter & 0x007F);
+        }
+
+        private byte getLiteralFromParameter(short _parameter)
+        {
+            if (_parameter > 255)
+                throw new Exception("too long, too large, too big");
+            return (byte)_parameter;
         }
 
         public Parser(Register.RegisterFileMap _registerFileMap)
