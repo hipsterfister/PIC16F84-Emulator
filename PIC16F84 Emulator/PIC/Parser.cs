@@ -17,6 +17,47 @@ namespace PIC16F84_Emulator.PIC.Parser
          */
         
         private Register.RegisterFileMap registerFileMap;
+        private const int ADDWF         = 0x0700;
+        private const int ADDWL_1       = 0x3E00;
+        private const int ADDWL_2       = 0x3F00;
+        private const int INCF          = 0x0A00;
+        private const int SUBWF         = 0x0200;
+        private const int SUBLW_1       = 0x3C00;
+        private const int SUBLW_2       = 0x3D00;
+        private const int DECF          = 0x0300;
+        private const int BCF_1         = 0x1000;
+        private const int BCF_2         = 0x1100;
+        private const int BCF_3         = 0x1200;
+        private const int BCF_4         = 0x1300;
+        private const int BSF_1         = 0x1400;
+        private const int BSF_2         = 0x1500;
+        private const int BSF_3         = 0x1600;
+        private const int BSF_4         = 0x1700;
+        private const int CLRF_CLRW     = 0x0100;
+        private const int COMF          = 0x0900;
+        private const int ANDWF         = 0x0500;
+        private const int ANDWL         = 0x3900;
+        private const int IORWF         = 0x0400;
+        private const int IORLW         = 0x3800;
+        private const int XORWF         = 0x0600;
+        private const int XORLW         = 0x3A00;
+        private const int MOVF          = 0x0800;
+        private const int MOVLW_1       = 0x3000;
+        private const int MOVLW_2       = 0x3100;
+        private const int MOVLW_3       = 0x3200;
+        private const int MOVLW_4       = 0x3300;
+        private const int RLF           = 0x0D00;
+        private const int RRF           = 0x0C00;
+        private const int SWAPF         = 0x0E00;
+        private const int CLRWDT        = 0x0064;
+        private const int RETFIE        = 0x0009;
+        private const int RETURN        = 0x0008;
+        private const int SLEEP         = 0x0063;
+        private const int NOP_1         = 0x0000;
+        private const int NOP_2         = 0x0020;
+        private const int NOP_3         = 0x0040;
+        private const int NOP_4         = 0x0060;
+
 
         public BaseOperation getNextOperation(short _codeAdress)
         {
@@ -49,8 +90,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 {
                     /* ------------------------------------------------------ */
                     /* -------- ARITHMETIC OPERATIONS ----------------------- */
-                    case 0x0700:
-                        // ADDWF
+                    case ADDWF:
                         // arithmetical operator
                         ArithOp = ArithmeticOperator.PLUS;
                         // target address
@@ -60,9 +100,8 @@ namespace PIC16F84_Emulator.PIC.Parser
                         byte1 = wreg;
                         byte2 = registerFileMap.Get(parameter);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case 0x3E00:
-                    case 0x3F00:
-                        // ADDLW
+                    case ADDWL_1:
+                    case ADDWL_2:
                         ArithOp = ArithmeticOperator.PLUS;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
@@ -70,23 +109,20 @@ namespace PIC16F84_Emulator.PIC.Parser
                         byte1 = wreg;
                         byte2 = (byte)parameter;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case 0x0A00:
-                        // INCF
+                    case INCF:
                         ArithOp = ArithmeticOperator.PLUS;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = 0x01;
                         byte2 = registerFileMap.Get(parameter);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case 0x0200:
-                        // SUBWF
+                    case SUBWF:
                         ArithOp = ArithmeticOperator.MINUS;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = registerFileMap.Get(parameter);
                         byte2 = wreg;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case 0x3C00:
-                    case 0x3D00:
-                        // SUBLW
+                    case SUBLW_1:
+                    case SUBLW_2:
                         ArithOp = ArithmeticOperator.MINUS;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
@@ -94,8 +130,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                         byte1 = (byte)parameter;
                         byte2 = wreg;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case 0x0300:
-                        // DECF
+                    case DECF:
                         ArithOp = ArithmeticOperator.MINUS;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = registerFileMap.Get(parameter);
@@ -105,11 +140,10 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- BIT OPERATIONS ------------------------------ */
-                    case 0x1000:
-                    case 0x1100:
-                    case 0x1200:
-                    case 0x1300:
-                        // BCF
+                    case BCF_1:
+                    case BCF_2:
+                    case BCF_3:
+                    case BCF_4:
                         // bit operator
                         BitOp = BitOperator.BITCLEAR;
                         // target address
@@ -117,11 +151,10 @@ namespace PIC16F84_Emulator.PIC.Parser
                         // bit-number
                         bit = (short)(operation+parameter & 0x0380);
                         return new BitOperation(target, bit, BitOp, registerFileMap, address);
-                    case 0x1400:
-                    case 0x1500:
-                    case 0x1600:
-                    case 0x1700:
-                        // BSF
+                    case BSF_1:
+                    case BSF_2:
+                    case BSF_3:
+                    case BSF_4:
                         BitOp = BitOperator.BITSET;
                         target = (short)(parameter & 0x007F);
                         bit = (short)(operation + parameter & 0x0380);
@@ -135,32 +168,27 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- CLEAR OPERATIONS ---------------------------- */
-                    case 0x0100:
-                        // CLRF
-                        // CLRW
+                    case CLRF_CLRW:
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         return new ClearOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- COMPLEMENT OPERATIONS ----------------------- */
-                    case 0x0900:
-                        // COMF
+                    case COMF:
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         return new ComplementOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- LOGIC OPERATIONS ---------------------------- */
-                    case 0x0500:
-                        // ANDWF
+                    case ANDWF:
                         LogOp = LogicOperator.AND;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = registerFileMap.Get(parameter);
                         byte2 = (byte)wreg;
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case 0x3900:
-                        // ANDLW
+                    case ANDWL:
                         LogOp = LogicOperator.AND;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
@@ -168,15 +196,13 @@ namespace PIC16F84_Emulator.PIC.Parser
                         byte1 = (byte)parameter;
                         byte2 = (byte)wreg;
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case 0x0400:
-                        // IORWF
+                    case IORWF:
                         LogOp = LogicOperator.IOR;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = registerFileMap.Get(parameter);
                         byte2 = (byte)wreg;
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case 0x3800:
-                        // IORLW
+                    case IORLW:
                         LogOp = LogicOperator.IOR;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
@@ -184,15 +210,13 @@ namespace PIC16F84_Emulator.PIC.Parser
                         byte1 = (byte)parameter;
                         byte2 = (byte)wreg;
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case 0x0600:
-                        // XORWF
+                    case XORWF:
                         LogOp = LogicOperator.XOR;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         byte1 = registerFileMap.Get(parameter);
                         byte2 = (byte)wreg;
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case 0x3A00:
-                        // XORLW
+                    case XORLW:
                         LogOp = LogicOperator.XOR;
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
@@ -204,16 +228,14 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- MOVE OPERATIONS ----------------------------- */
-                    case 0x0800:
-                        // MOVF
+                    case MOVF:
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         source = (short)(parameter & 0x007F);
                         return new MoveOperation(source, target, registerFileMap, address);
-                    case 0x3000:
-                    case 0x3100:
-                    case 0x3200:
-                    case 0x3300:
-                        // MOVLW
+                    case MOVLW_1:
+                    case MOVLW_2:
+                    case MOVLW_3:
+                    case MOVLW_4:
                         if (parameter > 255)
                             throw new Exception("too long, too large, too big");
                         byte1 = (byte)parameter;
@@ -222,14 +244,12 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- ROTATE OPERATIONS --------------------------- */
-                    case 0x0D00:
-                        // RLF
+                    case RLF:
                         RotDir = RotationDirection.LEFT;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         source = (short)(parameter & 0x007F);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
-                    case 0x0C00:
-                        // RRF
+                    case RRF:
                         RotDir = RotationDirection.RIGHT;
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         source = (short)(parameter & 0x007F);
@@ -238,8 +258,7 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- SWAP OPERATIONS ----------------------------- */
-                        // SWAPF
-                    case 0x0E00:
+                    case SWAPF:
                         target = parameter > 127 ? (short)(parameter & 0x007F) : wreg;
                         source = (short)(parameter & 0x007F);
                         return new SwapOperation(source, target, registerFileMap, address);
@@ -255,27 +274,22 @@ namespace PIC16F84_Emulator.PIC.Parser
                         }
                         switch (parameter)
                         {
-                            case 0x0064:
-                                // CLRWDT
+                            case CLRWDT:
                                 // TODO: CLRWDT ADDRESS
                                 /* target == CLRWDT_ADDRESS
                                  * return new ClearOperation(target, registerFileMap, address);
                                  */
                                 break;
-                            case 0x0009:
-                                // RETFIE
+                            case RETFIE:
                                 break;
-                            case 0x0008:
-                                // RETURN
+                            case RETURN:
                                 break;
-                            case 0x0063:
-                                // SLEEP
+                            case SLEEP:
                                 break;
-                            case 0x0000:
-                            case 0x0020:
-                            case 0x0040:
-                            case 0x0060:
-                                // NOP
+                            case NOP_1:
+                            case NOP_2:
+                            case NOP_3:
+                            case NOP_4:
                                 return new NopOperation(registerFileMap, address);
                         }                      
                         break;
