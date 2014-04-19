@@ -30,8 +30,8 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateiÖffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,12 +55,6 @@
             this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.dateiToolStripMenuItem.Text = "Datei";
             // 
-            // ansichtToolStripMenuItem
-            // 
-            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
-            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.ansichtToolStripMenuItem.Text = "Ansicht";
-            // 
             // dateiÖffnenToolStripMenuItem
             // 
             this.dateiÖffnenToolStripMenuItem.Name = "dateiÖffnenToolStripMenuItem";
@@ -68,9 +62,16 @@
             this.dateiÖffnenToolStripMenuItem.Text = "Datei öffnen";
             this.dateiÖffnenToolStripMenuItem.Click += new System.EventHandler(this.showOpenFileDialog);
             // 
+            // ansichtToolStripMenuItem
+            // 
+            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
+            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.ansichtToolStripMenuItem.Text = "Ansicht";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog";
+            this.openFileDialog1.Filter = "Programme | *.LST";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // PICEmulatorForm
