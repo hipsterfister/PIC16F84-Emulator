@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="PICEmulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="PICEmulatorForm.Designer.cs">
+      <DependentUpon>PICEmulatorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PIC\Clock.cs" />
     <Compile Include="PIC\Data\DataAdapter.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="PIC\Operations\BaseOperation.cs" />
     <Compile Include="PIC\Operations\BitOperation.cs" />
     <Compile Include="PIC\Operations\BitTestOperation.cs" />
+    <Compile Include="PIC\Operations\TestOperation.cs" />
     <Compile Include="PIC\Operations\CallOperation.cs" />
     <Compile Include="PIC\Operations\ClearOperation.cs" />
     <Compile Include="PIC\Operations\ComplementOperation.cs" />
@@ -84,8 +85,8 @@
     <Compile Include="Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="PICEmulatorForm.resx">
+      <DependentUpon>PICEmulatorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

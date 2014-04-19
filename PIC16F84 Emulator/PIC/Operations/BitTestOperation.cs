@@ -5,78 +5,60 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Operations
 {
-    public class TestOperation : BaseOperation
+    public class BitTestOperation : BaseOperation
     {
-        private const short CYCLES = 2;
-        private TestOperator op;
-        private short targetAddress;
-        private short sourceAddress;
+        private const short CYCLES = 1;
+        private BitTestOperator op;
+        private bool bitValue;
 
         /// <summary>
-        /// Creates a new TestOperation. Use only if d == 1 (INCFSZ f,d / DECFSZ f,d)
+        /// Creates a new BitTestOperation (1,2 Cycle Instruction)
         /// </summary>
-        /// <param name="_sourceAddress">f</param>
-        /// <param name="_op">INC / DEC</param>
+        /// <param name="_sourceAddress">The byte's address containing the targeted bit</param>
+        /// <param name="_bitNumber">[0,7]</param>
+        /// <param name="_op">BTFSC / BTFSS</param>
         /// <param name="_registerFileMap"></param>
         /// <param name="_address">code address</param>
-        public TestOperation(short _sourceAddress, TestOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
+        public BitTestOperation(short _sourceAddress, short _bitNumber, BitTestOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
             op = _op;
-            targetAddress = _sourceAddress;
-            sourceAddress = _sourceAddress;
+            bitValue = (registerFileMap.Get(_sourceAddress) & (1 << _bitNumber)) != 0;
         }
 
-        /// <summary>
-        /// Creates a new TestOperation. (INCFSZ f,d / DECFSZ f,d)
-        /// </summary>
-        /// <param name="_sourceAddress">f</param>
-        /// <param name="_op">INC / DEC</param>
-        /// <param name="_dValue">d</param>
-        /// <param name="_registerFileMap"></param>
-        /// <param name="_address">code address</param>
-        public TestOperation(short _sourceAddress, TestOperator _op, bool _dValue, Register.RegisterFileMap _registerFileMap, short _address) :
-            base(_registerFileMap, CYCLES, _address)
-        {
-            op = _op;
-            sourceAddress = _sourceAddress;
-            if (_dValue)
-            {
-                targetAddress = _sourceAddress;
-            }
-            else
-            {
-                targetAddress = Register.RegisterConstants.WORKING_REGISTER_ADDRESS;
-            }
-
-        }
 
         public override void execute()
         {
-            short value = registerFileMap.Get(sourceAddress);
+            bool condition = false;
             switch (op)
             {
-                case TestOperator.DECFSZ:
-                    value--;
+                case BitTestOperator.BTFSC:
+                    if (!bitValue)
+                    {
+                        condition = true;
+                    }
                     break;
-                case TestOperator.INCFSZ:
-                    value++;
+                case BitTestOperator.BTFSS:
+                    if (bitValue)
+                    {
+                        condition = true;
+                    }
                     break;
             }
 
             // If the result (value) is zero -> skip next operation.
-            if (value == 0)
+            if (condition)
             {
                 registerFileMap.incrementProgramCounter();
+                this.cycles = 2;
             }
 
-            registerFileMap.Set((byte) value, targetAddress);
         }
     }
 
-    public enum TestOperator
+    public enum BitTestOperator
     {
-        DECFSZ,
-        INCFSZ
+        BTFSC,
+        BTFSS
     }
 }

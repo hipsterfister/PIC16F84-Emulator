@@ -33,9 +33,12 @@
             this.schließenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.schließenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zeigeRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zeigeIOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +61,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dateiToolStripMenuItem,
+            this.ansichtToolStripMenuItem,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -68,17 +72,10 @@
             // dateiToolStripMenuItem
             // 
             this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
             this.schließenToolStripMenuItem1});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
             this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.dateiToolStripMenuItem.Text = "Datei";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem2.Text = "Öffnen";
             // 
             // schließenToolStripMenuItem1
             // 
@@ -86,11 +83,37 @@
             this.schließenToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.schließenToolStripMenuItem1.Text = "Schließen";
             // 
+            // ansichtToolStripMenuItem
+            // 
+            this.ansichtToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zeigeRegisterToolStripMenuItem,
+            this.zeigeIOToolStripMenuItem});
+            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
+            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.ansichtToolStripMenuItem.Text = "Ansicht";
+            // 
+            // zeigeRegisterToolStripMenuItem
+            // 
+            this.zeigeRegisterToolStripMenuItem.Name = "zeigeRegisterToolStripMenuItem";
+            this.zeigeRegisterToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.zeigeRegisterToolStripMenuItem.Text = "Zeige Register";
+            // 
+            // zeigeIOToolStripMenuItem
+            // 
+            this.zeigeIOToolStripMenuItem.Name = "zeigeIOToolStripMenuItem";
+            this.zeigeIOToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.zeigeIOToolStripMenuItem.Text = "Zeige I/O";
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
             this.toolStripMenuItem1.Text = "?";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // Form1
             // 
@@ -117,9 +140,12 @@
         private System.Windows.Forms.ToolStripMenuItem schließenToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem schließenToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ansichtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zeigeRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zeigeIOToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

@@ -27,5 +27,15 @@ namespace PIC16F84_Emulator
             childForm.MdiParent = this;
             childForm.Show();
         }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void openFileDialog1(object sender, EventArgs e)
+        {
+            openFileDialog1(sender, e);
+        }
     }
 }

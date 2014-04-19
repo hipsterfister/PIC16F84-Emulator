@@ -52,8 +52,8 @@ namespace PIC16F84_Emulator.PIC
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
             Operations.BaseOperation operation = new Operations.NopOperation(registerMap, programCounter.value); // to be replaced by parser call (fetchOperation(programCounter.value))
-            cyclesLeftToExecute = operation.cycles;
             operation.execute();
+            cyclesLeftToExecute = operation.cycles;
             return true;
         }
 
