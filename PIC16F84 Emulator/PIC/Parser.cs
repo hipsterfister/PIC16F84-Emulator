@@ -18,6 +18,8 @@ namespace PIC16F84_Emulator.PIC.Parser
          */
         
         private Register.RegisterFileMap registerFileMap;
+        private Data.ProgamMemory programMemory;
+
         private const int ADDWF         = 0x0700;
         private const int ADDWL_1       = 0x3E00;
         private const int ADDWL_2       = 0x3F00;
@@ -77,11 +79,6 @@ namespace PIC16F84_Emulator.PIC.Parser
         {
             try
             {
-                // TODO: obligatorischen Programmspeicher durch den richtigen ersetzen
-                Data.DataAdapter<short>[] Pr0gramStorage;
-                Pr0gramStorage = new Data.DataAdapter<short>[1];
-                Pr0gramStorage[0] = new Data.DataAdapter<short>();
-                
                 short target = 0;
                 short source = 0;
                 short address = _codeAdress;
@@ -91,13 +88,14 @@ namespace PIC16F84_Emulator.PIC.Parser
                 BitOperator BitOp = 0;
                 LogicOperator LogOp = 0;
                 TestOperator TestOp = 0;
+                BitTestOperator BitTestOp = 0;
                 ReturnOperator RetOp = 0;
                 RotationDirection RotDir = 0;
 
                 // mask Operation-Byte --> xxxx xxxx 0000 0000
-                short operation = (short)((short)Pr0gramStorage.GetValue(_codeAdress) & 0xFF00);
+                short operation = (short)((short)programMemory[_codeAdress] & 0xFF00);
                 // mask Parameter-Byte --> 0000 0000 xxxx xxxx
-                short parameter = (short)((short)Pr0gramStorage.GetValue(_codeAdress) & 0x00FF);
+                short parameter = (short)((short)programMemory[_codeAdress] & 0x00FF);
 
                 if (parameter < 0)
                     throw new Exception("negative parameter");
@@ -160,7 +158,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                         // target address
                         target = getAddressFromParameter(parameter);
                         // bit-number
-                        bit = (short)(operation + parameter & 0x0380); // xxxx xxBB Bxxx xxxx => 0000 00xx x000 0000
+                        bit = getBitNumberFromOperationCall(operation, parameter);
                         return new BitOperation(target, bit, BitOp, registerFileMap, address);
                     case BSF_1:
                     case BSF_2:
@@ -168,7 +166,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     case BSF_4:
                         BitOp = BitOperator.BITSET;
                         target = getAddressFromParameter(parameter);
-                        bit = (short)(operation + parameter & 0x0380);
+                        bit = getBitNumberFromOperationCall(operation, parameter);
                         return new BitOperation(target, bit, BitOp, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
@@ -269,6 +267,7 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- BIT TEST OPERATIONS ----------------------------- */
+                        // TODO: mit Th3Tw0 klaeren weshalb DVALUE fuer konstruktor benoetigt wird
                     case DECFSZ:
                         TestOp = TestOperator.DECFSZ;
                         target = checkDValue(parameter);
@@ -283,13 +282,18 @@ namespace PIC16F84_Emulator.PIC.Parser
                     case BTFSC_2:
                     case BTFSC_3:
                     case BTFSC_4:
-                        // TODO: BTFSC OPERATION
+                        BitTestOp = BitTestOperator.BTFSC;
+                        source = getAddressFromParameter(parameter);
+                        bit = getBitNumberFromOperationCall(operation, parameter);
+                        return new BitTestOperation(source, bit, BitTestOp, registerFileMap, address);
                     case BTFSS_1:
                     case BTFSS_2:
                     case BTFSS_3:
                     case BTFSS_4:
-                        // TODO: BTFSS OPERATION
-                        break;
+                        BitTestOp = BitTestOperator.BTFSS;
+                        source = getAddressFromParameter(parameter);
+                        bit = getBitNumberFromOperationCall(operation, parameter);
+                        return new BitTestOperation(source, bit, BitTestOp, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
@@ -366,9 +370,16 @@ namespace PIC16F84_Emulator.PIC.Parser
             return (byte)_parameter;
         }
 
-        public Parser(Register.RegisterFileMap _registerFileMap)
+        private short getBitNumberFromOperationCall(short _operation, short _parameter)
+        {
+            // xxxx xxBB Bxxx xxxx => 0000 00xx x000 0000
+            return (short)(_operation + _parameter & 0x0380);
+        }
+
+        public Parser(Register.RegisterFileMap _registerFileMap, Data.ProgamMemory _programMemory)
         {
             this.registerFileMap = _registerFileMap;
+            this.programMemory = _programMemory;
         }
    
     }
