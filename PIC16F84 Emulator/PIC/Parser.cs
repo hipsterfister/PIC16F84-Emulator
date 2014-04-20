@@ -372,8 +372,8 @@ namespace PIC16F84_Emulator.PIC.Parser
 
         private short getBitNumberFromOperationCall(short _operation, short _parameter)
         {
-            // xxxx xxBB Bxxx xxxx => 0000 00xx x000 0000
-            return (short)(_operation + _parameter & 0x0380);
+            // xxxx xxBB Bxxx xxxx => 0000 0000 0000 0BBB
+            return (short)(((_operation + _parameter) & 0x0380) >> 7);
         }
 
         public Parser(Register.RegisterFileMap _registerFileMap, Data.ProgamMemory _programMemory)
