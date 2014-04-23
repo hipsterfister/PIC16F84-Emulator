@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PIC16F84_Emulator
+{
+    public partial class ListingForm : Form
+    {
+        protected GUI.ProgramView programView;
+
+        public ListingForm(string _pathToFile)
+        {
+            InitializeComponent();
+
+            programView = new GUI.ProgramView(_pathToFile);
+            listingBox.DataSource = programView.source;
+        }
+    }
+}

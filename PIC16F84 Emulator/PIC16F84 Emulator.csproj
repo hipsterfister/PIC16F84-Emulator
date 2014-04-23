@@ -45,16 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\ProgramView.cs" />
-    <Compile Include="ListingForm.cs">
+    <Compile Include="GUI\Forms\ListingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListingForm.Designer.cs">
+    <Compile Include="GUI\Forms\ListingForm.Designer.cs">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PICEmulatorForm.cs">
+    <Compile Include="GUI\Forms\PICEmulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PICEmulatorForm.Designer.cs">
+    <Compile Include="GUI\Forms\PICEmulatorForm.Designer.cs">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PIC\Clock.cs" />
@@ -90,16 +90,16 @@
     <Compile Include="PIC\Register\RegisterFileMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Register.cs">
+    <Compile Include="GUI\Forms\Register.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Register.Designer.cs">
+    <Compile Include="GUI\Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ListingForm.resx">
+    <EmbeddedResource Include="GUI\Forms\ListingForm.resx">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PICEmulatorForm.resx">
+    <EmbeddedResource Include="GUI\Forms\PICEmulatorForm.resx">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -111,7 +111,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Register.resx">
+    <EmbeddedResource Include="GUI\Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
