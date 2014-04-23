@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PIC16F84_Emulator.PIC.Interrupts
+namespace PIC16F84_Emulator.PIC.Handler
 {
     public class InterruptHandler
     {

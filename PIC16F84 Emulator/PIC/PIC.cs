@@ -14,7 +14,7 @@ namespace PIC16F84_Emulator.PIC
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
         protected Data.OperationStack operationStack = new Data.OperationStack();
         protected Register.ProgramCounter programCounter;
-        protected Interrupts.InterruptHandler interruptHandler;
+        protected Handler.InterruptHandler interruptHandler;
         protected short cyclesLeftToExecute = 1;
         protected Clock clock;
 
@@ -27,7 +27,7 @@ namespace PIC16F84_Emulator.PIC
         {
             programCounter = new Register.ProgramCounter(registerMap);
             clock = new Clock(this, INTERVAL);
-            interruptHandler = new Interrupts.InterruptHandler(this, registerMap);
+            interruptHandler = new Handler.InterruptHandler(this, registerMap);
         }
 
         public void beginExecution()
