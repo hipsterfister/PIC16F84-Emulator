@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Data
 {
-    class EEPROMMemory
+    public class EEPROMMemory
     {
         private DataAdapter<byte>[] eeprom;
         private const short EEPROM_MEMORY_SIZE = 64;

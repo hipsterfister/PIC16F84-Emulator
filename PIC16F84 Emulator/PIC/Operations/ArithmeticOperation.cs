@@ -47,7 +47,6 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public override void execute()
         {
-            // TODO: events?
             switch (op)
             {
                 case ArithmeticOperator.PLUS:

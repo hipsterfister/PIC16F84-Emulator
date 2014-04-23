@@ -45,6 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\ProgramView.cs" />
+    <Compile Include="ListingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListingForm.Designer.cs">
+      <DependentUpon>ListingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PICEmulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ListingForm.resx">
+      <DependentUpon>ListingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PICEmulatorForm.resx">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
     </EmbeddedResource>

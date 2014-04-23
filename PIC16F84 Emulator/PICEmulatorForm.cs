@@ -26,9 +26,16 @@ namespace PIC16F84_Emulator
         {
             this.Activate();
             string file = openFileDialog1.FileName;
-            System.Console.WriteLine("FileLoaded: " + file);
+
+            // Initialize the programMemory
+            // TODO: PIC ??!
             PIC.Data.ProgamMemory programMemory = new PIC.Data.ProgamMemory();
             programMemory.readFile(file);
+
+            // Create a new Listing Form and show it!
+            ListingForm newListingForm = new ListingForm(file);
+            newListingForm.MdiParent = this;
+            newListingForm.Show();
         }
     }
 }
