@@ -12,6 +12,7 @@ namespace PIC16F84_Emulator.PIC
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
+        protected Data.EEPROMMemory eeprom = new Data.EEPROMMemory();
         protected Data.OperationStack operationStack = new Data.OperationStack();
         protected Register.ProgramCounter programCounter;
         protected Handler.InterruptHandler interruptHandler;
