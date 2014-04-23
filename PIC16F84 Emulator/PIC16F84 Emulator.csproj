@@ -74,6 +74,7 @@
     <Compile Include="PIC\Operations\SleepOperation.cs" />
     <Compile Include="PIC\Operations\SwapOperation.cs" />
     <Compile Include="PIC\Parser.cs" />
+    <Compile Include="PIC\ParserConstants.cs" />
     <Compile Include="PIC\PIC.cs" />
     <Compile Include="PIC\Register\ProgramCounter.cs" />
     <Compile Include="PIC\Register\Register.cs" />
