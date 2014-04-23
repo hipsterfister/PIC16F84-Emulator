@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\Forms\ControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\ControlForm.Designer.cs">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ProgramView.cs" />
     <Compile Include="GUI\Forms\ListingForm.cs">
       <SubType>Form</SubType>
@@ -96,6 +102,9 @@
     <Compile Include="GUI\Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="GUI\Forms\ControlForm.resx">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\ListingForm.resx">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </EmbeddedResource>

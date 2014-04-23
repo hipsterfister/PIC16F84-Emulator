@@ -29,6 +29,11 @@ namespace PIC16F84_Emulator.PIC
             clock.Enabled = false;
         }
 
+        public bool isEnabled()
+        {
+            return clock.Enabled;
+        }
+
         public void changeInterval(short _interval)
         {
             clock.Interval = _interval;

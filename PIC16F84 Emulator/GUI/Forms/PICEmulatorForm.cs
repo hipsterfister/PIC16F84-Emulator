@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PIC16F84_Emulator
+namespace PIC16F84_Emulator.GUI.Forms
 {
     public partial class PICEmulatorForm : Form
     {
+        protected PIC.PIC pic;
+
         public PICEmulatorForm()
         {
             InitializeComponent();
@@ -27,15 +29,22 @@ namespace PIC16F84_Emulator
             this.Activate();
             string file = openFileDialog1.FileName;
 
-            // Initialize the programMemory
-            // TODO: PIC ??!
-            PIC.Data.ProgamMemory programMemory = new PIC.Data.ProgamMemory();
-            programMemory.readFile(file);
+            // Initialize PIC
+            this.pic = new PIC.PIC();
+            pic.initProgramMemory(file);
 
             // Create a new Listing Form and show it!
             ListingForm newListingForm = new ListingForm(file);
             newListingForm.MdiParent = this;
             newListingForm.Show();
+        }
+
+        private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Create a new Control Form and show it!
+            ControlForm newControlForm = new ControlForm(pic);
+            newControlForm.MdiParent = this;
+            newControlForm.Show();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PIC16F84_Emulator
+﻿namespace PIC16F84_Emulator.GUI.Forms
 {
     partial class PICEmulatorForm
     {
@@ -35,6 +35,7 @@
             this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,8 @@
             // 
             // ansichtToolStripMenuItem
             // 
+            this.ansichtToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showControlsToolStripMenuItem});
             this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
             this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.ansichtToolStripMenuItem.Text = "Ansicht";
@@ -80,6 +83,13 @@
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // showControlsToolStripMenuItem
+            // 
+            this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
+            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showControlsToolStripMenuItem.Text = "Show Controls";
+            this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
             // 
             // PICEmulatorForm
             // 
@@ -106,5 +116,6 @@
         private System.Windows.Forms.ToolStripMenuItem ansichtToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem showControlsToolStripMenuItem;
     }
 }

@@ -41,6 +41,19 @@ namespace PIC16F84_Emulator.PIC
             clock.disableClock();
         }
 
+        public void executeSingleOperation()
+        {
+            if (!clock.isEnabled())
+            {
+                onCycleEnd();
+            }
+        }
+
+        public void initProgramMemory(string _filePath)
+        {
+            programMemory.readFile(_filePath);
+        }
+
         /// <summary>
         /// Executes the next (means: the operation referenced in programmCounter) operation
         /// 
@@ -71,10 +84,10 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         public void onCycleEnd()
         {
-            cyclesLeftToExecute--;
-
             lock (isReadyLock)
             {
+                cyclesLeftToExecute--;
+
                 if (cyclesLeftToExecute <= 0 && isReady)
                 {
                     isReady = false;

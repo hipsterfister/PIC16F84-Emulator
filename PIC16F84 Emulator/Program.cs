@@ -16,7 +16,7 @@ namespace PIC16F84_Emulator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PICEmulatorForm());
+            Application.Run(new GUI.Forms.PICEmulatorForm());
         }
     }
 }

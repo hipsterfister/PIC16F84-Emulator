@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PIC16F84_Emulator
+namespace PIC16F84_Emulator.GUI.Forms
 {
     public partial class Register : Form
     {

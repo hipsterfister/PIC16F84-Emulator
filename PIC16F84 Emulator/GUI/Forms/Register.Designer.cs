@@ -1,4 +1,4 @@
-﻿namespace PIC16F84_Emulator
+﻿namespace PIC16F84_Emulator.GUI.Forms
 {
     partial class Register
     {
