@@ -129,7 +129,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     case ParserConstants.CALL_7:
                     case ParserConstants.CALL_8:
                         target = getTargetAddress(operation, parameter);
-                        return new CallOperation(target, operationStack, registerFileMap, address);
+                        return new CallOperation(target, operationStack, programCounter, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */

@@ -32,22 +32,15 @@ namespace PIC16F84_Emulator.PIC.Operations
         /// </summary>
         /// <param name="_sourceAddress">f</param>
         /// <param name="_op">INC / DEC</param>
-        /// <param name="_dValue">d</param>
+        /// <param name="_targetAddress">the address where the result should be stored in</param>
         /// <param name="_registerFileMap"></param>
         /// <param name="_address">code address</param>
-        public TestOperation(short _sourceAddress, TestOperator _op, bool _dValue, Register.RegisterFileMap _registerFileMap, short _address) :
+        public TestOperation(short _sourceAddress, TestOperator _op, short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
             op = _op;
             sourceAddress = _sourceAddress;
-            if (_dValue)
-            {
-                targetAddress = _sourceAddress;
-            }
-            else
-            {
-                targetAddress = Register.RegisterConstants.WORKING_REGISTER_ADDRESS;
-            }
+            targetAddress = _targetAddress;
 
         }
 

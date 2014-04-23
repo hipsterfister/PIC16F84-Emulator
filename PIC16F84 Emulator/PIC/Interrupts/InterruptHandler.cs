@@ -16,6 +16,7 @@ namespace PIC16F84_Emulator.PIC.Interrupts
             this.pic = _pic;
             this.registerFileMap = _registerFileMap;
             this.valueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onValueChange);
+            registerSelfWithRegisterFileMap();
         }
 
         ~InterruptHandler()

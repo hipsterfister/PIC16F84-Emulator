@@ -13,20 +13,20 @@ namespace PIC16F84_Emulator.PIC.Operations
         private const short CYCLES = 2;
 
         private short targetOperationAddress;
-        private short followingOperationAddress;
+        private ProgramCounter programCounter;
         private OperationStack operationStack;
 
-        public CallOperation(short _targetOperationAddress, short _followingOperationAddress, OperationStack _operationStack, RegisterFileMap _registerFileMap, short _address) :
+        public CallOperation(short _targetOperationAddress, OperationStack _operationStack, ProgramCounter _programCounter, RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
             this.targetOperationAddress = _targetOperationAddress;
-            this.followingOperationAddress = _followingOperationAddress;
+            this.programCounter = _programCounter;
             this.operationStack = _operationStack;
         }
 
         public override void execute()
         {
-            this.operationStack.push(this.followingOperationAddress);
+            this.operationStack.push(this.programCounter.value);
             registerFileMap.setProgramCounter(this.targetOperationAddress);
         }
     }
