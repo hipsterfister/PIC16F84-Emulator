@@ -7,6 +7,7 @@ namespace PIC16F84_Emulator.PIC.Register
 {
     class RegisterConstants
     {
+        public const short REGISTER_FILE_MAP_SIZE = 258;
         // Register Addresses
         // Bank 0
         public const short INDF_ADDRESS = 0x00;
