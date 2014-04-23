@@ -50,6 +50,12 @@
     <Compile Include="GUI\Forms\ControlForm.Designer.cs">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\RegisterMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\RegisterMapForm.Designer.cs">
+      <DependentUpon>RegisterMapForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ProgramView.cs" />
     <Compile Include="GUI\Forms\ListingForm.cs">
       <SubType>Form</SubType>
@@ -62,6 +68,12 @@
     </Compile>
     <Compile Include="GUI\Forms\PICEmulatorForm.Designer.cs">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RegisterItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\TestItem.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="PIC\Clock.cs" />
     <Compile Include="PIC\Data\DataAdapter.cs" />
@@ -110,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\PICEmulatorForm.resx">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\RegisterMapForm.resx">
+      <DependentUpon>RegisterMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TestItem.resx">
+      <DependentUpon>TestItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

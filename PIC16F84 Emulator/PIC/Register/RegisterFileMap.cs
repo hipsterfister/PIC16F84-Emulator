@@ -238,5 +238,10 @@ namespace PIC16F84_Emulator.PIC.Register
         {
             Data[address].DataChanged -= listener;
         }
+
+        public DataAdapter<byte> getAdapter(int address)
+        {
+            return Data[address];
+        }
     }
 }

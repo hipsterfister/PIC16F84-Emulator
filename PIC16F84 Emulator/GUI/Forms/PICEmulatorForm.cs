@@ -46,5 +46,13 @@ namespace PIC16F84_Emulator.GUI.Forms
             newControlForm.MdiParent = this;
             newControlForm.Show();
         }
+
+        private void showRegisterMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Create a new RegisterMapForm and show it!
+            RegisterMapForm newRegisterMapForm = new RegisterMapForm(pic.getRegisterFileMap());
+            newRegisterMapForm.MdiParent = this;
+            newRegisterMapForm.Show();
+        }
     }
 }

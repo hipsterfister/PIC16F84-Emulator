@@ -104,5 +104,10 @@ namespace PIC16F84_Emulator.PIC
         {
             interruptIsNext = _value;
         }
+
+        public Register.RegisterFileMap getRegisterFileMap()
+        {
+            return registerMap;
+        }
     }
 }
