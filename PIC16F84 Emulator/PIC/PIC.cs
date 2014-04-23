@@ -8,7 +8,7 @@ namespace PIC16F84_Emulator.PIC
 {
     public class PIC
     {
-        private const short INTERVAL = 1000; // clock interval [ms]
+        private const short INTERVAL = 50; // clock interval [ms]
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
@@ -18,6 +18,7 @@ namespace PIC16F84_Emulator.PIC
         protected Handler.InterruptHandler interruptHandler;
         protected short cyclesLeftToExecute = 1;
         protected Clock clock;
+        protected Parser.Parser parser;
 
         private bool isReady = true;
         private Object isReadyLock = new Object();
@@ -29,6 +30,7 @@ namespace PIC16F84_Emulator.PIC
             programCounter = new Register.ProgramCounter(registerMap);
             clock = new Clock(this, INTERVAL);
             interruptHandler = new Handler.InterruptHandler(this, registerMap);
+            parser = new Parser.Parser(registerMap, programMemory, operationStack, programCounter, this);
         }
 
         public void beginExecution()
@@ -66,7 +68,9 @@ namespace PIC16F84_Emulator.PIC
                 // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
-            Operations.BaseOperation operation = new Operations.NopOperation(registerMap, programCounter.value); // to be replaced by parser call (fetchOperation(programCounter.value))
+            Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
+          //  Console.WriteLine(operation.GetType());
+            programCounter.value += 1;
             operation.execute();
             cyclesLeftToExecute = operation.cycles;
             return true;

@@ -7,7 +7,7 @@ using PIC16F84_Emulator.PIC.Operations;
 
 namespace PIC16F84_Emulator.PIC.Parser
 {
-    class Parser
+    public class Parser
     {
         /*
          *  This Class parses a 14-bit PIC-command, splitted in two bytes:

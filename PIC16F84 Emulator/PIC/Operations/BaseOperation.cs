@@ -22,7 +22,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             }
             set
             {
-                cycles = value;
+                neededCycles = value;
             }
         }
 

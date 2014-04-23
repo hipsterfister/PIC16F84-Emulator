@@ -11,17 +11,14 @@ namespace PIC16F84_Emulator.GUI
     {
         protected const short WIDTH = 20;
         protected const short HEIGHT = 40;
-        protected DataAdapter<byte> dataAdapter;
-        protected DataAdapter<byte>.OnDataChanged dataChangeListener;
+        protected byte value;
 
         public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
             Parent = _parent;
-            dataAdapter = _dataAdapter;
-            this.Text = dataAdapter.Value.ToString("X2");
+            this.Text = _dataAdapter.Value.ToString("X2");
             // onChange listener
-            dataChangeListener = new DataAdapter<byte>.OnDataChanged(updateValue);
-            dataAdapter.DataChanged += dataChangeListener;
+            _dataAdapter.DataChanged += onValueChange;
             // set default values
             this.SetBounds(_positionX, _positionY, WIDTH, HEIGHT);
             this.ReadOnly = true;
@@ -29,15 +26,26 @@ namespace PIC16F84_Emulator.GUI
             this.Show();
         }
 
-        public void updateValue(byte value, object sender)
+        public void onValueChange(byte _value, object sender)
         {
-            this.Text = dataAdapter.Value.ToString("X2");
+            MethodInvoker mi = delegate { updateValue(_value); };
+            if (InvokeRequired)
+            {
+                this.Invoke(mi);
+            }
+            
+        }
+
+        private void updateValue(byte _value)
+        {
+            value = _value;
+            this.Text = value.ToString("X2");
         }
 
         protected void showTooltip(object sender, System.EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            string ttText = "decimal value: " + this.dataAdapter.Value.ToString();
+            string ttText = "decimal value: " + this.value.ToString();
             tt.Show(ttText, this, 0, 18, 4000);
         } 
     }
