@@ -19,15 +19,35 @@ namespace PIC16F84_Emulator.PIC.Parser
         
         private Register.RegisterFileMap registerFileMap;
         private Data.ProgamMemory programMemory;
+        private Data.OperationStack operationStack;
+        private Register.ProgramCounter programCounter;
 
+        /* -------------------------------------- */
+        /* BYTE-ORIENTED FILE REGISTER OPERATIONS */
         private const int ADDWF         = 0x0700;
-        private const int ADDWL_1       = 0x3E00;
-        private const int ADDWL_2       = 0x3F00;
-        private const int INCF          = 0x0A00;
-        private const int SUBWF         = 0x0200;
-        private const int SUBLW_1       = 0x3C00;
-        private const int SUBLW_2       = 0x3D00;
+        private const int ANDWF         = 0x0500;
+        private const int CLRF_CLRW     = 0x0100;
+        private const int COMF          = 0x0900;
         private const int DECF          = 0x0300;
+        private const int DECFSZ        = 0x0B00;
+        private const int INCF          = 0x0A00;
+        private const int INCFSZ        = 0x0F00;
+        private const int IORWF         = 0x0400;
+        private const int MOVF          = 0x0800;
+        private const int MOVWF         = 0x0000;
+        private const int NOP_1         = 0x0000;
+        private const int NOP_2         = 0x0020;
+        private const int NOP_3         = 0x0040;
+        private const int NOP_4         = 0x0060;
+        private const int RLF           = 0x0D00;
+        private const int RRF           = 0x0C00;
+        private const int SUBWF         = 0x0200;
+        private const int SWAPF         = 0x0E00;
+        private const int XORWF         = 0x0600;
+        /* -------------------------------------- */
+
+        /* -------------------------------------- */
+        /* BIT-ORIENTED FILE REGISTER OPERATIONS  */
         private const int BCF_1         = 0x1000;
         private const int BCF_2         = 0x1100;
         private const int BCF_3         = 0x1200;
@@ -36,34 +56,6 @@ namespace PIC16F84_Emulator.PIC.Parser
         private const int BSF_2         = 0x1500;
         private const int BSF_3         = 0x1600;
         private const int BSF_4         = 0x1700;
-        private const int CLRF_CLRW     = 0x0100;
-        private const int COMF          = 0x0900;
-        private const int ANDWF         = 0x0500;
-        private const int ANDWL         = 0x3900;
-        private const int IORWF         = 0x0400;
-        private const int IORLW         = 0x3800;
-        private const int XORWF         = 0x0600;
-        private const int XORLW         = 0x3A00;
-        private const int MOVF          = 0x0800;
-        private const int MOVLW_1       = 0x3000;
-        private const int MOVLW_2       = 0x3100;
-        private const int MOVLW_3       = 0x3200;
-        private const int MOVLW_4       = 0x3300;
-        private const int RLF           = 0x0D00;
-        private const int RRF           = 0x0C00;
-        private const int SWAPF         = 0x0E00;
-        private const int CLRWDT        = 0x0064;
-        private const int RETFIE        = 0x0009;
-        private const int RETLW_1       = 0x3400;
-        private const int RETLW_2       = 0x3500;
-        private const int RETLW_3       = 0x3600;
-        private const int RETLW_4       = 0x3700;
-        private const int RETURN        = 0x0008;
-        private const int SLEEP         = 0x0063;
-        private const int NOP_1         = 0x0000;
-        private const int NOP_2         = 0x0020;
-        private const int NOP_3         = 0x0040;
-        private const int NOP_4         = 0x0060;
         private const int BTFSC_1       = 0x1800;
         private const int BTFSC_2       = 0x1900;
         private const int BTFSC_3       = 0x1A00;
@@ -72,8 +64,46 @@ namespace PIC16F84_Emulator.PIC.Parser
         private const int BTFSS_2       = 0x1D00;
         private const int BTFSS_3       = 0x1E00;
         private const int BTFSS_4       = 0x1F00;
-        private const int DECFSZ        = 0x0B00;
-        private const int INCFSZ        = 0x0F00;
+        /* -------------------------------------- */
+
+        /* -------------------------------------- */
+        /* --- LITERAL AND CONTROL OPERATIONS --- */
+        private const int ADDLW_1       = 0x3E00;
+        private const int ADDLW_2       = 0x3F00;
+        private const int ANDLW         = 0x3900;
+        private const int CALL_1        = 0x2000;
+        private const int CALL_2        = 0x2100;
+        private const int CALL_3        = 0x2200;
+        private const int CALL_4        = 0x2300;
+        private const int CALL_5        = 0x2400;
+        private const int CALL_6        = 0x2500;
+        private const int CALL_7        = 0x2600;
+        private const int CALL_8        = 0x2700;
+        private const int CLRWDT        = 0x0064;
+        private const int GOTO_1        = 0x2800;
+        private const int GOTO_2        = 0x2900;
+        private const int GOTO_3        = 0x2A00;
+        private const int GOTO_4        = 0x2B00;
+        private const int GOTO_5        = 0x2C00;
+        private const int GOTO_6        = 0x2D00;
+        private const int GOTO_7        = 0x2E00;
+        private const int GOTO_8        = 0x2F00;
+        private const int IORLW         = 0x3800;
+        private const int MOVLW_1       = 0x3000;
+        private const int MOVLW_2       = 0x3100;
+        private const int MOVLW_3       = 0x3200;
+        private const int MOVLW_4       = 0x3300;
+        private const int RETFIE        = 0x0009;
+        private const int RETLW_1       = 0x3400;
+        private const int RETLW_2       = 0x3500;
+        private const int RETLW_3       = 0x3600;
+        private const int RETLW_4       = 0x3700;
+        private const int RETURN        = 0x0008;
+        private const int SLEEP         = 0x0063;
+        private const int SUBLW_1       = 0x3C00;
+        private const int SUBLW_2       = 0x3D00;
+        private const int XORLW         = 0x3A00;
+        /* -------------------------------------- */
 
         public BaseOperation getNextOperation(short _codeAdress)
         {
@@ -108,13 +138,13 @@ namespace PIC16F84_Emulator.PIC.Parser
                         // arithmetical operator
                         ArithOp = ArithmeticOperator.PLUS;
                         // target address
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         // operating bytes
                         byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         byte2 = registerFileMap.Get(getAddressFromParameter(parameter));
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
-                    case ADDWL_1:
-                    case ADDWL_2:
+                    case ADDLW_1:
+                    case ADDLW_2:
                         ArithOp = ArithmeticOperator.PLUS;
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
@@ -122,13 +152,13 @@ namespace PIC16F84_Emulator.PIC.Parser
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case INCF:
                         ArithOp = ArithmeticOperator.PLUS;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = 0x01;
                         byte2 = registerFileMap.Get(getAddressFromParameter(parameter));
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case SUBWF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
@@ -141,7 +171,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
                     case DECF:
                         ArithOp = ArithmeticOperator.MINUS;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = 0x01;
                         return new ArithmeticOperation(byte1, byte2, ArithOp, target, registerFileMap, address);
@@ -172,20 +202,43 @@ namespace PIC16F84_Emulator.PIC.Parser
 
                     /* ------------------------------------------------------ */
                     /* -------- CALL OPERATIONS ----------------------------- */
-                        // TODO: CALL OPERATIONS
+                    case CALL_1:
+                    case CALL_2:
+                    case CALL_3:
+                    case CALL_4:
+                    case CALL_5:
+                    case CALL_6:
+                    case CALL_7:
+                    case CALL_8:
+                        target = getTargetAddress(operation, parameter);
+                        return new CallOperation(target, operationStack, registerFileMap, address);
+                    /* ------------------------------------------------------ */
+
+                    /* ------------------------------------------------------ */
+                    /* -------- GOTO OPERATION ------------------------------ */
+                    case GOTO_1:
+                    case GOTO_2:
+                    case GOTO_3:
+                    case GOTO_4:
+                    case GOTO_5:
+                    case GOTO_6:
+                    case GOTO_7:
+                    case GOTO_8:
+                        target = getTargetAddress(operation, parameter);
+                        return new GotoOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- CLEAR OPERATIONS ---------------------------- */
                     case CLRF_CLRW:
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         return new ClearOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- COMPLEMENT OPERATIONS ----------------------- */
                     case COMF:
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         return new ComplementOperation(target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
@@ -193,11 +246,11 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- LOGIC OPERATIONS ---------------------------- */
                     case ANDWF:
                         LogOp = LogicOperator.AND;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
-                    case ANDWL:
+                    case ANDLW:
                         LogOp = LogicOperator.AND;
                         target = RegisterConstants.WORKING_REGISTER_ADDRESS;
                         byte1 = getLiteralFromParameter(parameter);
@@ -205,7 +258,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case IORWF:
                         LogOp = LogicOperator.IOR;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
@@ -217,7 +270,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
                     case XORWF:
                         LogOp = LogicOperator.XOR;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         byte1 = registerFileMap.Get(getAddressFromParameter(parameter));
                         byte2 = registerFileMap.Get(RegisterConstants.WORKING_REGISTER_ADDRESS);
                         return new LogicOperation(byte1, byte2, LogOp, target, registerFileMap, address);
@@ -232,7 +285,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- MOVE OPERATIONS ----------------------------- */
                     case MOVF:
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
                         return new MoveOperation(source, target, registerFileMap, address);
                     case MOVLW_1:
@@ -247,12 +300,12 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* -------- ROTATE OPERATIONS --------------------------- */
                     case RLF:
                         RotDir = RotationDirection.LEFT;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     case RRF:
                         RotDir = RotationDirection.RIGHT;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
                         return new RotateOperation(source, target, RotDir, registerFileMap, address);
                     /* ------------------------------------------------------ */
@@ -260,24 +313,23 @@ namespace PIC16F84_Emulator.PIC.Parser
                     /* ------------------------------------------------------ */
                     /* -------- SWAP OPERATIONS ----------------------------- */
                     case SWAPF:
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
                         return new SwapOperation(source, target, registerFileMap, address);
                     /* ------------------------------------------------------ */
 
                     /* ------------------------------------------------------ */
                     /* -------- BIT TEST OPERATIONS ----------------------------- */
-                        // TODO: mit Th3Tw0 klaeren weshalb DVALUE fuer konstruktor benoetigt wird
                     case DECFSZ:
                         TestOp = TestOperator.DECFSZ;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
-                        return new TestOperation(source, TestOp, registerFileMap, address);
+                        return new TestOperation(source, TestOp, target, registerFileMap, address);
                     case INCFSZ:
                         TestOp = TestOperator.INCFSZ;
-                        target = checkDValue(parameter);
+                        target = getTargetAddress(parameter);
                         source = getAddressFromParameter(parameter);
-                        return new TestOperation(source, TestOp, registerFileMap, address);
+                        return new TestOperation(source, TestOp, target, registerFileMap, address);
                     case BTFSC_1:
                     case BTFSC_2:
                     case BTFSC_3:
@@ -349,11 +401,20 @@ namespace PIC16F84_Emulator.PIC.Parser
             }
         }
 
-        private short checkDValue(short _parameter)
+        private short getTargetAddress(short _parameter)
         {
             // CHECK IF D VALUE = 1 (p = DFFF FFFF => IF D = 1 => p > 127)
             // IF D = 1 => target = parameter | IF D = 0 => target = W-REG
             short target = _parameter > 127 ? getAddressFromParameter(_parameter) : RegisterConstants.WORKING_REGISTER_ADDRESS;
+            return target;
+        }
+
+        private short getTargetAddress(short _operation, short _parameter)
+        {
+            // xx10 0kkk kkkk kkkk => 0000 0kkk kkkk kkkk
+            short target = (short)((_operation & 0x0700) + _parameter);
+            if (target > 2047)
+                throw new Exception("too large address");
             return target;
         }
 
@@ -366,7 +427,7 @@ namespace PIC16F84_Emulator.PIC.Parser
         private byte getLiteralFromParameter(short _parameter)
         {
             if (_parameter > 255)
-                throw new Exception("too long, too large, too big");
+                throw new Exception("too large value");
             return (byte)_parameter;
         }
 
@@ -376,10 +437,12 @@ namespace PIC16F84_Emulator.PIC.Parser
             return (short)(((_operation + _parameter) & 0x0380) >> 7);
         }
 
-        public Parser(Register.RegisterFileMap _registerFileMap, Data.ProgamMemory _programMemory)
+        public Parser(Register.RegisterFileMap _registerFileMap, Data.ProgamMemory _programMemory, Data.OperationStack _operationStack, Register.ProgramCounter _programCounter)
         {
             this.registerFileMap = _registerFileMap;
             this.programMemory = _programMemory;
+            this.operationStack = _operationStack;
+            this.programCounter = _programCounter;
         }
    
     }
