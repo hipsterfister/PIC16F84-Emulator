@@ -72,9 +72,6 @@
     <Compile Include="GUI\RegisterItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GUI\TestItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PIC\Clock.cs" />
     <Compile Include="PIC\Data\DataAdapter.cs" />
     <Compile Include="PIC\Data\EEPROMMemory.cs" />
@@ -125,9 +122,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\RegisterMapForm.resx">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\TestItem.resx">
-      <DependentUpon>TestItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
