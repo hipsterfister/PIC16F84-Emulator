@@ -347,14 +347,14 @@ namespace PIC16F84_Emulator.PIC.Parser
             return (short)(((_operation + _parameter) & 0x0380) >> 7);
         }
 
-        public Parser(Data.ProgamMemory _programMemory, Data.OperationStack _operationStack, Register.ProgramCounter _programCounter, PIC _pic)
+        public Parser(PIC _pic)
         {
             // TODO: use get functions => only PIC as parameter in constructor
             this.pic = _pic;
             this.registerFileMap = pic.getRegisterFileMap();
-            this.programMemory = _programMemory;
-            this.operationStack = _operationStack;
-            this.programCounter = _programCounter;
+            this.programMemory = pic.getProgramMemory();
+            this.operationStack = pic.getOperationStack();
+            this.programCounter = pic.getProgramCounter();
         }
    
     }

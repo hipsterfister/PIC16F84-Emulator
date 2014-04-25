@@ -30,7 +30,7 @@ namespace PIC16F84_Emulator.PIC
             programCounter = new Register.ProgramCounter(registerMap);
             clock = new Clock(this, INTERVAL);
             interruptHandler = new Handler.InterruptHandler(this, registerMap);
-            parser = new Parser.Parser(registerMap, programMemory, operationStack, programCounter, this);
+            parser = new Parser.Parser(this);
         }
 
         public void beginExecution()
@@ -109,9 +109,40 @@ namespace PIC16F84_Emulator.PIC
             interruptIsNext = _value;
         }
 
+        /// <summary>
+        /// Returns the PIC's registerFileMap
+        /// </summary>
+        /// <returns>RegisterFileMap</returns>
         public Register.RegisterFileMap getRegisterFileMap()
         {
             return registerMap;
+        }
+
+        /// <summary>
+        /// Returns the PIC's programMemory
+        /// </summary>
+        /// <returns>ProgamMemory</returns>
+        public Data.ProgamMemory getProgramMemory()
+        {
+            return programMemory;
+        }
+
+        /// <summary>
+        /// Returns the PIC's programCounter (PC)
+        /// </summary>
+        /// <returns>ProgramCounter</returns>
+        public Register.ProgramCounter getProgramCounter()
+        {
+            return programCounter;
+        }
+
+        /// <summary>
+        /// Returns the PIC's operationStack (Stack)
+        /// </summary>
+        /// <returns>OperationStack</returns>
+        public Data.OperationStack getOperationStack()
+        {
+            return operationStack;
         }
     }
 }
