@@ -33,6 +33,10 @@ namespace PIC16F84_Emulator.GUI
             {
                 this.Invoke(mi);
             }
+            else
+            {
+                updateValue(_value);
+            }
             
         }
 

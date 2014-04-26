@@ -82,7 +82,7 @@ namespace PIC16F84_Emulator.PIC
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
             Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
-          //  Console.WriteLine(operation.GetType());
+            Console.WriteLine(operation.GetType());
             programCounter.value += 1;
             operation.execute();
             cyclesLeftToExecute = operation.cycles;

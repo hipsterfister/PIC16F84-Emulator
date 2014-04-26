@@ -15,7 +15,7 @@ namespace PIC16F84_Emulator.PIC.Register
         public ProgramCounter(RegisterFileMap _registerFileMap)
         {
             this.registerFileMap = _registerFileMap;
-            this.value = 0x01; // TODO: evaluieren!
+            this.value = 0x00; // TODO: evaluieren!
         }
 
         public short value

@@ -40,7 +40,7 @@ namespace PIC16F84_Emulator.PIC.Register
 
         public void Set(byte Data, int Position)
         {
-            if (IsBank1())
+            if (IsBank1() && Position < 0x80)
                 Position += 0x80;
             this.Data[Position].Value = Data;
 
@@ -58,14 +58,14 @@ namespace PIC16F84_Emulator.PIC.Register
 
         public byte Get(int Position)
         {
-            if (IsBank1())
+            if (IsBank1() && Position < 0x80)
                 Position += 0x80;
             return Data[Position].Value;
         }
 
         public bool IsBank1()
         {
-            return (Data[2].Value & (1 << 5)) != 0;
+            return (Data[RegisterConstants.STATUS_ADDRESS].Value & (1 << 5)) != 0;
         }
 
         /// <summary>
