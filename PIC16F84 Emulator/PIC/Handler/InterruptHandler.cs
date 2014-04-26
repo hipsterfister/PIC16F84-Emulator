@@ -38,14 +38,14 @@ namespace PIC16F84_Emulator.PIC.Handler
             short intconRegister = registerFileMap.Get(Register.RegisterConstants.INTCON_ADDRESS);
             // enable Flags
             bool gieFlag = intconRegister > 0x7F;
-            bool rbieFlag = (intconRegister & 0x08) != 0;
-            bool inteFlag = (intconRegister & 0x10) != 0;
-            bool t0eFlag = (intconRegister & 0x20) != 0;
-            bool eeieFlag = (intconRegister & 0x40) != 0;
+            bool rbieFlag = (intconRegister & Register.RegisterConstants.INTCON_RBIE_MASK) != 0; 
+            bool inteFlag = (intconRegister & Register.RegisterConstants.INTCON_INTE_MASK) != 0;
+            bool t0eFlag = (intconRegister & Register.RegisterConstants.INTCON_T0IE_MASK) != 0;
+            bool eeieFlag = (intconRegister & Register.RegisterConstants.INTCON_EEIE_MASK) != 0;
             // interrupt Flags
-            bool rbifFlag = (intconRegister & 0x01) != 0;
-            bool intfFlag = (intconRegister & 0x02) != 0;
-            bool t0ifFlag = (intconRegister & 0x04) != 0;
+            bool rbifFlag = (intconRegister & Register.RegisterConstants.INTCON_RBIF_MASK) != 0;
+            bool intfFlag = (intconRegister & Register.RegisterConstants.INTCON_INTF_MASK) != 0;
+            bool t0ifFlag = (intconRegister & Register.RegisterConstants.INTCON_T0IF_MASK) != 0;
             bool eeifFlag = (registerFileMap.Get(Register.RegisterConstants.EECON1_BANK1_ADDRESS) & 0x10) != 0;
 
             if (gieFlag)

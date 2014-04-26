@@ -58,8 +58,21 @@ namespace PIC16F84_Emulator.PIC.Register
         public const byte STATUS_PD_MASK = 0x08;
         public const byte STATUS_TO_MASK = 0x10;
 
-        // INTON Flags (read as bit-mask)
+        // OPTION Flags (read as bit-mask)
+        public const byte OPTION_T0CS_MASK = 0x20;
+        public const byte OPTION_PSA_MASK = 0x08;
+        public const byte OPTION_T0SE_MASK = 0x10;
+
+        // INTCON Flags (read as bit-mask)
         public const byte INTCON_GIE_MASK = 0x80;
+        public const byte INTCON_EEIE_MASK = 0x40;
+        public const byte INTCON_T0IE_MASK = 0x20;
+        public const byte INTCON_INTE_MASK = 0x10;
+        public const byte INTCON_RBIE_MASK = 0x08;
+        public const byte INTCON_T0IF_MASK = 0x04;
+        public const byte INTCON_INTF_MASK = 0x02;
+        public const byte INTCON_RBIF_MASK = 0x01;
+
         // Source: page 8-9 (pdf pages, not page numbers)
     }
 
