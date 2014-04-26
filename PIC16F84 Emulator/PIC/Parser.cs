@@ -272,7 +272,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 case ParserConstants.RETLW_4:
                     RetOp = ReturnOperator.RETLW;
                     byte1 = getLiteralFromParameter(parameter);
-                    return new ReturnOperation(RetOp, byte1, registerFileMap, address);
+                    return new ReturnOperation(operationStack, RetOp, byte1, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 case 0x0000:
@@ -290,10 +290,10 @@ namespace PIC16F84_Emulator.PIC.Parser
                             return new ClearOperation(target, registerFileMap, address);
                         case ParserConstants.RETFIE:
                             RetOp = ReturnOperator.RETFIE;
-                            return new ReturnOperation(RetOp, registerFileMap, address);
+                            return new ReturnOperation(operationStack, RetOp, registerFileMap, address);
                         case ParserConstants.RETURN:
                             RetOp = ReturnOperator.RETURN;
-                            return new ReturnOperation(RetOp, registerFileMap, address);
+                            return new ReturnOperation(operationStack, RetOp, registerFileMap, address);
                         case ParserConstants.SLEEP:
                             return new SleepOperation(pic, registerFileMap, address);
                         case ParserConstants.NOP_1:

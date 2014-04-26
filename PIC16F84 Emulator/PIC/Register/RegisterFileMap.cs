@@ -9,7 +9,6 @@ namespace PIC16F84_Emulator.PIC.Register
     public class RegisterFileMap
     {
         protected DataAdapter<byte>[] Data;
-        protected Data.OperationStack operationStack = new Data.OperationStack();
         protected ProgramCounter programCounter;
 
         public RegisterFileMap()
@@ -244,24 +243,6 @@ namespace PIC16F84_Emulator.PIC.Register
         public short getProgramCounter()
         {
             return this.programCounter.value;
-        }
-
-        /// <summary>
-        /// Pops the first element of the stack
-        /// </summary>
-        /// <returns></returns>
-        public short popStack()
-        {
-            return operationStack.pop();
-        }
-
-        /// <summary>
-        /// Pushes _value on top of the stack
-        /// </summary>
-        /// <param name="_value"></param>
-        public void pushStack(short _value)
-        {
-            operationStack.push(_value);
         }
 
         /// <summary>
