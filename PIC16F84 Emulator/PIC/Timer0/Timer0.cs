@@ -138,7 +138,8 @@ namespace PIC16F84_Emulator.PIC.Timer0
         {
             get
             {
-                int power = optionRegister.Value & 0x07 + 1;
+                int power = (optionRegister.Value & 0x07) + 1;
+                System.Console.WriteLine("getPrescalerValue: Power = " + power);
                 return (byte) (Math.Pow(2, power) - 1);
                 // power max = 8 (111b = 7h + 1 = 8d)
                 // Math.Pow_max = 2^power_max = 2^8 = 256
@@ -159,7 +160,7 @@ namespace PIC16F84_Emulator.PIC.Timer0
         /// </summary>
         private void tick()
         {
-
+            System.Console.WriteLine("PS assigned: " + prescalerIsAssigned + "; PS value: " + prescalerValue + "; IC value: " + internalCounter);
             if (prescalerIsAssigned)
             {
                 if (internalCounter >= prescalerValue)
