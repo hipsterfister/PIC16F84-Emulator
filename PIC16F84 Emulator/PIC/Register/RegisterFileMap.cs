@@ -38,51 +38,55 @@ namespace PIC16F84_Emulator.PIC.Register
             Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = RegisterConstants.INTCON_INITIAL_VALUE;
         }
 
-        public void Set(byte Data, int Position)
+        public void Set(byte _data, int Position)
         {
             if (IsBank1() && Position < 0x80)
                 Position += 0x80;
-            this.Data[Position].Value = Data;
+            if (isIndirect(Position))
+            {
+                Position = Data[RegisterConstants.FSR_ADDRESS].Value;
+            }
+            this.Data[Position].Value = _data;
 
             // TODO: Überarbeiten (hinter if stecken, prüfen ob für weitere Register notwendig...)
             // Überlegung: über onChange events?
             switch (Position) // STATUS-Register spiegeln
             {
                 case RegisterConstants.STATUS_ADDRESS:
-                    this.Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.STATUS_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.STATUS_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.STATUS_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.INDF_ADDRESS:
-                    this.Data[RegisterConstants.INDF_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.INDF_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.INDF_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.INDF_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.INDF_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.PCLATH_ADDRESS:
-                    this.Data[RegisterConstants.PCLATH_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.PCLATH_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.PCLATH_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.PCLATH_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.PCLATH_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.FSR_ADDRESS:
-                    this.Data[RegisterConstants.FSR_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.FSR_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.FSR_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.FSR_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.FSR_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.PCL_ADDRESS:
-                    this.Data[RegisterConstants.PCL_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.PCL_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.PCL_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.PCL_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.PCL_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.INTCON_ADDRESS:
-                    this.Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = _data;
                     break;
                 case RegisterConstants.INTCON_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.INTCON_ADDRESS].Value = Data;
+                    this.Data[RegisterConstants.INTCON_ADDRESS].Value = _data;
                     break;
             }
         }
@@ -91,12 +95,21 @@ namespace PIC16F84_Emulator.PIC.Register
         {
             if (IsBank1() && Position < 0x80)
                 Position += 0x80;
+            if (isIndirect(Position))
+            {
+                Position = Data[RegisterConstants.FSR_ADDRESS].Value;
+            }
             return Data[Position].Value;
         }
 
         public bool IsBank1()
         {
             return (Data[RegisterConstants.STATUS_ADDRESS].Value & (1 << 5)) != 0;
+        }
+
+        private bool isIndirect(int position)
+        {
+            return (position == RegisterConstants.INDF_ADDRESS || position == RegisterConstants.INDF_BANK1_ADDRESS);
         }
 
         /// <summary>

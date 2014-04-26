@@ -349,7 +349,6 @@ namespace PIC16F84_Emulator.PIC.Parser
 
         public Parser(PIC _pic)
         {
-            // TODO: use get functions => only PIC as parameter in constructor
             this.pic = _pic;
             this.registerFileMap = pic.getRegisterFileMap();
             this.programMemory = pic.getProgramMemory();

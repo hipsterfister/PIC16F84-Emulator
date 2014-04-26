@@ -21,7 +21,6 @@ namespace PIC16F84_Emulator.PIC.Timer0
         ///     (Note that Timer0Handler is a member of Timer0)
         /// </summary>
          
-        // TODO: When the prescaler is assigned to the TMR0 writing to the TMR0 register will clear the prescaler.
 
         protected Data.DataAdapter<byte> tmr0Register;
         protected Data.DataAdapter<byte> optionRegister;
