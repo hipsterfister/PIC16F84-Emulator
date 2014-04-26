@@ -80,6 +80,7 @@
     <Compile Include="PIC\Data\ProgamMemory.cs" />
     <Compile Include="PIC\Handler\EEPROMHandler.cs" />
     <Compile Include="PIC\Handler\InterruptHandler.cs" />
+    <Compile Include="PIC\Handler\Timer0Handler.cs" />
     <Compile Include="PIC\Operations\ArithmeticOperation.cs" />
     <Compile Include="PIC\Operations\BaseOperation.cs" />
     <Compile Include="PIC\Operations\BitOperation.cs" />

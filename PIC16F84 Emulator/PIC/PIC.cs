@@ -19,11 +19,15 @@ namespace PIC16F84_Emulator.PIC
         protected short cyclesLeftToExecute = 1;
         protected Clock clock;
         protected Parser.Parser parser;
+        protected Timer0.Timer0 timer0;
 
         private bool isReady = true;
         private Object isReadyLock = new Object();
 
         private bool interruptIsNext = false;
+
+        public delegate void OnCycleEnd();
+        public event OnCycleEnd cycleEnded;
 
         public PIC()
         {
@@ -31,6 +35,15 @@ namespace PIC16F84_Emulator.PIC
             clock = new Clock(this, INTERVAL);
             interruptHandler = new Handler.InterruptHandler(this, registerMap);
             parser = new Parser.Parser(this);
+            timer0 = new Timer0.Timer0(registerMap, this);
+        }
+
+        ~PIC()
+        {
+            while (cycleEnded != null)
+            {
+                cycleEnded -= new OnCycleEnd(dummy);
+            }
         }
 
         public void beginExecution()
@@ -92,6 +105,9 @@ namespace PIC16F84_Emulator.PIC
             {
                 cyclesLeftToExecute--;
 
+                if (cycleEnded != null)
+                    cycleEnded();
+
                 if (cyclesLeftToExecute <= 0 && isReady)
                 {
                     isReady = false;
@@ -144,5 +160,10 @@ namespace PIC16F84_Emulator.PIC
         {
             return operationStack;
         }
+
+        private void dummy()
+        {
+
+        } 
     }
 }

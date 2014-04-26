@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PIC16F84_Emulator.PIC.Handler;
 
 namespace PIC16F84_Emulator.PIC.Timer0
 {
@@ -14,9 +15,10 @@ namespace PIC16F84_Emulator.PIC.Timer0
         ///     > prescaler calculation
         ///     > triggering TMR0 interrupts
         ///     > general functionality
-        /// NOT responsible for:
-        ///     > "ticking" on its own > see Timer0Handler
+        /// Timer0Handler is responsible for:
+        ///     > triggering "ticks"
         ///     > any event handling
+        ///     (Note that Timer0Handler is a member of Timer0)
         /// </summary>
          
         // TODO: When the prescaler is assigned to the TMR0 writing to the TMR0 register will clear the prescaler.
@@ -24,14 +26,16 @@ namespace PIC16F84_Emulator.PIC.Timer0
         protected Data.DataAdapter<byte> tmr0Register;
         protected Data.DataAdapter<byte> optionRegister;
         protected Register.RegisterFileMap registerFileMap;
-        protected short internalCounter; 
+        protected short internalCounter;
+        protected Handler.Timer0Handler timerHandler;
 
-        public Timer0(Register.RegisterFileMap _registerFileMap)
+        public Timer0(Register.RegisterFileMap _registerFileMap, PIC _pic)
         {
             tmr0Register = _registerFileMap.getAdapter(Register.RegisterConstants.TMR0_ADDRESS);
             optionRegister = _registerFileMap.getAdapter(Register.RegisterConstants.OPTION_REG_BANK1_ADDRESS);
             registerFileMap = _registerFileMap;
             internalCounter = 0;
+            timerHandler = new Timer0Handler(_registerFileMap, this, _pic);
         }
 
         /// <summary>
@@ -196,6 +200,18 @@ namespace PIC16F84_Emulator.PIC.Timer0
         {
             if (timerState == Timer0State.TIMER)
                 internalCounter -= 2;
+        }
+
+        /// <summary>
+        /// Resets the prescaler IF (and only if) the prescaler is assigned to TMR0.
+        /// </summary>
+        public void resetPrescaler()
+        {
+            // TODO: evaluate: Muss der Prescaler oder der internal Counter resettet werden?
+            if (prescalerIsAssigned)
+            {
+                prescalerValue = 0;
+            }
         }
 
 
