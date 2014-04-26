@@ -45,6 +45,7 @@ namespace PIC16F84_Emulator.PIC.Register
             this.Data[Position].Value = Data;
 
             // TODO: Überarbeiten (hinter if stecken, prüfen ob für weitere Register notwendig...)
+            // Überlegung: über onChange events?
             switch (Position) // STATUS-Register spiegeln
             {
                 case RegisterConstants.STATUS_ADDRESS:
@@ -52,6 +53,36 @@ namespace PIC16F84_Emulator.PIC.Register
                     break;
                 case RegisterConstants.STATUS_BANK1_ADDRESS:
                     this.Data[RegisterConstants.STATUS_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.INDF_ADDRESS:
+                    this.Data[RegisterConstants.INDF_BANK1_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.INDF_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.INDF_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.PCLATH_ADDRESS:
+                    this.Data[RegisterConstants.PCLATH_BANK1_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.PCLATH_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.PCLATH_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.FSR_ADDRESS:
+                    this.Data[RegisterConstants.FSR_BANK1_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.FSR_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.FSR_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.PCL_ADDRESS:
+                    this.Data[RegisterConstants.PCL_BANK1_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.PCL_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.PCL_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.INTCON_ADDRESS:
+                    this.Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = Data;
+                    break;
+                case RegisterConstants.INTCON_BANK1_ADDRESS:
+                    this.Data[RegisterConstants.INTCON_ADDRESS].Value = Data;
                     break;
             }
         }

@@ -74,7 +74,7 @@ namespace PIC16F84_Emulator.PIC.Handler
             {
                 // These methods will only have effect if their conditions are met.
                 timer0.inhibitTwoCycles();
-             //   timer0.resetPrescaler();
+                timer0.resetPrescaler();
             }
         }
 

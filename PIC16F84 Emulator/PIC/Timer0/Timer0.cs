@@ -138,7 +138,11 @@ namespace PIC16F84_Emulator.PIC.Timer0
         {
             get
             {
-                return (byte) (optionRegister.Value & 0x07);
+                int power = optionRegister.Value & 0x07 + 1;
+                return (byte) (Math.Pow(2, power) - 1);
+                // power max = 8 (111b = 7h + 1 = 8d)
+                // Math.Pow_max = 2^power_max = 2^8 = 256
+                // (byte) (term) <= 255 = 0xFF
             }
             set
             {
@@ -155,7 +159,6 @@ namespace PIC16F84_Emulator.PIC.Timer0
         /// </summary>
         private void tick()
         {
-            internalCounter++;
 
             if (prescalerIsAssigned)
             {
@@ -163,6 +166,10 @@ namespace PIC16F84_Emulator.PIC.Timer0
                 {
                     internalCounter = 0;
                     incrementTimer0();
+                }
+                else
+                {
+                    internalCounter++;
                 }
             }
             else
@@ -207,10 +214,9 @@ namespace PIC16F84_Emulator.PIC.Timer0
         /// </summary>
         public void resetPrescaler()
         {
-            // TODO: evaluate: Muss der Prescaler oder der internal Counter resettet werden?
             if (prescalerIsAssigned)
             {
-                prescalerValue = 0;
+                internalCounter = 0;
             }
         }
 
