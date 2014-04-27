@@ -12,6 +12,8 @@ namespace PIC16F84_Emulator.GUI.Forms
     public partial class ControlForm : Form
     {
         protected PIC.PIC pic;
+        protected PlayButtonState playButtonState = PlayButtonState.PLAY;
+        protected System.ComponentModel.ComponentResourceManager resources = new ComponentResourceManager(typeof(ControlForm));
 
         public ControlForm(PIC.PIC _pic)
         {
@@ -22,7 +24,18 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            pic.beginExecution();
+            switch (playButtonState)
+            {
+                case PlayButtonState.PLAY:
+                    pic.beginExecution();
+                    playButtonState = PlayButtonState.PAUSE;
+                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
+                    break;
+                case PlayButtonState.PAUSE:
+                    pic.stopExecution();
+                    playButtonState = PlayButtonState.PLAY;
+                    break;
+            }
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -34,5 +47,12 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             pic.onCycleEnd();
         }
+
+        protected enum PlayButtonState
+        {
+            PLAY,
+            PAUSE
+        }
     }
+
 }
