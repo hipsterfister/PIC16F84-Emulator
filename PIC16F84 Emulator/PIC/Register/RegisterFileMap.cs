@@ -9,7 +9,6 @@ namespace PIC16F84_Emulator.PIC.Register
     public class RegisterFileMap
     {
         protected DataAdapter<byte>[] Data;
-        protected ProgramCounter programCounter;
 
         public RegisterFileMap()
         {
@@ -18,7 +17,6 @@ namespace PIC16F84_Emulator.PIC.Register
             {
                 Data[X] = new DataAdapter<byte>();
             }
-            programCounter = new ProgramCounter(this);
 
             initializeValues();
         }
@@ -29,7 +27,6 @@ namespace PIC16F84_Emulator.PIC.Register
             {
                 Data[X].Value = 0;
             }
-            programCounter.initializeValue();
             // initialize Special Function Registers
             // Bank 0
             Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;
@@ -227,32 +224,6 @@ namespace PIC16F84_Emulator.PIC.Register
         /// </summary>
         public void clearDigitCarry() {
             this.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_DIGIT_CARRY_MASK);
-        }
-
-        /// <summary>
-        /// Sets the Program Counter's value to _value
-        /// </summary>
-        /// <param name="_value"></param>
-        public void setProgramCounter(short _value)
-        {
-            this.programCounter.value = _value;
-        }
-
-        /// <summary>
-        /// Increments the Program Counter's value by 1
-        /// </summary>
-        public void incrementProgramCounter()
-        {
-            this.programCounter.value++;
-        }
-
-        /// <summary>
-        /// Returns the Program Counter's value
-        /// </summary>
-        /// <returns></returns>
-        public short getProgramCounter()
-        {
-            return this.programCounter.value;
         }
 
         /// <summary>

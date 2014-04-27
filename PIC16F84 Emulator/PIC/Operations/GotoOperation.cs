@@ -9,16 +9,18 @@ namespace PIC16F84_Emulator.PIC.Operations
     {
         private const short CYCLES = 2;
         private short targetAddress;
+        private Register.ProgramCounter programCounter;
 
-        public GotoOperation(short _targetAddress, Register.RegisterFileMap _registerFileMap, short _address) :
+        public GotoOperation(short _targetAddress, Register.ProgramCounter _programCounter, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
-            targetAddress = _targetAddress;
+            this.programCounter = _programCounter;
+            this.targetAddress = _targetAddress;
         }
 
         public override void execute()
         {
-            registerFileMap.setProgramCounter(targetAddress);
+            programCounter.value = targetAddress;
         }
     }
 }

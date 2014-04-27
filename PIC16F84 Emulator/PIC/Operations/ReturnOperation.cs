@@ -11,6 +11,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         private ReturnOperator op;
         private byte arg;
         private Data.OperationStack operationStack;
+        private Register.ProgramCounter programCounter;
 
         /// <summary>
         /// Creates a new instance of ReturnOperation without an argument. Use this for RETURN, RETFIE.
@@ -18,9 +19,10 @@ namespace PIC16F84_Emulator.PIC.Operations
         /// <param name="_op">enum RETURN / RETFIE</param>
         /// <param name="_registerFileMap"></param>
         /// <param name="_address"></param>
-        public ReturnOperation(Data.OperationStack _operationStack, ReturnOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
+        public ReturnOperation(Register.ProgramCounter _programCounter, Data.OperationStack _operationStack, ReturnOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
+            this.programCounter = _programCounter;
             this.operationStack = _operationStack;
             op = _op;
             arg = 0;
@@ -37,9 +39,10 @@ namespace PIC16F84_Emulator.PIC.Operations
         /// <param name="_arg"></param>
         /// <param name="_registerFileMap"></param>
         /// <param name="_address"></param>
-        public ReturnOperation(Data.OperationStack _operationStack, ReturnOperator _op, byte _arg, Register.RegisterFileMap _registerFileMap, short _address) :
+        public ReturnOperation(Register.ProgramCounter _programCounter, Data.OperationStack _operationStack, ReturnOperator _op, byte _arg, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
+            this.programCounter = _programCounter;
             this.operationStack = _operationStack;
             op = _op;
             arg = _arg;
@@ -47,7 +50,7 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public override void execute()
         {
-            registerFileMap.setProgramCounter(operationStack.pop());
+            programCounter.value = operationStack.pop();
 
             if(op == ReturnOperator.RETFIE) {
                     // 1 -> GIE

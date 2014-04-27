@@ -141,7 +141,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 case ParserConstants.GOTO_7:
                 case ParserConstants.GOTO_8:
                     target = getTargetAddress(operation, parameter);
-                    return new GotoOperation(target, registerFileMap, address);
+                    return new GotoOperation(target, programCounter, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 /* ------------------------------------------------------ */
@@ -241,12 +241,12 @@ namespace PIC16F84_Emulator.PIC.Parser
                     TestOp = TestOperator.DECFSZ;
                     target = getTargetAddress(parameter);
                     source = getAddressFromParameter(parameter);
-                    return new TestOperation(source, TestOp, target, registerFileMap, address);
+                    return new TestOperation(source, TestOp, target, programCounter, registerFileMap, address);
                 case ParserConstants.INCFSZ:
                     TestOp = TestOperator.INCFSZ;
                     target = getTargetAddress(parameter);
                     source = getAddressFromParameter(parameter);
-                    return new TestOperation(source, TestOp, target, registerFileMap, address);
+                    return new TestOperation(source, TestOp, target, programCounter, registerFileMap, address);
                 case ParserConstants.BTFSC_1:
                 case ParserConstants.BTFSC_2:
                 case ParserConstants.BTFSC_3:
@@ -254,7 +254,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     BitTestOp = BitTestOperator.BTFSC;
                     source = getAddressFromParameter(parameter);
                     bit = getBitNumberFromOperationCall(operation, parameter);
-                    return new BitTestOperation(source, bit, BitTestOp, registerFileMap, address);
+                    return new BitTestOperation(source, bit, BitTestOp, programCounter, registerFileMap, address);
                 case ParserConstants.BTFSS_1:
                 case ParserConstants.BTFSS_2:
                 case ParserConstants.BTFSS_3:
@@ -262,7 +262,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     BitTestOp = BitTestOperator.BTFSS;
                     source = getAddressFromParameter(parameter);
                     bit = getBitNumberFromOperationCall(operation, parameter);
-                    return new BitTestOperation(source, bit, BitTestOp, registerFileMap, address);
+                    return new BitTestOperation(source, bit, BitTestOp, programCounter, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 /* ------------------------------------------------------ */
@@ -273,7 +273,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                 case ParserConstants.RETLW_4:
                     RetOp = ReturnOperator.RETLW;
                     byte1 = getLiteralFromParameter(parameter);
-                    return new ReturnOperation(operationStack, RetOp, byte1, registerFileMap, address);
+                    return new ReturnOperation(programCounter, operationStack, RetOp, byte1, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 case 0x0000:
@@ -291,10 +291,10 @@ namespace PIC16F84_Emulator.PIC.Parser
                             return new ClearOperation(target, registerFileMap, address);
                         case ParserConstants.RETFIE:
                             RetOp = ReturnOperator.RETFIE;
-                            return new ReturnOperation(operationStack, RetOp, registerFileMap, address);
+                            return new ReturnOperation(programCounter, operationStack, RetOp, registerFileMap, address);
                         case ParserConstants.RETURN:
                             RetOp = ReturnOperator.RETURN;
-                            return new ReturnOperation(operationStack, RetOp, registerFileMap, address);
+                            return new ReturnOperation(programCounter, operationStack, RetOp, registerFileMap, address);
                         case ParserConstants.SLEEP:
                             return new SleepOperation(pic, registerFileMap, address);
                         case ParserConstants.NOP_1:

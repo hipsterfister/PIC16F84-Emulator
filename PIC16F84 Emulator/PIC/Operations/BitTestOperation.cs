@@ -9,6 +9,7 @@ namespace PIC16F84_Emulator.PIC.Operations
     {
         private const short CYCLES = 1;
         private BitTestOperator op;
+        private Register.ProgramCounter programCounter;
         private bool bitValue;
 
         /// <summary>
@@ -19,9 +20,10 @@ namespace PIC16F84_Emulator.PIC.Operations
         /// <param name="_op">BTFSC / BTFSS</param>
         /// <param name="_registerFileMap"></param>
         /// <param name="_address">code address</param>
-        public BitTestOperation(short _sourceAddress, short _bitNumber, BitTestOperator _op, Register.RegisterFileMap _registerFileMap, short _address) :
+        public BitTestOperation(short _sourceAddress, short _bitNumber, BitTestOperator _op, Register.ProgramCounter _programCounter, Register.RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
         {
+            programCounter = _programCounter;
             op = _op;
             bitValue = (registerFileMap.Get(_sourceAddress) & (1 << _bitNumber)) != 0;
         }
@@ -49,7 +51,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             // If the result (value) is zero -> skip next operation.
             if (condition)
             {
-                registerFileMap.incrementProgramCounter();
+                programCounter.increment();
                 this.cycles = 2;
             }
 

@@ -35,5 +35,10 @@ namespace PIC16F84_Emulator.PIC.Register
                 registerFileMap.Set((byte)(value / 0x100), RegisterConstants.PCLATH_ADDRESS);
             }
         }
+
+        public void increment()
+        {
+            this.value = (short) (value + 1);
+        }
     }
 }

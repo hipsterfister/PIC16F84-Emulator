@@ -27,7 +27,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         public override void execute()
         {
             this.operationStack.push(this.programCounter.value);
-            registerFileMap.setProgramCounter(this.targetOperationAddress);
+            this.programCounter.value = this.targetOperationAddress;
         }
     }
 }
