@@ -209,7 +209,8 @@ namespace PIC16F84_Emulator.PIC.Parser
                 case ParserConstants.MOVLW_3:
                 case ParserConstants.MOVLW_4:
                     byte1 = getLiteralFromParameter(parameter);
-                    return new MoveOperation(byte1, Register.RegisterConstants.WORKING_REGISTER_ADDRESS, registerFileMap, address);
+                    target = RegisterConstants.WORKING_REGISTER_ADDRESS;
+                    return new MoveOperation(byte1, target, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 /* ------------------------------------------------------ */

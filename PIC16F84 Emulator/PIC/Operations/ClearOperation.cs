@@ -18,7 +18,6 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         private short targetAddress;
         private const short CYCLES = 1;
-        // private const short WDT_ADDRESS = 0x00; TODO: implement WDT
 
         public ClearOperation(short _targetAddress, RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
@@ -29,15 +28,19 @@ namespace PIC16F84_Emulator.PIC.Operations
         public override void execute()
         {
             registerFileMap.Set(0x00, targetAddress);
-            
-            registerFileMap.setZeroFlag();
 
-            // Note: WDT is not part of the SFRs and has yet to be implemented
-           // if (targetAddress == WDT_ADDRESS)
-          //  {
-           //     registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, 0x18); // set PD, TO
-           // }
-
+            if (targetAddress == RegisterConstants.WDT_REGISTER_ADDRESS)
+            {
+                registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_TO_MASK);
+                registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_PD_MASK);
+                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS2_MASK);
+                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS1_MASK);
+                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS0_MASK);
+            }
+            else
+            {
+                registerFileMap.setZeroFlag();
+            }
         }
     }
 }
