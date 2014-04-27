@@ -15,7 +15,7 @@ namespace PIC16F84_Emulator.GUI
 
         public ProgramView(string pathOfProgramListing)
         {
-            string[] lines = System.IO.File.ReadAllLines(pathOfProgramListing);
+            string[] lines = System.IO.File.ReadAllLines(pathOfProgramListing, Encoding.GetEncoding(1252));
             linesOfCode = lines.Length;
             source = new List<string>();
             address = new short[linesOfCode];
