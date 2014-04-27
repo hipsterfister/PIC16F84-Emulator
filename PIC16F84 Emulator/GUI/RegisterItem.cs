@@ -11,7 +11,12 @@ namespace PIC16F84_Emulator.GUI
     {
         protected const short WIDTH = 20;
         protected const short HEIGHT = 40;
+        protected const short ACTIVE_DURATION = 1500; //[ms]
         protected byte value;
+        protected Helpers.UpdateTimer updateTimer;
+
+        protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
+        protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
 
         public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
@@ -24,6 +29,7 @@ namespace PIC16F84_Emulator.GUI
             this.ReadOnly = true;
             this.MouseHover += showTooltip;
             this.Show();
+            this.updateTimer = new Helpers.UpdateTimer(ACTIVE_DURATION, new System.Timers.ElapsedEventHandler(onTimerExpiredHandler));
         }
 
         public void onValueChange(byte _value, object sender)
@@ -44,13 +50,46 @@ namespace PIC16F84_Emulator.GUI
         {
             value = _value;
             this.Text = value.ToString("X2");
+            makeThisActive();
         }
+
+        private void makeThisActive()
+        {
+            this.BackColor = activeColor;
+            this.updateTimer.resetTimer();
+        }
+
+        private void makeThisPassive()
+        {
+            this.BackColor = passiveColor;
+        }
+
+        public void onTimerExpiredHandler(object o, System.Timers.ElapsedEventArgs e)
+        {
+            MethodInvoker mi = delegate { makeThisPassive(); };
+            if (InvokeRequired)
+            {
+                this.Invoke(mi);
+            }
+        }
+
 
         protected void showTooltip(object sender, System.EventArgs e)
         {
             ToolTip tt = new ToolTip();
             string ttText = "decimal value: " + this.value.ToString();
             tt.Show(ttText, this, 0, 18, 4000);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // RegisterItem
+            // 
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.ResumeLayout(false);
+
         } 
     }
 }

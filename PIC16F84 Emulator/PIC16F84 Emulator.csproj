@@ -56,6 +56,7 @@
     <Compile Include="GUI\Forms\RegisterMapForm.Designer.cs">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Helpers\UpdateTimer.cs" />
     <Compile Include="GUI\ProgramView.cs" />
     <Compile Include="GUI\Forms\ListingForm.cs">
       <SubType>Form</SubType>
@@ -124,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\RegisterMapForm.resx">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RegisterItem.resx">
+      <DependentUpon>RegisterItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
