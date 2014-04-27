@@ -20,6 +20,16 @@ namespace PIC16F84_Emulator.PIC.Register
             }
             programCounter = new ProgramCounter(this);
 
+            initializeValues();
+        }
+
+        public void initializeValues()
+        {
+            for (int X = 0; X < Data.Length; X++)
+            {
+                Data[X].Value = 0;
+            }
+            programCounter.initializeValue();
             // initialize Special Function Registers
             // Bank 0
             Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;

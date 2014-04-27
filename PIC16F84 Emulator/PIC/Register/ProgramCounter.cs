@@ -15,6 +15,11 @@ namespace PIC16F84_Emulator.PIC.Register
         public ProgramCounter(RegisterFileMap _registerFileMap)
         {
             this.registerFileMap = _registerFileMap;
+            initializeValue();
+        }
+
+        public void initializeValue()
+        {
             this.value = 0x00; 
         }
 

@@ -22,6 +22,15 @@ namespace PIC16F84_Emulator.PIC.Data
             }
         }
 
+        public void initializeValues()
+        {
+            currentTopIndex = 0;
+            for (int i = 0; i < STACK_SIZE; i++)
+            {
+                this.stack[i].Value = 0;
+            }
+        }
+
         public short pop()
         {
             short result = this.stack[currentTopIndex].Value;

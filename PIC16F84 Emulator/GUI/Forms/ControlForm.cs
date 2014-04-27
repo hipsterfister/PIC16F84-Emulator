@@ -29,18 +29,20 @@ namespace PIC16F84_Emulator.GUI.Forms
                 case PlayButtonState.PLAY:
                     pic.beginExecution();
                     playButtonState = PlayButtonState.PAUSE;
-                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
+                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
                     break;
                 case PlayButtonState.PAUSE:
                     pic.stopExecution();
                     playButtonState = PlayButtonState.PLAY;
+                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
                     break;
             }
         }
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            pic.stopExecution();
+            pic.resetPIC();
+            playButtonState = PlayButtonState.PLAY;
         }
 
         private void NextButton_Click(object sender, EventArgs e)

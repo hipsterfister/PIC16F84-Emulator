@@ -19,6 +19,14 @@ namespace PIC16F84_Emulator.PIC.Data
             }
         }
 
+        public void initializeValues()
+        {
+            for (int i = 0; i < EEPROM_MEMORY_SIZE; i++)
+            {
+                eeprom[i].Value = 0;
+            }
+        }
+
         public byte this[short address]
         {
             get

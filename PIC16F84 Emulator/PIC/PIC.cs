@@ -42,6 +42,22 @@ namespace PIC16F84_Emulator.PIC
             eepromHandler = new Handler.EEPROMHandler(registerMap, eeprom);
         }
 
+        public void resetPIC()
+        {
+            lock (isReadyLock)
+            {
+                isReady = false;
+                clock.disableClock();
+                registerMap.initializeValues();
+                programCounter.initializeValue();
+                eeprom.initializeValues();
+                operationStack.initializeValues();
+                cyclesLeftToExecute = 1;
+                interruptIsNext = false;
+                isReady = true;
+            }
+        }
+
         /// <summary>
         /// This needs to be called to unsubscribe events.
         /// </summary>
