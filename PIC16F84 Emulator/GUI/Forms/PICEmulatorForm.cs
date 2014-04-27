@@ -12,6 +12,10 @@ namespace PIC16F84_Emulator.GUI.Forms
     public partial class PICEmulatorForm : Form
     {
         protected PIC.PIC pic;
+        protected ListingForm listingForm;
+        protected ControlForm controlForm;
+        protected RegisterMapForm registerMapForm;
+        protected string file;
 
         public PICEmulatorForm()
         {
@@ -25,41 +29,95 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
-            closeAllOpenWindows();
             freeResources();
-            if (pic != null)
-            {
-                pic.dispose();
-            }
             
             this.Activate();
-            string file = openFileDialog1.FileName;
+            file = openFileDialog1.FileName;
              
+            initNewPIC(file);
+        }
+
+        /// <summary>
+        /// Instances a new PIC
+        /// </summary>
+        /// <param name="file"></param>
+        private void initNewPIC(string file)
+        {
             // Initialize PIC
             this.pic = new PIC.PIC();
             pic.initProgramMemory(file);
+        }
 
-            // Create a new Listing Form and show it!
-            ListingForm newListingForm = new ListingForm(file, pic);
-            newListingForm.MdiParent = this;
-            newListingForm.Show();
-            
+        private void createNewListingForm()
+        {
+            listingForm = new ListingForm(file, pic);
+            listingForm.MdiParent = this;
+            listingForm.Show();
+        }
+
+        private void createNewControlForm() 
+        {
+            controlForm = new ControlForm(pic);
+            controlForm.MdiParent = this;
+            controlForm.Show();
+        }
+        private void createNewRegisterMapForm() 
+        {
+            registerMapForm = new RegisterMapForm(pic.getRegisterFileMap());
+            registerMapForm.MdiParent = this;
+            registerMapForm.Show();
+        }
+
+
+        private void toggleListingForm()
+        {
+            if (listingForm == null || listingForm.Visible == false)
+            {
+                createNewListingForm();
+            }
+            else
+            {
+                listingForm.Close();
+            }
+        }
+
+        private void toggleControlForm()
+        {
+            if (controlForm == null || controlForm.Visible == false)
+            {
+                createNewControlForm();
+            }
+            else
+            {
+                controlForm.Close();
+            }
+        }
+
+        private void toggleRegisterMapForm()
+        {
+            if (registerMapForm == null || registerMapForm.Visible == false)
+            {
+                createNewRegisterMapForm();
+            }
+            else
+            {
+                registerMapForm.Close();
+            }
         }
 
         private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Create a new Control Form and show it!
-            ControlForm newControlForm = new ControlForm(pic);
-            newControlForm.MdiParent = this;
-            newControlForm.Show();
+            toggleControlForm();
         }
 
         private void showRegisterMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Create a new RegisterMapForm and show it!
-            RegisterMapForm newRegisterMapForm = new RegisterMapForm(pic.getRegisterFileMap());
-            newRegisterMapForm.MdiParent = this;
-            newRegisterMapForm.Show();
+            toggleRegisterMapForm();
+        }
+
+        private void listingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleListingForm();
         }
 
         private void closeAllOpenWindows()
@@ -70,8 +128,12 @@ namespace PIC16F84_Emulator.GUI.Forms
             }
         }
 
+        /// <summary>
+        /// Frees resources and closes all windows.
+        /// </summary>
         private void freeResources() 
         {
+            closeAllOpenWindows();
             if (pic != null)
             {
                 pic.dispose();
@@ -83,5 +145,6 @@ namespace PIC16F84_Emulator.GUI.Forms
             closeAllOpenWindows();
             freeResources();
         }
+
     }
 }
