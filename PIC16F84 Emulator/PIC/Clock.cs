@@ -17,7 +17,7 @@ namespace PIC16F84_Emulator.PIC
         public Clock(PIC _pic, short _interval)
         {
             clock = new System.Timers.Timer(_interval);
-            clock.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            clock.Elapsed += OnTimedEvent;
             this.pic = _pic;
         }
 
@@ -32,6 +32,11 @@ namespace PIC16F84_Emulator.PIC
         public bool isEnabled()
         {
             return clock.Enabled;
+        }
+
+        public void dispose()
+        {
+            clock.Elapsed -= OnTimedEvent;
         }
 
         public void changeInterval(short _interval)

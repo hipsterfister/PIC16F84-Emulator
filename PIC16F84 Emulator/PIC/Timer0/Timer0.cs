@@ -37,6 +37,11 @@ namespace PIC16F84_Emulator.PIC.Timer0
             timerHandler = new Timer0Handler(_registerFileMap, this, _pic);
         }
 
+        public void dispose()
+        {
+            timerHandler.dispose();
+        }
+
         /// <summary>
         /// Encapsulates the TMR0's state. Use this to get / set the state using an enum.
         /// Option-Register's value is synchronized.

@@ -19,10 +19,9 @@ namespace PIC16F84_Emulator.PIC.Handler
             registerSelfWithRegisterFileMap();
         }
 
-        ~InterruptHandler()
+        public void dispose()
         {
-            registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.INTCON_ADDRESS);
-            registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+            unregisterSelfWithRegisterFileMap();
         }
 
         private void onValueChange(byte value, object sender)
@@ -85,6 +84,12 @@ namespace PIC16F84_Emulator.PIC.Handler
         {
             registerFileMap.registerDataListener(valueChangeListener, Register.RegisterConstants.INTCON_ADDRESS);
             registerFileMap.registerDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+        }
+
+        private void unregisterSelfWithRegisterFileMap()
+        {
+            registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.INTCON_ADDRESS);
+            registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
         }
     }
 }

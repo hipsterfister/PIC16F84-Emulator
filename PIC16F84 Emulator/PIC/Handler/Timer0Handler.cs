@@ -11,6 +11,7 @@ namespace PIC16F84_Emulator.PIC.Handler
         private Timer0.Timer0 timer0;
         private byte lastPortAValue;
         private bool tmr0RegisterChangeEventIsSuppressed = false;
+        private PIC pic;
 
         // Listeners
         private Data.DataAdapter<byte>.OnDataChanged portAValueChangeListener;
@@ -20,6 +21,7 @@ namespace PIC16F84_Emulator.PIC.Handler
 
         public Timer0Handler(Register.RegisterFileMap _registerFileMap, Timer0.Timer0 _timer0, PIC _pic)
         {
+            pic = _pic;
             this.registerFileMap = _registerFileMap;
             this.timer0 = _timer0;
             lastPortAValue = _registerFileMap.Get(Register.RegisterConstants.PORTA_ADDRESS);
@@ -32,10 +34,9 @@ namespace PIC16F84_Emulator.PIC.Handler
             registerDelegates(_pic);
         }
 
-        ~Timer0Handler()
+        public void dispose()
         {
-            registerFileMap.unregisterDataListener(tmr0RegisterChangeListener, Register.RegisterConstants.TMR0_ADDRESS);
-            registerFileMap.unregisterDataListener(onPortAValueChange, Register.RegisterConstants.PORTA_ADDRESS);
+            pic.cycleEnded -= onCycleEnd;
         }
 
         public void onPortAValueChange(byte value, object sender)
@@ -87,7 +88,7 @@ namespace PIC16F84_Emulator.PIC.Handler
         {
             registerFileMap.registerDataListener(tmr0RegisterChangeListener, Register.RegisterConstants.TMR0_ADDRESS);
             registerFileMap.registerDataListener(onPortAValueChange, Register.RegisterConstants.PORTA_ADDRESS);
-            pic.cycleEnded += cycleEndListener;
+            pic.cycleEnded += onCycleEnd;
         }
     }
 }

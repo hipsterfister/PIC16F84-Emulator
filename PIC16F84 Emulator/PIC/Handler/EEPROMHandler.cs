@@ -5,18 +5,29 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Handler
 {
-    class EEPROMHandler
+    public class EEPROMHandler
     {
         private Register.RegisterFileMap registerFileMap;
         private Data.EEPROMMemory eepromMemory;
         private Data.DataAdapter<byte>.OnDataChanged valueChangeListener;
 
-        EEPROMHandler(Register.RegisterFileMap _registerFileMap, Data.EEPROMMemory _eepromMemory)
+        /// <summary>
+        /// Crates a new EEPROM Handler to enable EEPROM functionality.
+        /// IMPORTANT: call dispose(); when it's no longer needed.
+        /// </summary>
+        /// <param name="_registerFileMap"></param>
+        /// <param name="_eepromMemory"></param>
+        public EEPROMHandler(Register.RegisterFileMap _registerFileMap, Data.EEPROMMemory _eepromMemory)
         {
             this.registerFileMap = _registerFileMap;
             this.eepromMemory = _eepromMemory;
             this.valueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onValueChange);
             registerSelfWithRegisterFileMap();
+        }
+
+        public void dispose()
+        {
+            unregisterSelfWithRegisterFileMap();
         }
 
         public void onValueChange(byte value, object sender)
@@ -78,6 +89,11 @@ namespace PIC16F84_Emulator.PIC.Handler
         private void registerSelfWithRegisterFileMap()
         {
             registerFileMap.registerDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+        }
+
+        private void unregisterSelfWithRegisterFileMap()
+        {
+            registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
         }
     }
 }

@@ -26,6 +26,14 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
+            if (pic != null)
+            {
+                pic.dispose();
+            }
+            foreach (Form child in this.MdiChildren)
+            {
+                child.Close();
+            }
             this.Activate();
             string file = openFileDialog1.FileName;
 
@@ -37,6 +45,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             ListingForm newListingForm = new ListingForm(file, pic);
             newListingForm.MdiParent = this;
             newListingForm.Show();
+            
         }
 
         private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)

@@ -24,6 +24,7 @@ namespace PIC16F84_Emulator.GUI
             this.Text = _dataAdapter.Value.ToString("X2");
             // onChange listener
             _dataAdapter.DataChanged += onValueChange;
+            Disposed += delegate { _dataAdapter.DataChanged -= onValueChange; };
             // set default values
             this.SetBounds(_positionX, _positionY, WIDTH, HEIGHT);
             this.ReadOnly = true;
@@ -69,7 +70,14 @@ namespace PIC16F84_Emulator.GUI
             MethodInvoker mi = delegate { makeThisPassive(); };
             if (InvokeRequired)
             {
-                this.Invoke(mi);
+                try
+                {
+                    this.Invoke(mi);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Just ignore it. The UI Element is allready disposed, nothing left to update.
+                }
             }
         }
 

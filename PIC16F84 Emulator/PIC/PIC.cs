@@ -13,6 +13,7 @@ namespace PIC16F84_Emulator.PIC
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
         protected Data.EEPROMMemory eeprom = new Data.EEPROMMemory();
+        protected Handler.EEPROMHandler eepromHandler;
         protected Data.OperationStack operationStack = new Data.OperationStack();
         protected Register.ProgramCounter programCounter;
         protected Handler.InterruptHandler interruptHandler;
@@ -38,9 +39,21 @@ namespace PIC16F84_Emulator.PIC
             interruptHandler = new Handler.InterruptHandler(this, registerMap);
             parser = new Parser.Parser(this);
             timer0 = new Timer0.Timer0(registerMap, this);
+            eepromHandler = new Handler.EEPROMHandler(registerMap, eeprom);
         }
 
-        ~PIC()
+        /// <summary>
+        /// This needs to be called to unsubscribe events.
+        /// </summary>
+        public void dispose()
+        {
+            clock.dispose();
+            timer0.dispose();
+            interruptHandler.dispose();
+            eepromHandler.dispose();
+        }
+
+    /*    ~PIC()
         {
             while (cycleEnded != null)
             {
@@ -50,7 +63,7 @@ namespace PIC16F84_Emulator.PIC
             {
                 nextInstructionEvent -= new OnExecutionOfNextInstruction(nextInstructionDummy);
             }
-        }
+        } */
 
         public void beginExecution()
         {

@@ -19,7 +19,8 @@ namespace PIC16F84_Emulator.GUI.Forms
 
             programView = new GUI.ProgramView(_pathToFile);
             listingBox.DataSource = programView.source;
-            _pic.nextInstructionEvent += new PIC.PIC.OnExecutionOfNextInstruction(onNextInstructionExecution);
+            _pic.nextInstructionEvent += onNextInstructionExecution;
+            Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
         }
 
         public void changeCursor(short _instructionAddress) {
@@ -32,7 +33,14 @@ namespace PIC16F84_Emulator.GUI.Forms
             MethodInvoker mi = delegate { changeCursor(_instructionAddress); };
             if (InvokeRequired)
             {
-                this.Invoke(mi);
+                try
+                {
+                    this.Invoke(mi);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // ignore, the listener is not yet unregistered...
+                }
             }
             else
             {
