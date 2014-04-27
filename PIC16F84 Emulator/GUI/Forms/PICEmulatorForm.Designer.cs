@@ -34,9 +34,10 @@
             this.dateiÖffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showRegisterMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showRegisterMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateiSchließenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,8 @@
             // dateiToolStripMenuItem
             // 
             this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dateiÖffnenToolStripMenuItem});
+            this.dateiÖffnenToolStripMenuItem,
+            this.dateiSchließenToolStripMenuItem});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
             this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.dateiToolStripMenuItem.Text = "Datei";
@@ -62,7 +64,7 @@
             // dateiÖffnenToolStripMenuItem
             // 
             this.dateiÖffnenToolStripMenuItem.Name = "dateiÖffnenToolStripMenuItem";
-            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.dateiÖffnenToolStripMenuItem.Text = "Datei öffnen";
             this.dateiÖffnenToolStripMenuItem.Click += new System.EventHandler(this.showOpenFileDialog);
             // 
@@ -78,9 +80,16 @@
             // showControlsToolStripMenuItem
             // 
             this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
-            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.showControlsToolStripMenuItem.Text = "Show Controls";
             this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
+            // 
+            // showRegisterMapToolStripMenuItem
+            // 
+            this.showRegisterMapToolStripMenuItem.Name = "showRegisterMapToolStripMenuItem";
+            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.showRegisterMapToolStripMenuItem.Text = "Show Register Map";
+            this.showRegisterMapToolStripMenuItem.Click += new System.EventHandler(this.showRegisterMapToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -93,12 +102,12 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // showRegisterMapToolStripMenuItem
+            // dateiSchließenToolStripMenuItem
             // 
-            this.showRegisterMapToolStripMenuItem.Name = "showRegisterMapToolStripMenuItem";
-            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.showRegisterMapToolStripMenuItem.Text = "Show Register Map";
-            this.showRegisterMapToolStripMenuItem.Click += new System.EventHandler(this.showRegisterMapToolStripMenuItem_Click);
+            this.dateiSchließenToolStripMenuItem.Name = "dateiSchließenToolStripMenuItem";
+            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.dateiSchließenToolStripMenuItem.Text = "Datei schließen";
+            this.dateiSchließenToolStripMenuItem.Click += new System.EventHandler(this.dateiSchließenToolStripMenuItem_Click);
             // 
             // PICEmulatorForm
             // 
@@ -127,5 +136,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showControlsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showRegisterMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dateiSchließenToolStripMenuItem;
     }
 }

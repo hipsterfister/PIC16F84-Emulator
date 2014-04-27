@@ -26,7 +26,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             closeAllOpenWindows();
-
+            freeResources();
             if (pic != null)
             {
                 pic.dispose();
@@ -68,6 +68,20 @@ namespace PIC16F84_Emulator.GUI.Forms
             {
                 child.Close();
             }
+        }
+
+        private void freeResources() 
+        {
+            if (pic != null)
+            {
+                pic.dispose();
+            }
+        }
+
+        private void dateiSchließenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            closeAllOpenWindows();
+            freeResources();
         }
     }
 }
