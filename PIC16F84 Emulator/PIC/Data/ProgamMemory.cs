@@ -38,7 +38,7 @@ namespace PIC16F84_Emulator.PIC.Data
                         address = Int16.Parse(tempAddress, System.Globalization.NumberStyles.HexNumber);
                         value = Int16.Parse(tempValue, System.Globalization.NumberStyles.HexNumber);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         new Exception("Das Program-Listing enthält fehlerhafte Zeichenketten (Zeile: " + x + ")");
                     }
