@@ -25,17 +25,16 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
+            closeAllOpenWindows();
+
             if (pic != null)
             {
                 pic.dispose();
             }
-            foreach (Form child in this.MdiChildren)
-            {
-                child.Close();
-            }
+            
             this.Activate();
             string file = openFileDialog1.FileName;
-
+             
             // Initialize PIC
             this.pic = new PIC.PIC();
             pic.initProgramMemory(file);
@@ -61,6 +60,14 @@ namespace PIC16F84_Emulator.GUI.Forms
             RegisterMapForm newRegisterMapForm = new RegisterMapForm(pic.getRegisterFileMap());
             newRegisterMapForm.MdiParent = this;
             newRegisterMapForm.Show();
+        }
+
+        private void closeAllOpenWindows()
+        {
+            foreach (Form child in this.MdiChildren)
+            {
+                child.Close();
+            }
         }
     }
 }

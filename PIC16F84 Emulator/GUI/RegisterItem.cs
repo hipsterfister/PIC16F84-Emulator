@@ -38,7 +38,14 @@ namespace PIC16F84_Emulator.GUI
             MethodInvoker mi = delegate { updateValue(_value); };
             if (InvokeRequired)
             {
-                this.Invoke(mi);
+                try
+                {
+                    this.Invoke(mi);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // nothing to do here.
+                }
             }
             else
             {
