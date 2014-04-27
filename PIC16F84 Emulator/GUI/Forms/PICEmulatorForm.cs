@@ -20,7 +20,6 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void showOpenFileDialog(object sender, EventArgs e)
         {
-            System.Console.WriteLine("klick");
             openFileDialog1.ShowDialog();
         }
 
