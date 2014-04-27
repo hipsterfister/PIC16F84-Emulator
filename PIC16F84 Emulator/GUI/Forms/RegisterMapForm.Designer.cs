@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(456, 455);
+            this.ClientSize = new System.Drawing.Size(430, 455);
             this.Name = "RegisterMapForm";
             this.Text = "RegisterMapForm";
             this.ResumeLayout(false);

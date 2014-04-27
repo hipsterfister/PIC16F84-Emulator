@@ -13,45 +13,56 @@ namespace PIC16F84_Emulator.GUI.Forms
     {
         protected PIC.Register.RegisterFileMap registerFileMap;
         protected const short NUMBER_OF_ELEMENTS = 256;
+        protected const short ELEMENT_HEIGHT = 20;
+        protected const short ELEMENT_WIDTH = 21;
+        protected const short ELEMENT_MARING = 4;
+        protected const short MAP_LINE_HEIGHT = 2;
+        protected const short MAP_X_OFFSET = 25;
+        protected const short MAP_Y_OFFSET = 60;
+        protected const short TEXT_BOX_INCREASED_WIDTH = 1;
+        protected const short TEXT_BOX_INCREASED_HEIGHT = 3;
 
         public RegisterMapForm(PIC.Register.RegisterFileMap _registerFileMap)
         {
             InitializeComponent();
             registerFileMap = _registerFileMap;
-            //RegisterItem test = new RegisterItem();
-            //test.initRegisterItem(tAdapter, 10, 10, this);
-           // test.Show();
             createMap();
+            createSpecialValueView();
+        }
+
+        private void createSpecialValueView()
+        {
+            createNewLabel(5, 5 + TEXT_BOX_INCREASED_HEIGHT, 65, 20, "W-Register:");
+            RegisterItem newRegisterItem = new RegisterItem();
+            newRegisterItem.initRegisterItem(registerFileMap.getAdapter(PIC.Register.RegisterConstants.WORKING_REGISTER_ADDRESS), 75, 5, this);
         }
 
         private void createMap()
         {
-            int xOffset = 20;
-            int yOffset = 20;
             RegisterItem newRegisterItem;
-            Label newLabel;
             for (int y = 0; y < NUMBER_OF_ELEMENTS; y += 0x10)
             {
-                newLabel = new Label();
-                newLabel.Parent = this;
-                newLabel.Text = y.ToString("X2");
-                newLabel.SetBounds(0, y * 2 + yOffset + 3, 21, 20);
-                newLabel.Show();
+                createNewLabel(MAP_X_OFFSET - ELEMENT_WIDTH, y * 2 + MAP_Y_OFFSET + TEXT_BOX_INCREASED_HEIGHT, ELEMENT_WIDTH, ELEMENT_HEIGHT, y.ToString("X2"));
                 for (int x = 0; x < 16; x++)
                 {
                     newRegisterItem = new RegisterItem();
-                    newRegisterItem.initRegisterItem(registerFileMap.getAdapter(x + y), x * 25 + xOffset, y * 2 + yOffset, this);
+                    newRegisterItem.initRegisterItem(registerFileMap.getAdapter(x + y), x * (ELEMENT_WIDTH + ELEMENT_MARING) + MAP_X_OFFSET, y * MAP_LINE_HEIGHT + MAP_Y_OFFSET, this);
                 }
             }
             for (int x = 0; x < 16; x++)
             {
-                newLabel = new Label();
-                newLabel.Parent = this;
-                newLabel.Text = x.ToString("X2");
-                newLabel.SetBounds(x*25 + xOffset + 1, 0, 21, 20);
-                newLabel.Show();
+                createNewLabel(x * (ELEMENT_WIDTH + ELEMENT_MARING) + TEXT_BOX_INCREASED_WIDTH + MAP_X_OFFSET, MAP_Y_OFFSET - ELEMENT_HEIGHT, ELEMENT_WIDTH, ELEMENT_HEIGHT, x.ToString("X2"));
             }
 
+        }
+
+        private void createNewLabel(int x, int y, int width, int height, string text)
+        {
+            Label newLabel = new Label();
+            newLabel.Parent = this;
+            newLabel.Text = text;
+            newLabel.SetBounds(x, y, width, height);
+            newLabel.Show();
         }
 
 
