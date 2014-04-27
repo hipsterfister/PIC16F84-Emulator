@@ -47,6 +47,16 @@ namespace PIC16F84_Emulator.GUI
                 System.Console.WriteLine(source[i] + "|||" + address[i]);
             }
         }
-        
+
+        public int getLineByAddress(short _address)
+        {
+            for (int i = 0; i < source.Count; i++)
+            {
+                if (address[i] == _address)
+                    return i;
+            }
+            return -1;
+        }
+
     }
 }

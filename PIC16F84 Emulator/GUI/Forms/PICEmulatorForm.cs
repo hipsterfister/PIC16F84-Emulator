@@ -34,7 +34,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             pic.initProgramMemory(file);
 
             // Create a new Listing Form and show it!
-            ListingForm newListingForm = new ListingForm(file);
+            ListingForm newListingForm = new ListingForm(file, pic);
             newListingForm.MdiParent = this;
             newListingForm.Show();
         }

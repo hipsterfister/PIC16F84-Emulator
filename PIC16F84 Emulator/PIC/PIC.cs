@@ -28,6 +28,8 @@ namespace PIC16F84_Emulator.PIC
 
         public delegate void OnCycleEnd();
         public event OnCycleEnd cycleEnded;
+        public delegate void OnExecutionOfNextInstruction(short address);
+        public event OnExecutionOfNextInstruction nextInstructionEvent;
 
         public PIC()
         {
@@ -42,7 +44,11 @@ namespace PIC16F84_Emulator.PIC
         {
             while (cycleEnded != null)
             {
-                cycleEnded -= new OnCycleEnd(dummy);
+                cycleEnded -= new OnCycleEnd(endOfCylceDummy);
+            }
+            while (nextInstructionEvent != null)
+            {
+                nextInstructionEvent -= new OnExecutionOfNextInstruction(nextInstructionDummy);
             }
         }
 
@@ -76,6 +82,8 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         protected bool executeNextOperation()
         {
+            if (nextInstructionEvent != null)
+                nextInstructionEvent(programCounter.value);
             if (interruptIsNext)
             {
                 // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
@@ -161,9 +169,15 @@ namespace PIC16F84_Emulator.PIC
             return operationStack;
         }
 
-        private void dummy()
+        // TODO: there must be a better way... come on.
+        private static void endOfCylceDummy()
         {
 
         } 
+
+        private static void nextInstructionDummy(short a) 
+        {
+
+        }
     }
 }
