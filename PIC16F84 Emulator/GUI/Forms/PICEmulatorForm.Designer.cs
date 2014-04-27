@@ -75,6 +75,7 @@
             this.showControlsToolStripMenuItem,
             this.showRegisterMapToolStripMenuItem,
             this.listingToolStripMenuItem});
+            this.ansichtToolStripMenuItem.Enabled = false;
             this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
             this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.ansichtToolStripMenuItem.Text = "Ansicht";

@@ -35,6 +35,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             file = openFileDialog1.FileName;
              
             initNewPIC(file);
+            enableAnsichtMenu();
         }
 
         /// <summary>
@@ -46,6 +47,16 @@ namespace PIC16F84_Emulator.GUI.Forms
             // Initialize PIC
             this.pic = new PIC.PIC();
             pic.initProgramMemory(file);
+        }
+
+        private void enableAnsichtMenu()
+        {
+            ansichtToolStripMenuItem.Enabled = true;
+        }
+
+        private void disableAnsichtMenu()
+        {
+            ansichtToolStripMenuItem.Enabled = false;
         }
 
         private void createNewListingForm()
@@ -142,6 +153,7 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void dateiSchließenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            disableAnsichtMenu();
             closeAllOpenWindows();
             freeResources();
         }
