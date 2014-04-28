@@ -9,13 +9,14 @@ namespace PIC16F84_Emulator.PIC.Operations
     {
         /*
          *  This OperationClass covers the following (Move) Operations:
-         *      > MOVF (TODO: Muss implementiert werden)
+         *      > MOVF
          *      > MOVWF
          *      > MOVLW
          *  Simply create a new instance and call execute();
          */
         private byte data;
         private short targetAddress;
+        private bool isMOVF = false;
 
         private const short CYCLES = 1;
 
@@ -31,11 +32,19 @@ namespace PIC16F84_Emulator.PIC.Operations
         {
             this.data = _registerFileMap.Get(_sourceAddress);
             this.targetAddress = _targetAddress;
+            if (_sourceAddress != Register.RegisterConstants.WORKING_REGISTER_ADDRESS)
+            {
+                isMOVF = true;
+            }
         }
 
         public override void execute()
         {
             registerFileMap.Set(data, targetAddress);
+            if (isMOVF)
+            {
+                registerFileMap.updateZeroFlag(data == 0);
+            }
         }
     }
 }
