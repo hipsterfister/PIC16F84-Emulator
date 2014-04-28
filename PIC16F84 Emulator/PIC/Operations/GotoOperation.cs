@@ -20,6 +20,7 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public override void execute()
         {
+            targetAddress += (short) ((registerFileMap.Get(Register.RegisterConstants.PCLATH_ADDRESS) & 0x24) * 0x100); // use only the highest 2 bits of PCL
             programCounter.value = targetAddress;
         }
     }
