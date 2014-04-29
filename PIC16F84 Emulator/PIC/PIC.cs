@@ -46,15 +46,18 @@ namespace PIC16F84_Emulator.PIC
         {
             lock (isReadyLock)
             {
-                isReady = false;
-                clock.disableClock();
-                registerMap.initializeValues();
-                programCounter.initializeValue();
-                eeprom.initializeValues();
-                operationStack.initializeValues();
-                cyclesLeftToExecute = 1;
-                interruptIsNext = false;
-                isReady = true;
+                if (isReady)
+                {
+                    isReady = false;
+                    clock.disableClock();
+                    registerMap.initializeValues();
+                    programCounter.initializeValue();
+                    eeprom.initializeValues();
+                    operationStack.initializeValues();
+                    cyclesLeftToExecute = 1;
+                    interruptIsNext = false;
+                    isReady = true;
+                }
             }
         }
 
