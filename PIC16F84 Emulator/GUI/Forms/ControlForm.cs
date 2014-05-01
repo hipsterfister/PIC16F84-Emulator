@@ -25,16 +25,15 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            switch (playButtonState)
+            if (playButtonState == PlayButtonState.PLAY)
             {
-                case PlayButtonState.PLAY:
-                    pic.beginExecution();
-                    changeState(PlayButtonState.PAUSE);
-                    break;
-                case PlayButtonState.PAUSE:
-                    pic.stopExecution();
-                    changeState(PlayButtonState.PLAY);
-                    break;
+                pic.beginExecution();
+                changeState(PlayButtonState.PAUSE);
+            }
+            else
+            {
+                pic.stopExecution();
+                changeState(PlayButtonState.PLAY);
             }
         }
 
@@ -51,15 +50,15 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void changeState(PlayButtonState newState)
         {
-            switch(newState) {
-              case PlayButtonState.PLAY:
-                    playButtonState = PlayButtonState.PLAY;
-                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
-                    break;
-                case PlayButtonState.PAUSE:
-                    playButtonState = PlayButtonState.PAUSE;
-                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
-                    break;
+            if (newState == PlayButtonState.PLAY)
+            {
+                playButtonState = PlayButtonState.PLAY;
+                PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
+            }
+            else
+            {
+                playButtonState = PlayButtonState.PAUSE;
+                PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
             }
         }
 

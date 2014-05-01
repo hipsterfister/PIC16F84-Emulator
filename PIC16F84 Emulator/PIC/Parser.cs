@@ -302,6 +302,8 @@ namespace PIC16F84_Emulator.PIC.Parser
                         case ParserConstants.NOP_3:
                         case ParserConstants.NOP_4:
                             return new NopOperation(registerFileMap, address);
+                        default:
+                            break;
                     }                      
                     break;
 

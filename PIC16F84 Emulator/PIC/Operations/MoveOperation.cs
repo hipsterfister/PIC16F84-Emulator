@@ -12,7 +12,7 @@ namespace PIC16F84_Emulator.PIC.Operations
          *      > MOVF
          *      > MOVWF
          *      > MOVLW
-         *  Simply create a new instance and call execute();
+         *  Simply create a new instance and call execute
          */
         private byte data;
         private short targetAddress;

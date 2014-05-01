@@ -46,6 +46,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                         condition = true;
                     }
                     break;
+                default:
+                    break;
             }
 
             // If the result (value) is zero -> skip next operation.

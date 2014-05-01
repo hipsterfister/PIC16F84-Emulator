@@ -57,6 +57,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                 case TestOperator.INCFSZ:
                     value++;
                     break;
+                default:
+                    break;
             }
 
             // If the result (value) is zero -> skip next operation.

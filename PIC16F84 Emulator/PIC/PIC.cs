@@ -73,18 +73,6 @@ namespace PIC16F84_Emulator.PIC
             programCounter.dispose();
         }
 
-    /*    ~PIC()
-        {
-            while (cycleEnded != null)
-            {
-                cycleEnded -= new OnCycleEnd(endOfCylceDummy);
-            }
-            while (nextInstructionEvent != null)
-            {
-                nextInstructionEvent -= new OnExecutionOfNextInstruction(nextInstructionDummy);
-            }
-        } */
-
         public void beginExecution()
         {
             clock.enableClock();
@@ -123,7 +111,6 @@ namespace PIC16F84_Emulator.PIC
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
             Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
-           // Console.WriteLine(operation.GetType());
             operation.execute();
             programCounter.increment();
             cyclesLeftToExecute = operation.cycles;

@@ -44,19 +44,20 @@ namespace PIC16F84_Emulator.PIC.Register
             Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = RegisterConstants.INTCON_INITIAL_VALUE;
         }
 
-        public void Set(byte _data, int Position)
+        public void Set(byte _data, int _position)
         {
-            if (IsBank1() && Position < 0x80)
-                Position += 0x80;
-            if (isIndirect(Position))
+            int position = _position;
+            if (IsBank1() && position < 0x80)
+                position += 0x80;
+            if (isIndirect(position))
             {
-                Position = Data[RegisterConstants.FSR_ADDRESS].Value;
+                position = Data[RegisterConstants.FSR_ADDRESS].Value;
             }
-            this.Data[Position].Value = _data;
+            this.Data[position].Value = _data;
 
             // TODO: Überarbeiten (hinter if stecken, prüfen ob für weitere Register notwendig...)
             // Überlegung: über onChange events?
-            switch (Position) // STATUS-Register spiegeln
+            switch (position) // STATUS-Register spiegeln
             {
                 case RegisterConstants.STATUS_ADDRESS:
                     this.Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = _data;
@@ -94,18 +95,21 @@ namespace PIC16F84_Emulator.PIC.Register
                 case RegisterConstants.INTCON_BANK1_ADDRESS:
                     this.Data[RegisterConstants.INTCON_ADDRESS].Value = _data;
                     break;
+                default:
+                    break;
             }
         }
 
-        public byte Get(int Position)
+        public byte Get(int _position)
         {
-            if (IsBank1() && Position < 0x80)
-                Position += 0x80;
-            if (isIndirect(Position))
+            int position = _position;
+            if (IsBank1() && position < 0x80)
+                position += 0x80;
+            if (isIndirect(position))
             {
-                Position = Data[RegisterConstants.FSR_ADDRESS].Value;
+                position = Data[RegisterConstants.FSR_ADDRESS].Value;
             }
-            return Data[Position].Value;
+            return Data[position].Value;
         }
 
         public bool IsBank1()
@@ -151,7 +155,7 @@ namespace PIC16F84_Emulator.PIC.Register
                 this.clearCarryFlag();
             }
         }
-		
+
         /// <summary>
         /// Sets the Carry bit of STATUS register
         /// </summary>
@@ -181,7 +185,7 @@ namespace PIC16F84_Emulator.PIC.Register
                 this.clearZeroFlag();
             }
         }
-		
+        
         /// <summary>
         /// Sets the Zero bit of STATUS register
         /// </summary>
@@ -211,7 +215,7 @@ namespace PIC16F84_Emulator.PIC.Register
                 this.clearDigitCarry();
             }
         }
-		
+        
         /// <summary>
         /// Sets the Digit Carry (DC) bit of STATUS register
         /// </summary>
