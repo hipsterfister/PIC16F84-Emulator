@@ -31,7 +31,7 @@ namespace PIC16F84_Emulator.PIC.Handler
             this.tmr0RegisterChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onTMR0RegisterChanged);
             this.cycleEndListener = new PIC.OnCycleEnd(onCycleEnd);
 
-            registerDelegates(_pic);
+            registerDelegates();
         }
 
         public void dispose()
