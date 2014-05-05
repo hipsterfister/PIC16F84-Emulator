@@ -76,7 +76,6 @@
     <Compile Include="PIC\Clock.cs" />
     <Compile Include="PIC\Data\DataAdapter.cs" />
     <Compile Include="PIC\Data\EEPROMMemory.cs" />
-    <Compile Include="PIC\Data\Helper.cs" />
     <Compile Include="PIC\Data\OperationStack.cs" />
     <Compile Include="PIC\Data\ProgamMemory.cs" />
     <Compile Include="PIC\Handler\EEPROMHandler.cs" />
@@ -160,6 +159,10 @@
     <None Include="resources\pause.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

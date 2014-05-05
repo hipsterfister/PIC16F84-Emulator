@@ -14,6 +14,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected PIC.PIC pic;
         protected PlayButtonState playButtonState = PlayButtonState.PLAY;
         protected System.ComponentModel.ComponentResourceManager resources = new ComponentResourceManager(typeof(ControlForm));
+        private delegate void picReset();
 
         public ControlForm(PIC.PIC _pic)
         {
@@ -24,30 +25,41 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            switch (playButtonState)
+            if (playButtonState == PlayButtonState.PLAY)
             {
-                case PlayButtonState.PLAY:
-                    pic.beginExecution();
-                    playButtonState = PlayButtonState.PAUSE;
-                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
-                    break;
-                case PlayButtonState.PAUSE:
-                    pic.stopExecution();
-                    playButtonState = PlayButtonState.PLAY;
-                    PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
-                    break;
+                pic.beginExecution();
+                changeState(PlayButtonState.PAUSE);
+            }
+            else
+            {
+                pic.stopExecution();
+                changeState(PlayButtonState.PLAY);
             }
         }
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            pic.resetPIC();
-            playButtonState = PlayButtonState.PLAY;
+            this.BeginInvoke(new picReset(pic.resetPIC));
+            changeState(PlayButtonState.PLAY);
         }
 
         private void NextButton_Click(object sender, EventArgs e)
         {
             pic.onCycleEnd();
+        }
+
+        private void changeState(PlayButtonState newState)
+        {
+            if (newState == PlayButtonState.PLAY)
+            {
+                playButtonState = PlayButtonState.PLAY;
+                PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
+            }
+            else
+            {
+                playButtonState = PlayButtonState.PAUSE;
+                PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
+            }
         }
 
         protected enum PlayButtonState

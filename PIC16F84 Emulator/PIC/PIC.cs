@@ -8,7 +8,7 @@ namespace PIC16F84_Emulator.PIC
 {
     public class PIC
     {
-        private const short INTERVAL = 50; // clock interval [ms]
+        private const short INTERVAL = 1; // clock interval [ms]
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
@@ -46,15 +46,18 @@ namespace PIC16F84_Emulator.PIC
         {
             lock (isReadyLock)
             {
-                isReady = false;
-                clock.disableClock();
-                registerMap.initializeValues();
-                programCounter.initializeValue();
-                eeprom.initializeValues();
-                operationStack.initializeValues();
-                cyclesLeftToExecute = 1;
-                interruptIsNext = false;
-                isReady = true;
+                if (isReady)
+                {
+                    isReady = false;
+                    clock.disableClock();
+                    registerMap.initializeValues();
+                    programCounter.initializeValue();
+                    eeprom.initializeValues();
+                    operationStack.initializeValues();
+                    cyclesLeftToExecute = 1;
+                    interruptIsNext = false;
+                    isReady = true;
+                }
             }
         }
 
@@ -67,19 +70,8 @@ namespace PIC16F84_Emulator.PIC
             timer0.dispose();
             interruptHandler.dispose();
             eepromHandler.dispose();
+            programCounter.dispose();
         }
-
-    /*    ~PIC()
-        {
-            while (cycleEnded != null)
-            {
-                cycleEnded -= new OnCycleEnd(endOfCylceDummy);
-            }
-            while (nextInstructionEvent != null)
-            {
-                nextInstructionEvent -= new OnExecutionOfNextInstruction(nextInstructionDummy);
-            }
-        } */
 
         public void beginExecution()
         {
@@ -119,9 +111,8 @@ namespace PIC16F84_Emulator.PIC
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
             Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
-            Console.WriteLine(operation.GetType());
-            programCounter.value += 1;
             operation.execute();
+            programCounter.increment();
             cyclesLeftToExecute = operation.cycles;
             return true;
         }

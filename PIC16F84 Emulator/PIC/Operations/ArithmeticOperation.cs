@@ -23,7 +23,6 @@ namespace PIC16F84_Emulator.PIC.Operations
         private short targetAddress;
 
         private const short CYCLES = 1;
-       // currently not in use... tbi bool conditional;
 
         public ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap, short _address) :
             base(_registerFileMap, CYCLES, _address)
@@ -32,7 +31,6 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.arg2 = _arg2;
             this.op = _op;
             this.targetAddress = _target;
-            //this.conditional = false;
         }
 
         public ArithmeticOperation(byte _arg1, byte _arg2, ArithmeticOperator _op, short _target, RegisterFileMap _registerFileMap, bool _conditional, short _address) :
@@ -42,7 +40,6 @@ namespace PIC16F84_Emulator.PIC.Operations
             this.arg2 = _arg2;
             this.op = _op;
             this.targetAddress = _target;
-            //this.conditional = _conditional;
         }
 
         public override void execute()
@@ -54,6 +51,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                     break;
                 case ArithmeticOperator.MINUS:
                     executeSubtract();
+                    break;
+                default:
                     break;
             }
         }
@@ -68,7 +67,8 @@ namespace PIC16F84_Emulator.PIC.Operations
 
             registerFileMap.updateCarryFlag(temp > 0xFF);
             registerFileMap.updateZeroFlag(result == 0);
-            registerFileMap.updateDigitCarry((arg1 % 0x10) + (arg2 % 0x10) > 0xF); // byte % 0x10 cuts off the 4 most significant bits. If the sum of these is still greater then 0000 1111 (0x0F), a carry out on the lower bits happened
+            registerFileMap.updateDigitCarry((arg1 % 0x10) + (arg2 % 0x10) > 0xF); 
+            // byte % 0x10 cuts off the 4 most significant bits. If the sum of these is still greater then 0000 1111 (0x0F), a carry out on the lower bits happened
             
             registerFileMap.Set(result, targetAddress);
         }

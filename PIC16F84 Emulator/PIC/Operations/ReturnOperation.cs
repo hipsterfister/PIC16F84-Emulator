@@ -50,7 +50,8 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public override void execute()
         {
-            programCounter.value = operationStack.pop();
+            programCounter.value = (short) (operationStack.pop() + 1); // programCounter won't increase after modifying it. 
+            //TODO: find better way.
 
             if(op == ReturnOperator.RETFIE) {
                     // 1 -> GIE

@@ -49,6 +49,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                     carry = (byte) (data % 2); // carry = least significant bit of data
                     result = (byte)temp;
                     break;
+                default:
+                    break;
             }
 
             registerFileMap.updateCarryFlag(carry == 0);

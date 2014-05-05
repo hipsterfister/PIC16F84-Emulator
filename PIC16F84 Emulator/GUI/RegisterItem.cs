@@ -40,7 +40,7 @@ namespace PIC16F84_Emulator.GUI
             {
                 try
                 {
-                    this.Invoke(mi);
+                    this.BeginInvoke(mi); // Async to prohibit deadlock
                 }
                 catch (ObjectDisposedException)
                 {
@@ -79,7 +79,7 @@ namespace PIC16F84_Emulator.GUI
             {
                 try
                 {
-                    this.Invoke(mi);
+                    this.BeginInvoke(mi); // Async to prohibit deadlock
                 }
                 catch (ObjectDisposedException)
                 {

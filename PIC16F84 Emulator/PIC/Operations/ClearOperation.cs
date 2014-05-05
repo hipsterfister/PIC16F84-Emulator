@@ -13,7 +13,7 @@ namespace PIC16F84_Emulator.PIC.Operations
          *      > CLRF
          *      > CLRW
          *      > CLRWDT
-         *   Simply create a new instance with the corresponding address and call execute();
+         *   Simply create a new instance with the corresponding address and call execute
          */
 
         private short targetAddress;

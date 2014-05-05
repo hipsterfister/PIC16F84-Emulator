@@ -39,6 +39,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                     modifyByte = (byte) (0xFF ^ modifyByte); // 0001.0000 XOR 1111.1111 = 1110.1111 <3
                     result = (byte)(result & modifyByte); // xxx0.xxxx
                     break;
+                default:
+                    break;
             }
             registerFileMap.Set(result, targetAddress);
         }

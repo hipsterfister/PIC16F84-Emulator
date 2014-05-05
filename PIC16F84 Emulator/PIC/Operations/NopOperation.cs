@@ -17,7 +17,7 @@ namespace PIC16F84_Emulator.PIC.Operations
 
         public override void execute()
         {
-           // System.Console.WriteLine("NOP executed");
+            // do nothing
         }
     }
 }

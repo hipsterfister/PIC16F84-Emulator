@@ -35,7 +35,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             {
                 try
                 {
-                    this.Invoke(mi);
+                    this.BeginInvoke(mi); // Async to prohibit deadlock
                 }
                 catch (ObjectDisposedException)
                 {

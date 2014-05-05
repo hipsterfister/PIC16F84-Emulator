@@ -44,6 +44,8 @@ namespace PIC16F84_Emulator.PIC.Operations
                 case LogicOperator.XOR:
                     result = (byte)(arg1 ^ arg2);
                     break;
+                default:
+                    break;
             }
 
             registerFileMap.updateZeroFlag(result == 0);
