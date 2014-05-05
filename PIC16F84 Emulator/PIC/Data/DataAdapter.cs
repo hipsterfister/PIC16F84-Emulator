@@ -12,7 +12,7 @@ namespace PIC16F84_Emulator.PIC.Data
 
         protected T _Data;
 
-        public T Value
+        public virtual T Value
         {
             get
             {
@@ -21,9 +21,14 @@ namespace PIC16F84_Emulator.PIC.Data
             set
             {
                 _Data = value;
-                if (DataChanged != null)
-                    DataChanged(value, this);
+                onDataChanged(value, this);
             }
+        }
+
+        protected void onDataChanged(T _value, object _sender)
+        {
+            if (DataChanged != null)
+                DataChanged(_value, this);
         }
     }
 }
