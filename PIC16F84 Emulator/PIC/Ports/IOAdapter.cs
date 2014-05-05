@@ -30,35 +30,45 @@ namespace PIC16F84_Emulator.PIC.Ports
 
     class IOAdapter<T> : DataAdapter<byte>
     {
-        public delegate void OnTrisChanged(T Value, object Sender);
-        public event OnTrisChanged TrisChanged;
+        private DataAdapter<byte>.OnDataChanged trisChangeListener;
 
-        protected T tris;
+        protected byte tris;
         private short portAddress;
-        private short trisAddress;
 
-        public T Tris
+        public byte Tris
         {
             get
             {
                 return tris;
-            }
-            set
-            {
-                tris = value;
-                if (TrisChanged != null)
-                    TrisChanged(value, this);
             }
         }
 
         /// <summary>
         /// New IOAdapter for an I/O-Port
         /// </summary>
-        /// <param name="_portAddress">Port Address on Bank 0</param>
-        public IOAdapter(short _portAddress)
+        /// <param name="_address">Port address</param>
+        public IOAdapter(RegisterFileMap _registerFileMap, short _address)
         {
-            this.portAddress = _portAddress;
-            this.trisAddress = (short)(_portAddress + 0x80);
+            this.portAddress = _address;
+
+            this.trisChangeListener = new DataAdapter<byte>.OnDataChanged(onTrisChange);
+            _registerFileMap.registerDataListener(trisChangeListener, (short)(portAddress + 0x80));
+        }
+
+        /// <summary>
+        /// Get Tris Value
+        /// </summary>
+        private void onTrisChange(byte Value, object Sender)
+        {
+            this.tris = Value;
+        }
+
+        /// <summary>
+        /// unregister the tris listener
+        /// </summary>
+        public void dispose(RegisterFileMap _registerFileMap)
+        {
+            _registerFileMap.unregisterDataListener(trisChangeListener, (short)(portAddress + 0x80));
         }
     }
 }

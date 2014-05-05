@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PIC16F84_Emulator.PIC.Data;
+using PIC16F84_Emulator.PIC.Ports;
 
 namespace PIC16F84_Emulator.PIC.Register
 {
@@ -17,6 +18,10 @@ namespace PIC16F84_Emulator.PIC.Register
             {
                 Data[X] = new DataAdapter<byte>();
             }
+
+            // I/O Ports as IOAdapter
+            Data[RegisterConstants.PORTA_ADDRESS] = new IOAdapter<byte>(this, RegisterConstants.PORTA_ADDRESS);
+            Data[RegisterConstants.PORTB_ADDRESS] = new IOAdapter<byte>(this, RegisterConstants.PORTB_ADDRESS);
 
             initializeValues();
         }
