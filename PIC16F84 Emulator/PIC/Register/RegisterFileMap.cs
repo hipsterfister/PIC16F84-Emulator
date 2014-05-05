@@ -20,8 +20,8 @@ namespace PIC16F84_Emulator.PIC.Register
             }
 
             // I/O Ports as IOAdapter
-            Data[RegisterConstants.PORTA_ADDRESS] = new IOAdapter<byte>(this, RegisterConstants.PORTA_ADDRESS);
-            Data[RegisterConstants.PORTB_ADDRESS] = new IOAdapter<byte>(this, RegisterConstants.PORTB_ADDRESS);
+            Data[RegisterConstants.PORTA_ADDRESS] = new IOAdapter(this, RegisterConstants.PORTA_ADDRESS);
+            Data[RegisterConstants.PORTB_ADDRESS] = new IOAdapter(this, RegisterConstants.PORTB_ADDRESS);
 
             initializeValues();
         }
