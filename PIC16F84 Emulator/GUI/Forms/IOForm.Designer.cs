@@ -91,6 +91,7 @@
             this.checkBoxBitA0.TabIndex = 0;
             this.checkBoxBitA0.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA0.UseVisualStyleBackColor = true;
+            this.checkBoxBitA0.CheckedChanged += new System.EventHandler(this.checkBoxBitA0_CheckedChanged);
             // 
             // checkBoxBitA3
             // 
@@ -101,6 +102,7 @@
             this.checkBoxBitA3.TabIndex = 1;
             this.checkBoxBitA3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA3.UseVisualStyleBackColor = true;
+            this.checkBoxBitA3.CheckedChanged += new System.EventHandler(this.checkBoxBitA3_CheckedChanged);
             // 
             // checkBoxBitA2
             // 
@@ -111,6 +113,7 @@
             this.checkBoxBitA2.TabIndex = 2;
             this.checkBoxBitA2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA2.UseVisualStyleBackColor = true;
+            this.checkBoxBitA2.CheckedChanged += new System.EventHandler(this.checkBoxBitA2_CheckedChanged);
             // 
             // checkBoxBitA1
             // 
@@ -121,6 +124,7 @@
             this.checkBoxBitA1.TabIndex = 3;
             this.checkBoxBitA1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA1.UseVisualStyleBackColor = true;
+            this.checkBoxBitA1.CheckedChanged += new System.EventHandler(this.checkBoxBitA1_CheckedChanged);
             // 
             // checkBoxBitA6
             // 
@@ -131,6 +135,7 @@
             this.checkBoxBitA6.TabIndex = 4;
             this.checkBoxBitA6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA6.UseVisualStyleBackColor = true;
+            this.checkBoxBitA6.CheckedChanged += new System.EventHandler(this.checkBoxBitA6_CheckedChanged);
             // 
             // checkBoxBitA5
             // 
@@ -141,6 +146,7 @@
             this.checkBoxBitA5.TabIndex = 5;
             this.checkBoxBitA5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA5.UseVisualStyleBackColor = true;
+            this.checkBoxBitA5.CheckedChanged += new System.EventHandler(this.checkBoxBitA5_CheckedChanged);
             // 
             // checkBoxBitA4
             // 
@@ -151,6 +157,7 @@
             this.checkBoxBitA4.TabIndex = 6;
             this.checkBoxBitA4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA4.UseVisualStyleBackColor = true;
+            this.checkBoxBitA4.CheckedChanged += new System.EventHandler(this.checkBoxBitA4_CheckedChanged);
             // 
             // checkBoxBitA7
             // 
@@ -161,6 +168,7 @@
             this.checkBoxBitA7.TabIndex = 7;
             this.checkBoxBitA7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitA7.UseVisualStyleBackColor = true;
+            this.checkBoxBitA7.CheckedChanged += new System.EventHandler(this.checkBoxBitA7_CheckedChanged);
             // 
             // labelA7
             // 
@@ -499,6 +507,7 @@
             this.checkBoxBitB7.TabIndex = 43;
             this.checkBoxBitB7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB7.UseVisualStyleBackColor = true;
+            this.checkBoxBitB7.CheckedChanged += new System.EventHandler(this.checkBoxBitB7_CheckedChanged);
             // 
             // checkBoxBitB4
             // 
@@ -509,6 +518,7 @@
             this.checkBoxBitB4.TabIndex = 42;
             this.checkBoxBitB4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB4.UseVisualStyleBackColor = true;
+            this.checkBoxBitB4.CheckedChanged += new System.EventHandler(this.checkBoxBitB4_CheckedChanged);
             // 
             // checkBoxBitB5
             // 
@@ -519,6 +529,7 @@
             this.checkBoxBitB5.TabIndex = 41;
             this.checkBoxBitB5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB5.UseVisualStyleBackColor = true;
+            this.checkBoxBitB5.CheckedChanged += new System.EventHandler(this.checkBoxBitB5_CheckedChanged);
             // 
             // checkBoxBitB6
             // 
@@ -529,6 +540,7 @@
             this.checkBoxBitB6.TabIndex = 40;
             this.checkBoxBitB6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB6.UseVisualStyleBackColor = true;
+            this.checkBoxBitB6.CheckedChanged += new System.EventHandler(this.checkBoxBitB6_CheckedChanged);
             // 
             // checkBoxBitB1
             // 
@@ -539,6 +551,7 @@
             this.checkBoxBitB1.TabIndex = 39;
             this.checkBoxBitB1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB1.UseVisualStyleBackColor = true;
+            this.checkBoxBitB1.CheckedChanged += new System.EventHandler(this.checkBoxBitB1_CheckedChanged);
             // 
             // checkBoxBitB2
             // 
@@ -549,6 +562,7 @@
             this.checkBoxBitB2.TabIndex = 38;
             this.checkBoxBitB2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB2.UseVisualStyleBackColor = true;
+            this.checkBoxBitB2.CheckedChanged += new System.EventHandler(this.checkBoxBitB2_CheckedChanged);
             // 
             // checkBoxBitB3
             // 
@@ -559,6 +573,7 @@
             this.checkBoxBitB3.TabIndex = 37;
             this.checkBoxBitB3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB3.UseVisualStyleBackColor = true;
+            this.checkBoxBitB3.CheckedChanged += new System.EventHandler(this.checkBoxBitB3_CheckedChanged);
             // 
             // checkBoxBitB0
             // 
@@ -569,6 +584,7 @@
             this.checkBoxBitB0.TabIndex = 36;
             this.checkBoxBitB0.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.checkBoxBitB0.UseVisualStyleBackColor = true;
+            this.checkBoxBitB0.CheckedChanged += new System.EventHandler(this.checkBoxBitB0_CheckedChanged);
             // 
             // IOForm
             // 
