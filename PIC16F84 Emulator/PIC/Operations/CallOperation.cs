@@ -27,7 +27,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         public override void execute()
         {
             this.operationStack.push(this.programCounter.value);
-            short highValue = (short) ((registerFileMap.Get(Register.RegisterConstants.PCLATH_ADDRESS) & 0x24) * 0x100);
+            short highValue = (short) ((registerFileMap.Get(Register.RegisterConstants.PCLATH_ADDRESS) & 0x18) * 0x100);
             this.programCounter.value = (short)(highValue + this.targetOperationAddress);
         }
     }
