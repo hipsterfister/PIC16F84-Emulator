@@ -28,18 +28,24 @@ namespace PIC16F84_Emulator.PIC.Ports
     /// </summary>
     /// 
 
-    class IOAdapter<T> : DataAdapter<byte>
+    class IOAdapter : DataAdapter<byte>
     {
         private DataAdapter<byte>.OnDataChanged trisChangeListener;
 
         protected byte tris;
         private short portAddress;
 
-        public byte Tris
+        public override byte Value
         {
             get
             {
-                return tris;
+                return _Data;
+            }
+            set
+            {
+                // xxxx xxxx AND ~(iiii oooo) = 0000 xxxx
+                _Data = (byte)(value & ~tris);
+                onDataChanged(value, this);
             }
         }
 
@@ -69,6 +75,26 @@ namespace PIC16F84_Emulator.PIC.Ports
         public void dispose(RegisterFileMap _registerFileMap)
         {
             _registerFileMap.unregisterDataListener(trisChangeListener, (short)(portAddress + 0x80));
+        }
+
+        /// <summary>
+        /// Sets the specified bits.
+        /// </summary>
+        /// <param name="_bitMask">Bitmask, selected bits == 1</param>
+        public void setBit(byte _bitMask)
+        {
+            _Data = (byte)(_Data | _bitMask); ;
+            onDataChanged(_Data, this);
+        }
+
+        /// <summary>
+        /// Clears the specified bits.
+        /// </summary>
+        /// <param name="_bitMask">Bitmask, selected bits == 1</param>
+        public void clearBit(byte _bitMask)
+        {
+            _Data = (byte)(_Data & ~_bitMask); 
+            onDataChanged(_Data, this);
         }
     }
 }
