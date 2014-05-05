@@ -36,7 +36,7 @@ namespace PIC16F84_Emulator.PIC.Handler
 
         public void dispose()
         {
-            pic.cycleEnded -= onCycleEnd;
+            unregisterDelegates();
         }
 
         public void onPortAValueChange(byte value, object sender)
@@ -83,12 +83,18 @@ namespace PIC16F84_Emulator.PIC.Handler
         /// <summary>
         /// Registers the Listeners with the corresponding Observables
         /// </summary>
-        /// <param name="pic"></param>
-        private void registerDelegates(PIC pic)
+        private void registerDelegates()
         {
             registerFileMap.registerDataListener(tmr0RegisterChangeListener, Register.RegisterConstants.TMR0_ADDRESS);
-            registerFileMap.registerDataListener(onPortAValueChange, Register.RegisterConstants.PORTA_ADDRESS);
+            registerFileMap.registerDataListener(portAValueChangeListener, Register.RegisterConstants.PORTA_ADDRESS);
             pic.cycleEnded += onCycleEnd;
+        }
+        
+        private void unregisterDelegates() 
+        {
+            registerFileMap.unregisterDataListener(tmr0RegisterChangeListener, Register.RegisterConstants.TMR0_ADDRESS);
+            registerFileMap.unregisterDataListener(onPortAValueChange, Register.RegisterConstants.PORTA_ADDRESS);
+            pic.cycleEnded -= onCycleEnd;
         }
     }
 }
