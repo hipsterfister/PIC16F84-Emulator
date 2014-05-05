@@ -109,11 +109,11 @@
     <Compile Include="PIC\Timer0\Timer0.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GUI\Forms\Register.cs">
+    <Compile Include="GUI\Forms\IOForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Forms\Register.Designer.cs">
-      <DependentUpon>Register.cs</DependentUpon>
+    <Compile Include="GUI\Forms\IOForm.Designer.cs">
+      <DependentUpon>IOForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="GUI\Forms\ControlForm.resx">
       <DependentUpon>ControlForm.cs</DependentUpon>
@@ -139,8 +139,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="GUI\Forms\Register.resx">
-      <DependentUpon>Register.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Forms\IOForm.resx">
+      <DependentUpon>IOForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

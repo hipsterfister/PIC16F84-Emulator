@@ -15,6 +15,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected ListingForm listingForm;
         protected ControlForm controlForm;
         protected RegisterMapForm registerMapForm;
+        protected IOForm ioForm;
         protected string file;
 
         public PICEmulatorForm()
@@ -78,7 +79,12 @@ namespace PIC16F84_Emulator.GUI.Forms
             registerMapForm.MdiParent = this;
             registerMapForm.Show();
         }
-
+        private void createNewIOForm()
+        {
+            ioForm = new IOForm();
+            ioForm.MdiParent = this;
+            ioForm.Show();
+        }
 
         private void toggleListingForm()
         {
@@ -113,6 +119,18 @@ namespace PIC16F84_Emulator.GUI.Forms
             else
             {
                 registerMapForm.Close();
+            }
+        }
+
+        private void toggleIOForm()
+        {
+            if (ioForm == null || ioForm.Visible == false)
+            {
+                createNewIOForm();
+            }
+            else
+            {
+                ioForm.Close();
             }
         }
 
@@ -156,6 +174,11 @@ namespace PIC16F84_Emulator.GUI.Forms
             disableAnsichtMenu();
             closeAllOpenWindows();
             freeResources();
+        }
+
+        private void iOControlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleIOForm();
         }
 
     }
