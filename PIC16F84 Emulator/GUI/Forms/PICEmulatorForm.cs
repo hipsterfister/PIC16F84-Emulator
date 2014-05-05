@@ -81,7 +81,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         }
         private void createNewIOForm()
         {
-            ioForm = new IOForm();
+            ioForm = new IOForm(pic.getRegisterFileMap());
             ioForm.MdiParent = this;
             ioForm.Show();
         }

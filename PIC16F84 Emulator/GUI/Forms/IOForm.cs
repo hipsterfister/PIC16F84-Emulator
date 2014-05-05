@@ -6,13 +6,34 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PIC16F84_Emulator.PIC.Register;
+using PIC16F84_Emulator.PIC.Data;
 
 namespace PIC16F84_Emulator.GUI.Forms
 {
     public partial class IOForm : Form
     {
-        public IOForm()
+        DataAdapter<byte>.OnDataChanged portAListener;
+        DataAdapter<byte>.OnDataChanged portBListener;
+        DataAdapter<byte>.OnDataChanged trisAListener;
+        DataAdapter<byte>.OnDataChanged trisBListener;
+
+        public IOForm(RegisterFileMap _registerFileMap)
         {
+            this.portAListener = new DataAdapter<byte>.OnDataChanged(onPortAChange);
+            this.portBListener = new DataAdapter<byte>.OnDataChanged(onPortBChange);
+            this.trisAListener = new DataAdapter<byte>.OnDataChanged(onTrisAChange);
+            this.trisBListener = new DataAdapter<byte>.OnDataChanged(onTrisBChange);
+
+            _registerFileMap.registerDataListener(portAListener, RegisterConstants.PORTA_ADDRESS);
+            _registerFileMap.registerDataListener(portBListener, RegisterConstants.PORTB_ADDRESS);
+            _registerFileMap.registerDataListener(trisAListener, RegisterConstants.TRISA_BANK1_ADDRESS);
+            _registerFileMap.registerDataListener(trisBListener, RegisterConstants.TRISB_BANK1_ADDRESS);
+
+            Disposed += delegate { _registerFileMap.unregisterDataListener(portAListener, RegisterConstants.PORTA_ADDRESS); };
+            Disposed += delegate { _registerFileMap.unregisterDataListener(portBListener, RegisterConstants.PORTB_ADDRESS); };
+            Disposed += delegate { _registerFileMap.unregisterDataListener(trisAListener, RegisterConstants.TRISA_BANK1_ADDRESS); };
+            Disposed += delegate { _registerFileMap.unregisterDataListener(trisBListener, RegisterConstants.TRISB_BANK1_ADDRESS); };
 
             InitializeComponent();
         }
