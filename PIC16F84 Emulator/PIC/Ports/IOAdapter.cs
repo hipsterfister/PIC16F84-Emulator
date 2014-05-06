@@ -83,7 +83,7 @@ namespace PIC16F84_Emulator.PIC.Ports
         /// <param name="_bitMask">Bitmask, selected bits == 1</param>
         public void setBit(byte _bitMask)
         {
-            _Data = (byte)(_Data | _bitMask); ;
+            _Data = (byte)(_Data | _bitMask);
             onDataChanged(_Data, this);
         }
 
