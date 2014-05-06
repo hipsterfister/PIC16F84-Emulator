@@ -21,12 +21,15 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         RegisterFileMap registerFileMap;
 
+        CheckBox[] PortA = new CheckBox[8];
+        CheckBox[] PortB = new CheckBox[8];
+
         public IOForm(RegisterFileMap _registerFileMap)
         {
-            InitializeComponent();
 
             this.registerFileMap = _registerFileMap;
 
+            // Listener fuer GUI-Aktualisierung
             this.portAListener = new DataAdapter<byte>.OnDataChanged(onPortAChange);
             this.portBListener = new DataAdapter<byte>.OnDataChanged(onPortBChange);
             this.trisAListener = new DataAdapter<byte>.OnDataChanged(onTrisAChange);
@@ -42,8 +45,33 @@ namespace PIC16F84_Emulator.GUI.Forms
             Disposed += delegate { registerFileMap.unregisterDataListener(trisAListener, RegisterConstants.TRISA_BANK1_ADDRESS); };
             Disposed += delegate { registerFileMap.unregisterDataListener(trisBListener, RegisterConstants.TRISB_BANK1_ADDRESS); };
 
+            // PORT-Checkboxes dynamisch erstellen
+            for (int i = 0; i < 8; i++)
+            {
+                PortA[i] = new CheckBox();
+                PortA[i].Location = new Point(58 + i * 21, 96);
+                PortA[i].MouseClick += new MouseEventHandler(CheckboxChanged);
+                PortA[i].Name = "checkBoxBitA" + (7 - i).ToString();
+                PortA[i].Width = 15;
+                PortA[i].Height = 15;
+
+                PortB[i] = new CheckBox();
+                PortB[i].Location = new Point(58 + i * 21, 50);
+                PortB[i].MouseClick += new MouseEventHandler(CheckboxChanged);
+                PortB[i].Name = "checkBoxBitB" + (7 - i).ToString();
+                PortB[i].Width = 15;
+                PortB[i].Height = 15;
+            }
+
+            this.Controls.AddRange(PortA);
+            this.Controls.AddRange(PortB);
+
+            InitializeComponent();
+
             updateTrisA(registerFileMap.Get(RegisterConstants.TRISA_BANK1_ADDRESS));
             updateTrisB(registerFileMap.Get(RegisterConstants.TRISB_BANK1_ADDRESS));
+            updatePortA(registerFileMap.Get(RegisterConstants.PORTA_ADDRESS));
+            updatePortB(registerFileMap.Get(RegisterConstants.PORTB_ADDRESS));
 
         }
 
@@ -129,28 +157,15 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void updatePortA(byte _value)
         {
-            // xxxx xxxx & 0x01 = 0000 000x => checkbox = x
-            this.checkBoxBitA0.Checked = (_value & 0x01) != 0 ? true : false;
-            this.checkBoxBitA1.Checked = (_value & 0x02) != 0 ? true : false;
-            this.checkBoxBitA2.Checked = (_value & 0x04) != 0 ? true : false;
-            this.checkBoxBitA3.Checked = (_value & 0x08) != 0 ? true : false;
-            this.checkBoxBitA4.Checked = (_value & 0x10) != 0 ? true : false;
-            this.checkBoxBitA5.Checked = (_value & 0x20) != 0 ? true : false;
-            this.checkBoxBitA6.Checked = (_value & 0x40) != 0 ? true : false;
-            this.checkBoxBitA7.Checked = (_value & 0x80) != 0 ? true : false;
+            // xxxx xxxx & 0x01 = 0000 000x => checkBoxBitA0 = x etc...
+            for (int i = 0; i < PortA.Length; i++)
+                PortA[(7-i)].Checked = (_value & (0x01 << i)) != 0 ? true : false;
         }
-
         private void updatePortB(byte _value)
         {
-            // xxxx xxxx & 0x01 = 0000 000x => checkbox = x
-            this.checkBoxBitB0.Checked = (_value & 0x01) != 0 ? true : false;
-            this.checkBoxBitB1.Checked = (_value & 0x02) != 0 ? true : false;
-            this.checkBoxBitB2.Checked = (_value & 0x04) != 0 ? true : false;
-            this.checkBoxBitB3.Checked = (_value & 0x08) != 0 ? true : false;
-            this.checkBoxBitB4.Checked = (_value & 0x10) != 0 ? true : false;
-            this.checkBoxBitB5.Checked = (_value & 0x20) != 0 ? true : false;
-            this.checkBoxBitB6.Checked = (_value & 0x40) != 0 ? true : false;
-            this.checkBoxBitB7.Checked = (_value & 0x80) != 0 ? true : false;
+            // xxxx xxxx & 0x01 = 0000 000x => checkBoxBitB0 = x etc...
+            for (int i = 0; i < PortB.Length; i++)
+                PortB[(7 - i)].Checked = (_value & (0x01 << i)) != 0 ? true : false;
         }
         private void updateTrisA(byte _value)
         {
@@ -175,142 +190,30 @@ namespace PIC16F84_Emulator.GUI.Forms
             this.labelTrisB7.Text = (_value & 0x80) != 0 ? "i" : "o";
         }
 
-        private void checkBoxBitA0_CheckedChanged(object sender, EventArgs e)
+        private void CheckboxChanged(object sender, EventArgs e)
         {
-            if (checkBoxBitA0.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x01);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x01);
-        }
+            CheckBox bit;
+            byte byteMask = 0x00;
+            int bitNumber = 0;
+            short portAddress = 0;
 
-        private void checkBoxBitA1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA1.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x02);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x02);
-
-        }
-
-        private void checkBoxBitA2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA2.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x04);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x04);
-
-        }
-
-        private void checkBoxBitA3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA3.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x08);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x08);
-
-        }
-
-        private void checkBoxBitA4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA4.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x10);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x10);
-
-        }
-
-        private void checkBoxBitA5_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA5.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x20);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x20);
-
-        }
-
-        private void checkBoxBitA6_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA6.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x40);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x40);
-
-        }
-
-        private void checkBoxBitA7_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitA7.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).setBit(0x80);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS))).clearBit(0x80);
-
-        }
-
-        private void checkBoxBitB0_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB0.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x01);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x01);
-        }
-
-        private void checkBoxBitB1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB1.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x02);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x02);
-
-        }
-
-        private void checkBoxBitB2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB2.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x04);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x04);
-
-        }
-
-        private void checkBoxBitB3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB3.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x08);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x08);
-
-        }
-
-        private void checkBoxBitB4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB4.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x10);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x10);
-        }
-
-        private void checkBoxBitB5_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB5.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x20);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x20);
-        }
-
-        private void checkBoxBitB6_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB6.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x40);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x40);
-        }
-
-        private void checkBoxBitB7_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBitB7.Checked)
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).setBit(0x80);
-            else
-                ((IOAdapter)(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS))).clearBit(0x80);
+            try
+            {
+                bit = (CheckBox)sender;
+                // bit.Name = "checkBoxBit" + [A|B] + x(=bitNumber)
+                bitNumber = Int32.Parse(bit.Name.Substring(bit.Name.Length - 1));
+                portAddress = bit.Name.Substring(bit.Name.Length - 2, 1) == "A" ? RegisterConstants.PORTA_ADDRESS : RegisterConstants.PORTB_ADDRESS;
+                byteMask = (byte)(0x01 << bitNumber);
+                
+                if (bit.Checked)
+                    ((IOAdapter)(registerFileMap.getAdapter(portAddress))).setBit(byteMask);
+                else
+                    ((IOAdapter)(registerFileMap.getAdapter(portAddress))).clearBit(byteMask);
+            }
+            catch
+            {
+                throw new Exception("failed to handle user input");
+            }
         }
     }
 }
