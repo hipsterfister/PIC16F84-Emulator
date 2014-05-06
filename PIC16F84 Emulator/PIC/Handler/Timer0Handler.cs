@@ -50,9 +50,10 @@ namespace PIC16F84_Emulator.PIC.Handler
                 }
                 else
                 {
-                    timer0.triggerCounterTick(Timer0.Timer0SelectedEdge.FALLING);
+                    timer0.triggerCounterTick(Timer0.Timer0SelectedEdge.RISING);
                 }
                 tmr0RegisterChangeEventIsSuppressed = false;
+                lastPortAValue = value;
             }
         }
 
@@ -93,7 +94,7 @@ namespace PIC16F84_Emulator.PIC.Handler
         private void unregisterDelegates() 
         {
             registerFileMap.unregisterDataListener(tmr0RegisterChangeListener, Register.RegisterConstants.TMR0_ADDRESS);
-            registerFileMap.unregisterDataListener(onPortAValueChange, Register.RegisterConstants.PORTA_ADDRESS);
+            registerFileMap.unregisterDataListener(portAValueChangeListener, Register.RegisterConstants.PORTA_ADDRESS);
             pic.cycleEnded -= onCycleEnd;
         }
     }
