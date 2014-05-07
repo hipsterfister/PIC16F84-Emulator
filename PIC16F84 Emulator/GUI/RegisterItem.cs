@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PIC16F84_Emulator.PIC.Register;
 
 namespace PIC16F84_Emulator.GUI
 {
@@ -18,20 +19,26 @@ namespace PIC16F84_Emulator.GUI
         protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
         protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
 
+        DataAdapter<byte> dataAdapter;
+
         ToolTip tt;
+        TextBox hexBox;
 
         public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
             Parent = _parent;
             this.Text = _dataAdapter.Value.ToString("X2");
+            this.dataAdapter = _dataAdapter;
+            this.value = dataAdapter.Value;
             // onChange listener
-            _dataAdapter.DataChanged += onValueChange;
-            Disposed += delegate { _dataAdapter.DataChanged -= onValueChange; };
+            dataAdapter.DataChanged += onValueChange;
+            Disposed += delegate { dataAdapter.DataChanged -= onValueChange; };
             // set default values
             this.SetBounds(_positionX, _positionY, WIDTH, HEIGHT);
             this.ReadOnly = true;
             this.MouseEnter += showTooltip;
             this.MouseLeave += hideTooltip;
+            this.DoubleClick += createNewHexBox;
             this.Show();
             this.updateTimer = new Helpers.UpdateTimer(ACTIVE_DURATION, new System.Timers.ElapsedEventHandler(onTimerExpiredHandler));
         }
@@ -96,12 +103,50 @@ namespace PIC16F84_Emulator.GUI
         {
             this.tt = new ToolTip();
             string ttText = "decimal value: " + this.value.ToString();
-            tt.Show(ttText, this, 0, 18, 4000);
+            tt.Show(ttText, this, 0, 18);
         }
 
         protected void hideTooltip(object sender, System.EventArgs e)
         {
             tt.Dispose();
+        }
+
+        protected void createNewHexBox(object sender, System.EventArgs e)
+        {
+            hexBox = new TextBox();
+            hexBox.Text = value.ToString("X2");
+            hexBox.MaxLength = 2;
+            hexBox.Parent = this;
+            hexBox.KeyDown += updateHexValue;
+            hexBox.Show();
+            Parent.MouseClick += clickBesideHexBox;
+        }
+
+        private void updateHexValue(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    this.dataAdapter.Value = checked((byte)(Convert.ToInt16(hexBox.Text, 16)));
+                }
+                catch
+                {
+                    hexBox.Clear();
+                    return;
+                }
+                disposeHexBox();
+            }
+        }
+
+        private void disposeHexBox()
+        {
+            hexBox.Dispose();
+        }
+
+        private void clickBesideHexBox(object sender, MouseEventArgs e)
+        {
+            disposeHexBox();
         }
 
         private void InitializeComponent()
