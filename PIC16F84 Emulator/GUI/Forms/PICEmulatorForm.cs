@@ -67,7 +67,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             controlForm.defaultView();
             ioForm.defaultView(controlForm.Height);
-            registerMapForm.defaultView(controlForm.Bounds.Left);
+            registerMapForm.defaultView(controlForm.Bounds.Left < ioForm.Bounds.Left ? controlForm.Bounds.Left : ioForm.Bounds.Left);
             listingForm.defaultView(registerMapForm.Bounds.Left);
         }
 
@@ -119,7 +119,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             registerMapForm.MdiParent = this;
             registerMapForm.Show();
             if (_defaultView)
-                registerMapForm.defaultView(controlForm.Bounds.Left);
+                registerMapForm.defaultView(controlForm.Bounds.Left < ioForm.Bounds.Left ? controlForm.Bounds.Left : ioForm.Bounds.Left);
         }
         private void createNewIOForm(bool _defaultView)
         {
