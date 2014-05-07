@@ -37,6 +37,8 @@ namespace PIC16F84_Emulator.GUI.Forms
              
             initNewPIC(file);
             enableAnsichtMenu();
+            enableDateiSchließen();
+            enableDefaultView();
         }
 
         /// <summary>
@@ -50,6 +52,30 @@ namespace PIC16F84_Emulator.GUI.Forms
             pic.initProgramMemory(file);
         }
 
+        /// <summary>
+        /// opens the child-forms in a default view
+        /// </summary>
+        private void enableDefaultView()
+        {
+            createNewControlForm(true);
+            createNewIOForm(true);
+            createNewRegisterMapForm(true);
+            createNewListingForm(true);
+        }
+
+        private void rearrangeFormsToDefaultView()
+        {
+            controlForm.defaultView();
+            ioForm.defaultView(controlForm.Height);
+            registerMapForm.defaultView(controlForm.Bounds.Left);
+            listingForm.defaultView(registerMapForm.Bounds.Left);
+        }
+
+        private void PICEmulatorForm_onClientSizeChanged(object sender, EventArgs e)
+        {
+            rearrangeFormsToDefaultView();
+        }
+
         private void enableAnsichtMenu()
         {
             ansichtToolStripMenuItem.Enabled = true;
@@ -60,37 +86,55 @@ namespace PIC16F84_Emulator.GUI.Forms
             ansichtToolStripMenuItem.Enabled = false;
         }
 
-        private void createNewListingForm()
+        private void enableDateiSchließen()
+        {
+            dateiSchließenToolStripMenuItem.Enabled = true;
+        }
+
+        private void disableDateiSchließen()
+        {
+            dateiSchließenToolStripMenuItem.Enabled = false;
+        }
+
+        private void createNewListingForm(bool _defaultView)
         {
             listingForm = new ListingForm(file, pic);
             listingForm.MdiParent = this;
             listingForm.Show();
+            if (_defaultView)
+                listingForm.defaultView(registerMapForm.Bounds.Left);
         }
 
-        private void createNewControlForm() 
+        private void createNewControlForm(bool _defaultView) 
         {
             controlForm = new ControlForm(pic);
             controlForm.MdiParent = this;
             controlForm.Show();
+            if (_defaultView)
+                controlForm.defaultView();
         }
-        private void createNewRegisterMapForm() 
+        private void createNewRegisterMapForm(bool _defaultView) 
         {
             registerMapForm = new RegisterMapForm(pic.getRegisterFileMap());
             registerMapForm.MdiParent = this;
             registerMapForm.Show();
+            if (_defaultView)
+                registerMapForm.defaultView(controlForm.Bounds.Left);
         }
-        private void createNewIOForm()
+        private void createNewIOForm(bool _defaultView)
         {
             ioForm = new IOForm(pic.getRegisterFileMap());
             ioForm.MdiParent = this;
             ioForm.Show();
+            if (_defaultView)
+                ioForm.defaultView(controlForm.Height);
         }
 
         private void toggleListingForm()
         {
             if (listingForm == null || listingForm.Visible == false)
             {
-                createNewListingForm();
+                createNewListingForm(false);
             }
             else
             {
@@ -102,7 +146,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             if (controlForm == null || controlForm.Visible == false)
             {
-                createNewControlForm();
+                createNewControlForm(false);
             }
             else
             {
@@ -114,7 +158,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             if (registerMapForm == null || registerMapForm.Visible == false)
             {
-                createNewRegisterMapForm();
+                createNewRegisterMapForm(false);
             }
             else
             {
@@ -126,7 +170,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             if (ioForm == null || ioForm.Visible == false)
             {
-                createNewIOForm();
+                createNewIOForm(false);
             }
             else
             {
@@ -172,6 +216,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void dateiSchließenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             disableAnsichtMenu();
+            disableDateiSchließen();
             closeAllOpenWindows();
             freeResources();
         }

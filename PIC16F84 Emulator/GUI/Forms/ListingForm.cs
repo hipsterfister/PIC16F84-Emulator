@@ -23,6 +23,17 @@ namespace PIC16F84_Emulator.GUI.Forms
             Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
         }
 
+        /// <summary>
+        /// default form position
+        /// </summary>
+        /// <param name="_right">registermap-form left position</param>
+        public void defaultView(int _right)
+        {
+            this.Location = new Point(0, 0);
+            this.Height = MdiParent.ClientRectangle.Height - 30;
+            this.Width = _right;
+        }
+
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
             listingBox.SelectedIndex = line;

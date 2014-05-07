@@ -37,9 +37,9 @@
             this.showControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showRegisterMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iOControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.iOControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +72,7 @@
             // 
             // dateiSchließenToolStripMenuItem
             // 
+            this.dateiSchließenToolStripMenuItem.Enabled = false;
             this.dateiSchließenToolStripMenuItem.Name = "dateiSchließenToolStripMenuItem";
             this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.dateiSchließenToolStripMenuItem.Text = "Datei schließen";
@@ -92,23 +93,30 @@
             // showControlsToolStripMenuItem
             // 
             this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
-            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.showControlsToolStripMenuItem.Text = "Controls";
             this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
             // 
             // showRegisterMapToolStripMenuItem
             // 
             this.showRegisterMapToolStripMenuItem.Name = "showRegisterMapToolStripMenuItem";
-            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.showRegisterMapToolStripMenuItem.Text = "Register Map";
             this.showRegisterMapToolStripMenuItem.Click += new System.EventHandler(this.showRegisterMapToolStripMenuItem_Click);
             // 
             // listingToolStripMenuItem
             // 
             this.listingToolStripMenuItem.Name = "listingToolStripMenuItem";
-            this.listingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listingToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.listingToolStripMenuItem.Text = "Listing";
             this.listingToolStripMenuItem.Click += new System.EventHandler(this.listingToolStripMenuItem_Click);
+            // 
+            // iOControlToolStripMenuItem
+            // 
+            this.iOControlToolStripMenuItem.Name = "iOControlToolStripMenuItem";
+            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.iOControlToolStripMenuItem.Text = "I/O Control";
+            this.iOControlToolStripMenuItem.Click += new System.EventHandler(this.iOControlToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -121,13 +129,6 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // iOControlToolStripMenuItem
-            // 
-            this.iOControlToolStripMenuItem.Name = "iOControlToolStripMenuItem";
-            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.iOControlToolStripMenuItem.Text = "I/O Control";
-            this.iOControlToolStripMenuItem.Click += new System.EventHandler(this.iOControlToolStripMenuItem_Click);
-            // 
             // PICEmulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,6 +139,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "PICEmulatorForm";
             this.Text = "PICEmulatorForm";
+            this.ClientSizeChanged += new System.EventHandler(this.PICEmulatorForm_onClientSizeChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

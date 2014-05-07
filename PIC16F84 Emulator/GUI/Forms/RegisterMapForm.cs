@@ -30,6 +30,16 @@ namespace PIC16F84_Emulator.GUI.Forms
             createSpecialValueView();
         }
 
+        /// <summary>
+        /// default form position
+        /// </summary>
+        /// <param name="_right">control-form left position</param>
+        public void defaultView(int _right)
+        {
+            this.Location = new Point(_right - this.Width, 0);
+            this.Height = MdiParent.ClientRectangle.Height - 30;
+        }
+
         private void createSpecialValueView()
         {
             createNewLabel(5, 5 + TEXT_BOX_INCREASED_HEIGHT, 65, 20, "W-Register:");

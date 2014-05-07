@@ -19,8 +19,16 @@ namespace PIC16F84_Emulator.GUI.Forms
         public ControlForm(PIC.PIC _pic)
         {
             InitializeComponent();
-
+            
             this.pic = _pic;
+        }
+
+        /// <summary>
+        /// default form position
+        /// </summary>
+        public void defaultView()
+        {
+            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + 5), 0);
         }
 
         private void PlayButton_Click(object sender, EventArgs e)

@@ -75,6 +75,15 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         }
 
+        /// <summary>
+        /// default form position
+        /// </summary>
+        /// <param name="_top">control-form height</param>
+        public void defaultView(int _top)
+        {
+            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + 5), _top);
+        }
+
         public void onPortAChange(byte Value, object Sender)
         {
             MethodInvoker mi = delegate { updatePortA(Value); };
