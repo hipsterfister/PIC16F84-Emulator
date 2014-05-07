@@ -55,7 +55,7 @@ namespace PIC16F84_Emulator.PIC.Handler
 
         private bool checkWriteControlBit(byte value)
         {
-            if ((value & 2) == 1 && (value & 4) == 1)
+            if ((value & 2) != 0 && (value & 4) != 0)
             {
                 return true;
             }
@@ -84,6 +84,7 @@ namespace PIC16F84_Emulator.PIC.Handler
             eepromMemory[address] = value;
             // Clear Write Control Bit
             registerFileMap.clearBit(Register.RegisterConstants.EECON1_BANK1_ADDRESS, 2);
+            registerFileMap.setBit(Register.RegisterConstants.EECON1_BANK1_ADDRESS, 0x10);
         }
 
         private void registerSelfWithRegisterFileMap()
