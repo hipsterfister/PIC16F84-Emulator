@@ -49,6 +49,12 @@ namespace PIC16F84_Emulator.PIC.Register
             Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = RegisterConstants.INTCON_INITIAL_VALUE;
         }
 
+        public void dispose()
+        {
+            ((IOAdapter)(Data[RegisterConstants.PORTA_ADDRESS])).dispose(this);
+            ((IOAdapter)(Data[RegisterConstants.PORTB_ADDRESS])).dispose(this);
+        }
+
         public void Set(byte _data, int _position)
         {
             int position = _position;

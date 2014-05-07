@@ -8,7 +8,7 @@ namespace PIC16F84_Emulator.PIC
 {
     public class PIC
     {
-        private const short INTERVAL = 2; // clock interval [ms]
+        private const short INTERVAL = 1; // clock interval [ms]
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
@@ -73,6 +73,8 @@ namespace PIC16F84_Emulator.PIC
             interruptHandler.dispose();
             eepromHandler.dispose();
             programCounter.dispose();
+            registerMap.dispose();
+            wdt.dispose();
         }
 
         public void beginExecution()

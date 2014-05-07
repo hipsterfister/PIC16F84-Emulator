@@ -28,6 +28,10 @@ namespace PIC16F84_Emulator.PIC.WatchDog
             wdtTimer.AutoReset = false;
         }
 
+        public void dispose() {
+            optionRegister.DataChanged -= onOptionRegisterChange;
+        }
+
         void onOptionRegisterChange(byte Value, object Sender)
         {
             wdtTimer.Interval = calculateWdtInterval();
