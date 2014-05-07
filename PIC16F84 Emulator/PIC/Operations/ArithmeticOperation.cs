@@ -87,12 +87,12 @@ namespace PIC16F84_Emulator.PIC.Operations
             }
             catch (OverflowException)
             {
-                result = (byte)(~(arg1 - arg2) + 1); // 2s-complement
+                result = (byte)(~(arg2 - arg1) + 1); // 2s-complement
                 registerFileMap.clearCarryFlag();
             }
 
             registerFileMap.updateZeroFlag(result == 0);
-            registerFileMap.updateDigitCarry((arg1 % 0x10) > (arg2 % 0x10)); // meaning of digit carry bit is inverted for subtraction (like the carry bit)
+            registerFileMap.updateDigitCarry((arg1 % 0x10) >= (arg2 % 0x10)); // meaning of digit carry bit is inverted for subtraction (like the carry bit)
 
             registerFileMap.Set(result, targetAddress);
         }
