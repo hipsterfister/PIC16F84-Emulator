@@ -8,7 +8,7 @@ namespace PIC16F84_Emulator.PIC
 {
     public class PIC
     {
-        private const short INTERVAL = 1; // clock interval [ms]
+        private const short INTERVAL = 2; // clock interval [ms]
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
@@ -21,6 +21,7 @@ namespace PIC16F84_Emulator.PIC
         protected Clock clock;
         protected Parser.Parser parser;
         protected Timer0.Timer0 timer0;
+        protected WatchDog.WDT wdt;
 
         private bool isReady = true;
         private Object isReadyLock = new Object();
@@ -40,6 +41,7 @@ namespace PIC16F84_Emulator.PIC
             parser = new Parser.Parser(this);
             timer0 = new Timer0.Timer0(registerMap, this);
             eepromHandler = new Handler.EEPROMHandler(registerMap, eeprom);
+            wdt = new WatchDog.WDT(this);
         }
 
         public void resetPIC()
@@ -76,11 +78,13 @@ namespace PIC16F84_Emulator.PIC
         public void beginExecution()
         {
             clock.enableClock();
+            wdt.start();
         }
 
         public void stopExecution()
         {
             clock.disableClock();
+            wdt.stop();
         }
 
         public void executeSingleOperation()
@@ -188,6 +192,17 @@ namespace PIC16F84_Emulator.PIC
         {
             return operationStack;
         }
+
+        /// <summary>
+        /// Returns the PIC's instruction cycle duration
+        /// Note: The value does not factor in user's execution speed, so this value could appear lower then the actual needed execution time.
+        /// </summary>
+        /// <returns>value in ms</returns>
+        public short getCycleDuration()
+        {
+            return INTERVAL;
+        }
+
 
         // TODO: there must be a better way... come on.
         private static void endOfCylceDummy()

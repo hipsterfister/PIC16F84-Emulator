@@ -106,6 +106,7 @@
     <Compile Include="PIC\Register\RegisterConstants.cs" />
     <Compile Include="PIC\Register\RegisterFileMap.cs" />
     <Compile Include="PIC\Timer0\Timer0.cs" />
+    <Compile Include="PIC\WatchDog\WDT.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GUI\Forms\IOForm.cs">
