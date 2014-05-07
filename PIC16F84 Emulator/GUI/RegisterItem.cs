@@ -18,6 +18,8 @@ namespace PIC16F84_Emulator.GUI
         protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
         protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
 
+        ToolTip tt;
+
         public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
             Parent = _parent;
@@ -28,7 +30,8 @@ namespace PIC16F84_Emulator.GUI
             // set default values
             this.SetBounds(_positionX, _positionY, WIDTH, HEIGHT);
             this.ReadOnly = true;
-            this.MouseHover += showTooltip;
+            this.MouseEnter += showTooltip;
+            this.MouseLeave += hideTooltip;
             this.Show();
             this.updateTimer = new Helpers.UpdateTimer(ACTIVE_DURATION, new System.Timers.ElapsedEventHandler(onTimerExpiredHandler));
         }
@@ -56,7 +59,7 @@ namespace PIC16F84_Emulator.GUI
 
         private void updateValue(byte _value)
         {
-            value = _value;
+            this.value = _value;
             this.Text = value.ToString("X2");
             makeThisActive();
         }
@@ -91,9 +94,14 @@ namespace PIC16F84_Emulator.GUI
 
         protected void showTooltip(object sender, System.EventArgs e)
         {
-            ToolTip tt = new ToolTip();
+            this.tt = new ToolTip();
             string ttText = "decimal value: " + this.value.ToString();
             tt.Show(ttText, this, 0, 18, 4000);
+        }
+
+        protected void hideTooltip(object sender, System.EventArgs e)
+        {
+            tt.Dispose();
         }
 
         private void InitializeComponent()
