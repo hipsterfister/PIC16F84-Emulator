@@ -15,13 +15,19 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected PIC.Data.ProgamMemory programMemory;
 
         protected static System.Drawing.Color breakpointColor = System.Drawing.Color.Orange;
+        protected static System.Drawing.Color defaultColor = System.Drawing.Color.White;
+        protected static System.Drawing.Color defaultSelectionColor = System.Drawing.SystemColors.Highlight;
 
         public ListingForm(string _pathToFile, PIC.PIC _pic)
         {
             InitializeComponent();
 
             programView = new GUI.ProgramView(_pathToFile);
-            listingBox.DataSource = programView.source;
+
+            foreach(string item in programView.source) {
+                dataGridView1.Rows.Add(item);
+            }
+
             _pic.nextInstructionEvent += onNextInstructionExecution;
             Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
 
@@ -41,7 +47,9 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
-            listingBox.SelectedIndex = line;
+            dataGridView1.Rows[line].Selected = true;
+            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - 20)
+            dataGridView1.FirstDisplayedScrollingRowIndex = line - 5;
         }
 
         public void onNextInstructionExecution(short _instructionAddress)
@@ -71,7 +79,8 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void toggleBreakpoint()
         {
-            short address = programView.getAddressByLine(listingBox.SelectedIndex);
+            int index = dataGridView1.SelectedRows[0].Index;
+            short address = programView.getAddressByLine(index);
             
             if (address == ProgramView.NO_ADDRESS_VALUE)
             {
@@ -82,20 +91,27 @@ namespace PIC16F84_Emulator.GUI.Forms
 
             if (isSet)
             {
-                System.Console.WriteLine("+");
-                TextBox p = new TextBox();
-                p.Parent = this;
-                p.SetBounds(2, 13 * listingBox.SelectedIndex + 2, 72, 13);
-                p.BorderStyle = BorderStyle.None;
-                p.BackColor = breakpointColor;
-                p.BringToFront();
-                p.Show();
+                foreach (DataGridViewRow item in dataGridView1.SelectedRows)
+                {
+                    item.DefaultCellStyle.BackColor = breakpointColor;
+                    item.DefaultCellStyle.SelectionBackColor = breakpointColor;
+                }
             }
             else
             {
-                System.Console.WriteLine("-");
+                foreach (DataGridViewRow item in dataGridView1.SelectedRows)
+                {
+                    item.DefaultCellStyle.BackColor = defaultColor;
+                    item.DefaultCellStyle.SelectionBackColor = defaultSelectionColor;
+                }
             }
 
         }
+
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            toggleBreakpoint();
+        }
+
     }
 }
