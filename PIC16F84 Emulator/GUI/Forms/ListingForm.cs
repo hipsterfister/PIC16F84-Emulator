@@ -14,8 +14,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected GUI.ProgramView programView;
         protected PIC.Data.ProgamMemory programMemory;
 
-        protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
-        protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
+        protected static System.Drawing.Color breakpointColor = System.Drawing.Color.Orange;
 
         public ListingForm(string _pathToFile, PIC.PIC _pic)
         {
@@ -84,6 +83,13 @@ namespace PIC16F84_Emulator.GUI.Forms
             if (isSet)
             {
                 System.Console.WriteLine("+");
+                TextBox p = new TextBox();
+                p.Parent = this;
+                p.SetBounds(2, 13 * listingBox.SelectedIndex + 2, 72, 13);
+                p.BorderStyle = BorderStyle.None;
+                p.BackColor = breakpointColor;
+                p.BringToFront();
+                p.Show();
             }
             else
             {
