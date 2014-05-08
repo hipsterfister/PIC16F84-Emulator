@@ -12,6 +12,10 @@ namespace PIC16F84_Emulator.GUI.Forms
     public partial class ListingForm : Form
     {
         protected GUI.ProgramView programView;
+        protected PIC.Data.ProgamMemory programMemory;
+
+        protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
+        protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
 
         public ListingForm(string _pathToFile, PIC.PIC _pic)
         {
@@ -21,6 +25,8 @@ namespace PIC16F84_Emulator.GUI.Forms
             listingBox.DataSource = programView.source;
             _pic.nextInstructionEvent += onNextInstructionExecution;
             Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
+
+            programMemory = _pic.getProgramMemory();
         }
 
         /// <summary>
@@ -57,6 +63,33 @@ namespace PIC16F84_Emulator.GUI.Forms
             {
                 changeCursor(_instructionAddress);
             }
+        }
+
+        private void listingBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            toggleBreakpoint();
+        }
+
+        private void toggleBreakpoint()
+        {
+            short address = programView.getAddressByLine(listingBox.SelectedIndex);
+            
+            if (address == ProgramView.NO_ADDRESS_VALUE)
+            {
+                // not an instruction
+                return;
+            }
+            bool isSet = programMemory.toggleBreakpoint(address);
+
+            if (isSet)
+            {
+                System.Console.WriteLine("+");
+            }
+            else
+            {
+                System.Console.WriteLine("-");
+            }
+
         }
     }
 }

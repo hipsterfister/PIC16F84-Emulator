@@ -8,13 +8,20 @@ namespace PIC16F84_Emulator.PIC.Data
     public class ProgamMemory
     {
         protected DataAdapter<short>[] programMemory;
+        
+        protected bool[] breakpoints;
+        protected short breakpointCount = 0;
+
         public ProgamMemory()
         {
             programMemory = new DataAdapter<short>[ProgamMemoryConstants.SIZE_OF_PROGRAM_MEMORY];
+            breakpoints = new bool[ProgamMemoryConstants.SIZE_OF_PROGRAM_MEMORY];
+
             for (int x = 0; x < ProgamMemoryConstants.SIZE_OF_PROGRAM_MEMORY; x++)
             {
                 programMemory[x] = new DataAdapter<short>();
                 programMemory[x].Value = 0;
+                breakpoints[x] = false;
             }
         }
 
@@ -56,6 +63,28 @@ namespace PIC16F84_Emulator.PIC.Data
             set
             {
                 programMemory[address].Value = value;
+            }
+        }
+
+        /// <summary>
+        /// Toggles a breakpoint for the given address
+        /// </summary>
+        /// <param name="address">code address</param>
+        /// <returns>new state of this breakpoint</returns>
+        public bool toggleBreakpoint(int address)
+        {
+            bool wasSet = breakpoints[address];
+            breakpoints[address] = !wasSet;
+
+            if (wasSet)
+            {
+                breakpointCount--;
+                return false;
+            }
+            else
+            {
+                breakpointCount++;
+                return true;
             }
         }
     }

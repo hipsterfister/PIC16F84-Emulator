@@ -40,6 +40,7 @@
             this.listingBox.Name = "listingBox";
             this.listingBox.Size = new System.Drawing.Size(284, 262);
             this.listingBox.TabIndex = 0;
+            this.listingBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listingBox_MouseDoubleClick);
             // 
             // ListingForm
             // 
