@@ -23,20 +23,22 @@ namespace PIC16F84_Emulator.PIC.Parser
         private Register.ProgramCounter programCounter;
         private PIC pic;
 
+        private short target = 0;
+        private short source = 0;
+        private short address = 0;
+        private short bit = 0;
+        private byte byte1, byte2;
+        private ArithmeticOperator ArithOp = 0;
+        private BitOperator BitOp = 0;
+        private LogicOperator LogOp = 0;
+        private TestOperator TestOp = 0;
+        private BitTestOperator BitTestOp = 0;
+        private ReturnOperator RetOp = 0;
+        private RotationDirection RotDir = 0;
+
         public BaseOperation getNextOperation(short _codeAdress)
         {
-            short target = 0;
-            short source = 0;
-            short address = _codeAdress;
-            short bit = 0;
-            byte byte1, byte2;
-            ArithmeticOperator ArithOp = 0;
-            BitOperator BitOp = 0;
-            LogicOperator LogOp = 0;
-            TestOperator TestOp = 0;
-            BitTestOperator BitTestOp = 0;
-            ReturnOperator RetOp = 0;
-            RotationDirection RotDir = 0;
+            this.address = _codeAdress;
 
             // mask Operation-Byte --> xxxx xxxx 0000 0000
             short operation = (short)((short)programMemory[_codeAdress] & 0xFF00);
