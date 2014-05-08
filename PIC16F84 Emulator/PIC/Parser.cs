@@ -157,7 +157,10 @@ namespace PIC16F84_Emulator.PIC.Parser
                 /* -------- COMPLEMENT OPERATIONS ----------------------- */
                 case ParserConstants.COMF:
                     target = getTargetAddress(parameter);
-                    return new ComplementOperation(target, registerFileMap, address);
+                    if (target == RegisterConstants.WORKING_REGISTER_ADDRESS)
+                        return new ComplementOperation(target, registerFileMap, address);
+                    else
+                        return new ComplementOperation(getAddressFromParameter(parameter), target, registerFileMap, address);
                 /* ------------------------------------------------------ */
 
                 /* ------------------------------------------------------ */
