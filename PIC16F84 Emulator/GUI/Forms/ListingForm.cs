@@ -48,7 +48,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
             dataGridView1.Rows[line].Selected = true;
-            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - 20)
+            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - 20) //TODO: magic number
             dataGridView1.FirstDisplayedScrollingRowIndex = line - 5;
         }
 
