@@ -12,15 +12,26 @@ namespace PIC16F84_Emulator.GUI.Forms
     public partial class ListingForm : Form
     {
         protected GUI.ProgramView programView;
+        protected PIC.Data.ProgamMemory programMemory;
+
+        protected static System.Drawing.Color breakpointColor = System.Drawing.Color.Orange;
+        protected static System.Drawing.Color defaultColor = System.Drawing.Color.White;
+        protected static System.Drawing.Color defaultSelectionColor = System.Drawing.SystemColors.Highlight;
 
         public ListingForm(string _pathToFile, PIC.PIC _pic)
         {
             InitializeComponent();
 
             programView = new GUI.ProgramView(_pathToFile);
-            listingBox.DataSource = programView.source;
+
+            foreach(string item in programView.source) {
+                dataGridView1.Rows.Add(item);
+            }
+
             _pic.nextInstructionEvent += onNextInstructionExecution;
             Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
+
+            programMemory = _pic.getProgramMemory();
         }
 
         /// <summary>
@@ -36,7 +47,9 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
-            listingBox.SelectedIndex = line;
+            dataGridView1.Rows[line].Selected = true;
+            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - 20) //TODO: magic number
+            dataGridView1.FirstDisplayedScrollingRowIndex = line - 5;
         }
 
         public void onNextInstructionExecution(short _instructionAddress)
@@ -58,5 +71,47 @@ namespace PIC16F84_Emulator.GUI.Forms
                 changeCursor(_instructionAddress);
             }
         }
+
+        private void listingBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            toggleBreakpoint();
+        }
+
+        private void toggleBreakpoint()
+        {
+            int index = dataGridView1.SelectedRows[0].Index;
+            short address = programView.getAddressByLine(index);
+            
+            if (address == ProgramView.NO_ADDRESS_VALUE)
+            {
+                // not an instruction
+                return;
+            }
+            bool isSet = programMemory.toggleBreakpoint(address);
+
+            if (isSet)
+            {
+                foreach (DataGridViewRow item in dataGridView1.SelectedRows)
+                {
+                    item.DefaultCellStyle.BackColor = breakpointColor;
+                    item.DefaultCellStyle.SelectionBackColor = breakpointColor;
+                }
+            }
+            else
+            {
+                foreach (DataGridViewRow item in dataGridView1.SelectedRows)
+                {
+                    item.DefaultCellStyle.BackColor = defaultColor;
+                    item.DefaultCellStyle.SelectionBackColor = defaultSelectionColor;
+                }
+            }
+
+        }
+
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            toggleBreakpoint();
+        }
+
     }
 }

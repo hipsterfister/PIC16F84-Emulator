@@ -7,7 +7,7 @@ namespace PIC16F84_Emulator.GUI
 {
     public class ProgramView
     {
-        private const int NO_ADDRESS_VALUE = -1;
+        public const int NO_ADDRESS_VALUE = -1;
 
         private int linesOfCode;
         public List<string> source;
@@ -56,6 +56,11 @@ namespace PIC16F84_Emulator.GUI
                     return i;
             }
             return -1;
+        }
+
+        public short getAddressByLine(int _line)
+        {
+            return address[_line];
         }
 
     }
