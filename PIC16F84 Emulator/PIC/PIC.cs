@@ -27,11 +27,14 @@ namespace PIC16F84_Emulator.PIC
         private Object isReadyLock = new Object();
 
         private bool interruptIsNext = false;
+        private bool resumeAfterBreakpoint = false;
 
         public delegate void OnCycleEnd();
         public event OnCycleEnd cycleEnded;
         public delegate void OnExecutionOfNextInstruction(short address);
         public event OnExecutionOfNextInstruction nextInstructionEvent;
+        private delegate void OnResumeAfterBreakpoint();
+        private event OnResumeAfterBreakpoint resumeAfterBreakpointEvent;
 
         public PIC()
         {
@@ -79,9 +82,11 @@ namespace PIC16F84_Emulator.PIC
 
         public void beginExecution()
         {
+            resumeAfterBreakpoint = true;
             clock.enableClock();
             wdt.start();
         }
+
 
         public void stopExecution()
         {
@@ -93,6 +98,7 @@ namespace PIC16F84_Emulator.PIC
         {
             if (!clock.isEnabled())
             {
+                resumeAfterBreakpoint = true;
                 onCycleEnd();
             }
         }
@@ -109,17 +115,28 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         protected bool executeNextOperation()
         {
-            if (nextInstructionEvent != null)
-                nextInstructionEvent(programCounter.value);
+            if (programMemory.isBreakpoint(programCounter.value) && !resumeAfterBreakpoint)
+            {
+                stopExecution();
+                return true;
+            }
+            
+
             if (interruptIsNext)
             {
                 // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
                 interruptHandler.triggerInterrupt(operationStack, programCounter);
             }
+
             Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
             operation.execute();
             programCounter.increment();
+            
             cyclesLeftToExecute = operation.cycles;
+            
+            if (nextInstructionEvent != null)
+                nextInstructionEvent(programCounter.value);
+            
             return true;
         }
 
@@ -148,6 +165,7 @@ namespace PIC16F84_Emulator.PIC
                     isReady = executeNextOperation();
                 }
             }
+            resumeAfterBreakpoint = false;
         }
 
         /// <summary>

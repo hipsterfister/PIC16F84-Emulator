@@ -66,6 +66,12 @@ namespace PIC16F84_Emulator.PIC.Data
             }
         }
 
+        public bool isBreakpoint(int address)
+        {
+            return breakpoints[address];
+        }
+
+
         /// <summary>
         /// Toggles a breakpoint for the given address
         /// </summary>

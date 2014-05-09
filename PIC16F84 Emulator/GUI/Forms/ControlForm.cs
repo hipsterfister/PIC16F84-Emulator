@@ -53,7 +53,7 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            pic.onCycleEnd();
+            pic.executeSingleOperation();
         }
 
         private void changeState(PlayButtonState newState)
