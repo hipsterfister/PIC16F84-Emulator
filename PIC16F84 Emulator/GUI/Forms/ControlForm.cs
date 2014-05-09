@@ -12,15 +12,16 @@ namespace PIC16F84_Emulator.GUI.Forms
     public partial class ControlForm : Form
     {
         protected PIC.PIC pic;
-        protected PlayButtonState playButtonState = PlayButtonState.PLAY;
+        protected PIC.PIC.PicExecutionState picExecutionState = PIC.PIC.PicExecutionState.STOPPED;
         protected System.ComponentModel.ComponentResourceManager resources = new ComponentResourceManager(typeof(ControlForm));
         private delegate void picReset();
 
         public ControlForm(PIC.PIC _pic)
         {
             InitializeComponent();
-            
             this.pic = _pic;
+            pic.registerExecutionStateListener(onPicExecutionChange);
+            Disposed += delegate { pic.unregisterExecutionStateListener(onPicExecutionChange); };
         }
 
         /// <summary>
@@ -33,22 +34,19 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            if (playButtonState == PlayButtonState.PLAY)
+            if (picExecutionState == PIC.PIC.PicExecutionState.STOPPED)
             {
                 pic.beginExecution();
-                changeState(PlayButtonState.PAUSE);
             }
             else
             {
                 pic.stopExecution();
-                changeState(PlayButtonState.PLAY);
             }
         }
 
         private void StopButton_Click(object sender, EventArgs e)
         {
             this.BeginInvoke(new picReset(pic.resetPIC));
-            changeState(PlayButtonState.PLAY);
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -56,25 +54,41 @@ namespace PIC16F84_Emulator.GUI.Forms
             pic.executeSingleOperation();
         }
 
-        private void changeState(PlayButtonState newState)
+        private void onPicExecutionChange(PIC.PIC.PicExecutionState value, object sender)
         {
-            if (newState == PlayButtonState.PLAY)
+            MethodInvoker mi = delegate { changeState(value); };
+            if (InvokeRequired)
             {
-                playButtonState = PlayButtonState.PLAY;
+                try
+                {
+                    this.BeginInvoke(mi); // Async to prohibit deadlock
+                }
+                catch (ObjectDisposedException)
+                {
+                    // ignore, the listener is not yet unregistered...
+                }
+            }
+            else
+            {
+                changeState(value);
+            }
+        }
+
+
+        private void changeState(PIC.PIC.PicExecutionState newState)
+        {
+            picExecutionState = newState;
+
+            if (newState == PIC.PIC.PicExecutionState.STOPPED)
+            {
                 PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PlayButton.Image"));
             }
             else
             {
-                playButtonState = PlayButtonState.PAUSE;
                 PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
             }
         }
 
-        protected enum PlayButtonState
-        {
-            PLAY,
-            PAUSE
-        }
     }
 
 }

@@ -29,12 +29,12 @@ namespace PIC16F84_Emulator.PIC
         private bool interruptIsNext = false;
         private bool resumeAfterBreakpoint = false;
 
+        private Data.DataAdapter<PicExecutionState> executionStatus = new Data.DataAdapter<PicExecutionState>();
+
         public delegate void OnCycleEnd();
         public event OnCycleEnd cycleEnded;
         public delegate void OnExecutionOfNextInstruction(short address);
         public event OnExecutionOfNextInstruction nextInstructionEvent;
-        private delegate void OnResumeAfterBreakpoint();
-        private event OnResumeAfterBreakpoint resumeAfterBreakpointEvent;
 
         public PIC()
         {
@@ -45,6 +45,8 @@ namespace PIC16F84_Emulator.PIC
             timer0 = new Timer0.Timer0(registerMap, this);
             eepromHandler = new Handler.EEPROMHandler(registerMap, eeprom);
             wdt = new WatchDog.WDT(this);
+
+            executionStatus.Value = PicExecutionState.STOPPED;
         }
 
         public void resetPIC()
@@ -54,7 +56,7 @@ namespace PIC16F84_Emulator.PIC
                 if (isReady)
                 {
                     isReady = false;
-                    clock.disableClock();
+                    stopExecution();
                     registerMap.initializeValues();
                     programCounter.initializeValue();
                     eeprom.initializeValues();
@@ -82,6 +84,7 @@ namespace PIC16F84_Emulator.PIC
 
         public void beginExecution()
         {
+            executionStatus.Value = PicExecutionState.RUNNING;
             resumeAfterBreakpoint = true;
             clock.enableClock();
             wdt.start();
@@ -90,6 +93,7 @@ namespace PIC16F84_Emulator.PIC
 
         public void stopExecution()
         {
+            executionStatus.Value = PicExecutionState.STOPPED;
             clock.disableClock();
             wdt.stop();
         }
@@ -233,6 +237,22 @@ namespace PIC16F84_Emulator.PIC
         private static void nextInstructionDummy(short a) 
         {
 
+        }
+
+        public void registerExecutionStateListener(Data.DataAdapter<PicExecutionState>.OnDataChanged listener)
+        {
+            executionStatus.DataChanged += listener;
+        }
+
+        public void unregisterExecutionStateListener(Data.DataAdapter<PicExecutionState>.OnDataChanged listener)
+        {
+            executionStatus.DataChanged -= listener;
+        }
+
+        public enum PicExecutionState
+        {
+            RUNNING,
+            STOPPED
         }
     }
 }
