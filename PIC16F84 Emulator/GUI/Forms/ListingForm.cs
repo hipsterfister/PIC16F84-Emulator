@@ -18,6 +18,8 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected static System.Drawing.Color defaultColor = System.Drawing.Color.White;
         protected static System.Drawing.Color defaultSelectionColor = System.Drawing.SystemColors.Highlight;
 
+        protected int numberOfLinesDisplayed;
+
         public ListingForm(string _pathToFile, PIC.PIC _pic)
         {
             InitializeComponent();
@@ -32,6 +34,8 @@ namespace PIC16F84_Emulator.GUI.Forms
             Disposed += delegate { _pic.nextInstructionEvent -= onNextInstructionExecution;  };
 
             programMemory = _pic.getProgramMemory();
+
+            numberOfLinesDisplayed = dataGridView1.Height / dataGridView1.RowTemplate.Height;
         }
 
         /// <summary>
@@ -48,7 +52,8 @@ namespace PIC16F84_Emulator.GUI.Forms
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
             dataGridView1.Rows[line].Selected = true;
-            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - 20) //TODO: magic number
+            // is the current line not visible?
+            if (dataGridView1.FirstDisplayedScrollingRowIndex < line - numberOfLinesDisplayed || dataGridView1.FirstDisplayedScrollingRowIndex > line + numberOfLinesDisplayed)
             dataGridView1.FirstDisplayedScrollingRowIndex = line - 5;
         }
 
