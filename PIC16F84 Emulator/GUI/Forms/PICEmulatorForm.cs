@@ -62,6 +62,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             createNewIOForm();
             createNewRegisterMapForm();
             createNewListingForm();
+            createNewSpecialValueForm();
 
             arrangeFormsToDefaultView();
         }
