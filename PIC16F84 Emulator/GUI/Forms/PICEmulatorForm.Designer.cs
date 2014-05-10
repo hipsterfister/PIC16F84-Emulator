@@ -40,6 +40,7 @@
             this.iOControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.specialValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,7 +85,8 @@
             this.showControlsToolStripMenuItem,
             this.showRegisterMapToolStripMenuItem,
             this.listingToolStripMenuItem,
-            this.iOControlToolStripMenuItem});
+            this.iOControlToolStripMenuItem,
+            this.specialValuesToolStripMenuItem});
             this.ansichtToolStripMenuItem.Enabled = false;
             this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
             this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
@@ -93,28 +95,28 @@
             // showControlsToolStripMenuItem
             // 
             this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
-            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showControlsToolStripMenuItem.Text = "Controls";
             this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
             // 
             // showRegisterMapToolStripMenuItem
             // 
             this.showRegisterMapToolStripMenuItem.Name = "showRegisterMapToolStripMenuItem";
-            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showRegisterMapToolStripMenuItem.Text = "Register Map";
             this.showRegisterMapToolStripMenuItem.Click += new System.EventHandler(this.showRegisterMapToolStripMenuItem_Click);
             // 
             // listingToolStripMenuItem
             // 
             this.listingToolStripMenuItem.Name = "listingToolStripMenuItem";
-            this.listingToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.listingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.listingToolStripMenuItem.Text = "Listing";
             this.listingToolStripMenuItem.Click += new System.EventHandler(this.listingToolStripMenuItem_Click);
             // 
             // iOControlToolStripMenuItem
             // 
             this.iOControlToolStripMenuItem.Name = "iOControlToolStripMenuItem";
-            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.iOControlToolStripMenuItem.Text = "I/O Control";
             this.iOControlToolStripMenuItem.Click += new System.EventHandler(this.iOControlToolStripMenuItem_Click);
             // 
@@ -128,6 +130,13 @@
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // specialValuesToolStripMenuItem
+            // 
+            this.specialValuesToolStripMenuItem.Name = "specialValuesToolStripMenuItem";
+            this.specialValuesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.specialValuesToolStripMenuItem.Text = "Special Values";
+            this.specialValuesToolStripMenuItem.Click += new System.EventHandler(this.specialValuesToolStripMenuItem_Click);
             // 
             // PICEmulatorForm
             // 
@@ -160,5 +169,6 @@
         private System.Windows.Forms.ToolStripMenuItem dateiSchließenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iOControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem specialValuesToolStripMenuItem;
     }
 }

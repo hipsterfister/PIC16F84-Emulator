@@ -73,5 +73,10 @@ namespace PIC16F84_Emulator.PIC.Register
             }
             isOwnChange = false;
         }
+
+        internal Data.DataAdapter<byte> getHighByteAdapter()
+        {
+            return upperBits;
+        }
     }
 }

@@ -56,6 +56,12 @@
     <Compile Include="GUI\Forms\RegisterMapForm.Designer.cs">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\SpecialValueForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\SpecialValueForm.Designer.cs">
+      <DependentUpon>SpecialValueForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Helpers\UpdateTimer.cs" />
     <Compile Include="GUI\ProgramView.cs" />
     <Compile Include="GUI\Forms\ListingForm.cs">
@@ -126,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\RegisterMapForm.resx">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\SpecialValueForm.resx">
+      <DependentUpon>SpecialValueForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\RegisterItem.resx">
       <DependentUpon>RegisterItem.cs</DependentUpon>

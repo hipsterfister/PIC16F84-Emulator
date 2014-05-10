@@ -16,6 +16,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected ControlForm controlForm;
         protected RegisterMapForm registerMapForm;
         protected IOForm ioForm;
+        protected SpecialValueForm specialForm;
         protected string file;
 
         public PICEmulatorForm()
@@ -118,17 +119,26 @@ namespace PIC16F84_Emulator.GUI.Forms
             controlForm.MdiParent = this;
             controlForm.Show();
         }
+
         private void createNewRegisterMapForm() 
         {
             registerMapForm = new RegisterMapForm(pic.getRegisterFileMap());
             registerMapForm.MdiParent = this;
             registerMapForm.Show();
         }
+
         private void createNewIOForm()
         {
             ioForm = new IOForm(pic.getRegisterFileMap());
             ioForm.MdiParent = this;
             ioForm.Show();
+        }
+
+        private void createNewSpecialValueForm()
+        {
+            specialForm = new SpecialValueForm(pic);
+            specialForm.MdiParent = this;
+            specialForm.Show();
         }
 
         private void toggleListingForm()
@@ -179,6 +189,18 @@ namespace PIC16F84_Emulator.GUI.Forms
             }
         }
 
+        private void toggleSpecialValueForm()
+        {
+            if (specialForm == null || specialForm.Visible == false)
+            {
+                createNewSpecialValueForm();
+            }
+            else
+            {
+                specialForm.Close();
+            }
+        }
+
         private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toggleControlForm();
@@ -226,6 +248,13 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             toggleIOForm();
         }
+
+        private void specialValuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleSpecialValueForm();
+        }
+
+       
 
     }
 }
