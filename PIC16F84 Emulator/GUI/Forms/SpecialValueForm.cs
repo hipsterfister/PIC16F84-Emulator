@@ -13,6 +13,7 @@ namespace PIC16F84_Emulator.GUI.Forms
     {
         private PIC.PIC pic;
         private const int TEXT_BOX_Y_OFFSET = 2;
+        private const int STACK_X_OFFSET = 175;
 
         private TextBox[] stackBoxes;
 
@@ -27,6 +28,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             Disposed += delegate { pic.getOperationStack().unregisterStackUpdateListener(onStackUpdate); };
 
             createValueDisplays();
+            Paint += drawVerticalLine;
         }
 
         private void createValueDisplays()
@@ -36,6 +38,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             createTimer0Display();
             createStackDisplay();
         }
+
 
         private void createWRegisterDisplay()
         {
@@ -72,7 +75,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             for (int i = 0; i < PIC.Data.OperationStack.STACK_SIZE; i++)
             {
                 box = new TextBox();
-                box.SetBounds(5, stackIndex0Label.Bounds.Y - TEXT_BOX_Y_OFFSET + i * 20, 25, 25);
+                box.SetBounds(5 + STACK_X_OFFSET, stackIndex0Label.Bounds.Y - TEXT_BOX_Y_OFFSET + i * 20, 25, 25);
                 box.Parent = this;
                 box.ReadOnly = true;
                 box.Show();
@@ -81,6 +84,12 @@ namespace PIC16F84_Emulator.GUI.Forms
 
             updateStackDisplay();
             //throw new NotImplementedException();
+        }
+
+        private void drawVerticalLine(object sender, PaintEventArgs e)
+        {
+            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
+            e.Graphics.DrawLine(pen, STACK_X_OFFSET - 10, 5, STACK_X_OFFSET - 10, this.Height - 40);
         }
 
         private void updateStackDisplay()

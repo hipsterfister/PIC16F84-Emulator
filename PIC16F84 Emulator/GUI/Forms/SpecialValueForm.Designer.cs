@@ -39,7 +39,7 @@
             // wRegisterLabel
             // 
             this.wRegisterLabel.AutoSize = true;
-            this.wRegisterLabel.Location = new System.Drawing.Point(50, 13);
+            this.wRegisterLabel.Location = new System.Drawing.Point(50, 63);
             this.wRegisterLabel.Name = "wRegisterLabel";
             this.wRegisterLabel.Size = new System.Drawing.Size(60, 13);
             this.wRegisterLabel.TabIndex = 0;
@@ -48,7 +48,7 @@
             // programCounterLabel
             // 
             this.programCounterLabel.AutoSize = true;
-            this.programCounterLabel.Location = new System.Drawing.Point(50, 36);
+            this.programCounterLabel.Location = new System.Drawing.Point(50, 86);
             this.programCounterLabel.Name = "programCounterLabel";
             this.programCounterLabel.Size = new System.Drawing.Size(86, 13);
             this.programCounterLabel.TabIndex = 1;
@@ -57,7 +57,7 @@
             // timer0Label
             // 
             this.timer0Label.AutoSize = true;
-            this.timer0Label.Location = new System.Drawing.Point(50, 59);
+            this.timer0Label.Location = new System.Drawing.Point(50, 109);
             this.timer0Label.Name = "timer0Label";
             this.timer0Label.Size = new System.Drawing.Size(42, 13);
             this.timer0Label.TabIndex = 2;
@@ -66,16 +66,17 @@
             // stackLabel
             // 
             this.stackLabel.AutoSize = true;
-            this.stackLabel.Location = new System.Drawing.Point(50, 148);
+            this.stackLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stackLabel.Location = new System.Drawing.Point(207, 86);
             this.stackLabel.Name = "stackLabel";
-            this.stackLabel.Size = new System.Drawing.Size(35, 13);
+            this.stackLabel.Size = new System.Drawing.Size(47, 13);
             this.stackLabel.TabIndex = 3;
-            this.stackLabel.Text = "Stack";
+            this.stackLabel.Text = "STACK";
             // 
             // stackIndex0Label
             // 
             this.stackIndex0Label.AutoSize = true;
-            this.stackIndex0Label.Location = new System.Drawing.Point(50, 93);
+            this.stackIndex0Label.Location = new System.Drawing.Point(207, 16);
             this.stackIndex0Label.Name = "stackIndex0Label";
             this.stackIndex0Label.Size = new System.Drawing.Size(42, 13);
             this.stackIndex0Label.TabIndex = 4;
@@ -84,7 +85,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(50, 208);
+            this.label7.Location = new System.Drawing.Point(207, 156);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(13, 13);
             this.label7.TabIndex = 11;
@@ -94,13 +95,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(238, 233);
+            this.ClientSize = new System.Drawing.Size(262, 187);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.stackIndex0Label);
             this.Controls.Add(this.stackLabel);
             this.Controls.Add(this.timer0Label);
             this.Controls.Add(this.programCounterLabel);
             this.Controls.Add(this.wRegisterLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SpecialValueForm";
             this.Text = "SpecialValueForm";
             this.ResumeLayout(false);
