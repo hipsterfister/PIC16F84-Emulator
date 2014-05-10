@@ -38,9 +38,9 @@
             this.showRegisterMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iOControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.specialValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.specialValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +67,8 @@
             // dateiÖffnenToolStripMenuItem
             // 
             this.dateiÖffnenToolStripMenuItem.Name = "dateiÖffnenToolStripMenuItem";
-            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.dateiÖffnenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.dateiÖffnenToolStripMenuItem.Text = "Datei öffnen";
             this.dateiÖffnenToolStripMenuItem.Click += new System.EventHandler(this.showOpenFileDialog);
             // 
@@ -75,7 +76,7 @@
             // 
             this.dateiSchließenToolStripMenuItem.Enabled = false;
             this.dateiSchließenToolStripMenuItem.Name = "dateiSchließenToolStripMenuItem";
-            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.dateiSchließenToolStripMenuItem.Text = "Datei schließen";
             this.dateiSchließenToolStripMenuItem.Click += new System.EventHandler(this.dateiSchließenToolStripMenuItem_Click);
             // 
@@ -120,6 +121,13 @@
             this.iOControlToolStripMenuItem.Text = "I/O Control";
             this.iOControlToolStripMenuItem.Click += new System.EventHandler(this.iOControlToolStripMenuItem_Click);
             // 
+            // specialValuesToolStripMenuItem
+            // 
+            this.specialValuesToolStripMenuItem.Name = "specialValuesToolStripMenuItem";
+            this.specialValuesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.specialValuesToolStripMenuItem.Text = "Special Values";
+            this.specialValuesToolStripMenuItem.Click += new System.EventHandler(this.specialValuesToolStripMenuItem_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog";
@@ -130,13 +138,6 @@
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // specialValuesToolStripMenuItem
-            // 
-            this.specialValuesToolStripMenuItem.Name = "specialValuesToolStripMenuItem";
-            this.specialValuesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.specialValuesToolStripMenuItem.Text = "Special Values";
-            this.specialValuesToolStripMenuItem.Click += new System.EventHandler(this.specialValuesToolStripMenuItem_Click);
             // 
             // PICEmulatorForm
             // 
