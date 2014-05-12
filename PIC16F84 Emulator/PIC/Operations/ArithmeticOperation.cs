@@ -92,8 +92,7 @@ namespace PIC16F84_Emulator.PIC.Operations
             }
 
             registerFileMap.updateZeroFlag(result == 0);
-            LA - LB >= 0  => DC = 0
-            registerFileMap.updateDigitCarry((arg1 % 0x10) < (arg2 % 0x10)); // meaning of digit carry bit is inverted for subtraction (like the carry bit)
+            registerFileMap.updateDigitCarry(((arg1 % 0x10) + ((~arg2+1) % 0x10)) > 0xF); // meaning of digit carry bit is inverted for subtraction (like the carry bit)
 
             registerFileMap.Set(result, targetAddress);
         }
