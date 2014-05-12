@@ -31,6 +31,15 @@ namespace PIC16F84_Emulator.GUI.Forms
             Paint += drawVerticalLine;
         }
 
+        /// <summary>
+        /// default form position
+        /// </summary>
+        /// <param name="_top">control-form height</param>
+        public void defaultView(int _top)
+        {
+            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + 5), _top);
+        }
+
         private void createValueDisplays()
         {
             createWRegisterDisplay();
