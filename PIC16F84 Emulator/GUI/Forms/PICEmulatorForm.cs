@@ -72,7 +72,8 @@ namespace PIC16F84_Emulator.GUI.Forms
             try
             {
                 controlForm.defaultView();
-                ioForm.defaultView(controlForm.Height);
+                ioForm.defaultView(controlForm.Bounds.Bottom);
+                specialForm.defaultView(ioForm.Bounds.Bottom);
                 registerMapForm.defaultView(controlForm.Bounds.Left < ioForm.Bounds.Left ? controlForm.Bounds.Left : ioForm.Bounds.Left);
                 listingForm.defaultView(registerMapForm.Bounds.Left);
             }
