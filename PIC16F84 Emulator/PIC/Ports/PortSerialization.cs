@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PIC16F84_Emulator.PIC.Ports
 {
-    public class PortSerialization
+    internal class PortSerialization
     {
         private const byte CODE_SYMBOL = 0x30;
         private const byte CODE_CARRIAGE_RETURN = 0x0D;
@@ -22,9 +22,11 @@ namespace PIC16F84_Emulator.PIC.Ports
         private Data.DataAdapter<byte> trisA;
         private Data.DataAdapter<byte> trisB;
 
+        private bool serializationIsActive = false;
+
         private System.IO.Ports.SerialPort comPort = new System.IO.Ports.SerialPort();
 
-        public PortSerialization(Register.RegisterFileMap registerFileMap)
+        internal PortSerialization(Register.RegisterFileMap registerFileMap)
         {
             this.portA = registerFileMap.getAdapter(Register.RegisterConstants.PORTA_ADDRESS);
             this.portB = registerFileMap.getAdapter(Register.RegisterConstants.PORTB_ADDRESS);
@@ -35,7 +37,7 @@ namespace PIC16F84_Emulator.PIC.Ports
             comPort.DataReceived += comPort_DataReceived;
         }
 
-        public bool openPort() {
+        internal bool openPort() {
             try
             {
                 if (comPort.IsOpen == true) 
@@ -53,13 +55,55 @@ namespace PIC16F84_Emulator.PIC.Ports
             }
             catch (Exception)
             {
+                // TODO: notify user
                 return false;
             }
         }
 
-        public void send()
+        internal bool closePort()
+        {
+            if (comPort.IsOpen == true)
+                comPort.Close();
+            
+            return true;
+        }
+
+        internal void send()
         {
             this.writeData();
+        }
+
+        internal void startSerialization()
+        {
+            if (!serializationIsActive) 
+            {
+                portA.DataChanged += onValueChangeListener;
+                portB.DataChanged += onValueChangeListener;
+
+                trisA.DataChanged += onValueChangeListener;
+                trisB.DataChanged += onValueChangeListener;
+
+                serializationIsActive = true;
+            }
+        }
+
+        internal void endSerialization()
+        {
+            if (serializationIsActive)
+            {
+                portA.DataChanged -= onValueChangeListener;
+                portB.DataChanged -= onValueChangeListener;
+
+                trisA.DataChanged -= onValueChangeListener;
+                trisB.DataChanged -= onValueChangeListener;
+
+                serializationIsActive = false;
+            }
+        }
+
+        private void onValueChangeListener(byte value, object sender)
+        {
+            send();
         }
 
         private void comPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)

@@ -11,6 +11,9 @@ namespace PIC16F84_Emulator.GUI.Forms
 {
     public partial class PICEmulatorForm : Form
     {
+        private const String COM3_LABEL_AKTIVIEREN_TEXT = "COM3 Ausgabe aktivieren";
+        private const String COM3_LABEL_DEAKTIVIEREN_TEXT = "COM3 Ausgabe deaktivieren";
+
         protected PIC.PIC pic;
         protected ListingForm listingForm;
         protected ControlForm controlForm;
@@ -256,7 +259,26 @@ namespace PIC16F84_Emulator.GUI.Forms
             toggleSpecialValueForm();
         }
 
-       
+        private void cOM3AusgabeAktivierenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleCom3Label();
+        }
+
+        private void toggleCom3Label()
+        {
+            if (cOM3AusgabeAktivierenToolStripMenuItem.Text == COM3_LABEL_AKTIVIEREN_TEXT)
+            {
+                pic.startSerialization();
+
+                cOM3AusgabeAktivierenToolStripMenuItem.Text = COM3_LABEL_DEAKTIVIEREN_TEXT;
+                pic.beginContinuousSerialization();
+            }
+            else
+            {
+                cOM3AusgabeAktivierenToolStripMenuItem.Text = COM3_LABEL_AKTIVIEREN_TEXT;
+                pic.endContinuousSerialization();
+            }
+        }
 
     }
 }

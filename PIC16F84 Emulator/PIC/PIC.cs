@@ -22,12 +22,14 @@ namespace PIC16F84_Emulator.PIC
         protected Parser.Parser parser;
         protected Timer0.Timer0 timer0;
         protected WatchDog.WDT wdt;
+        internal Ports.PortSerialization portSerializer;
 
         private bool isReady = true;
         private Object isReadyLock = new Object();
 
         private bool interruptIsNext = false;
         private bool resumeAfterBreakpoint = false;
+        private bool serialPortIsOpen = false;
 
         private Data.DataAdapter<PicExecutionState> executionStatus = new Data.DataAdapter<PicExecutionState>();
 
@@ -57,6 +59,10 @@ namespace PIC16F84_Emulator.PIC
                 {
                     isReady = false;
                     stopExecution();
+
+                    endContinuousSerialization();
+                    endSerialization();
+
                     registerMap.initializeValues();
                     programCounter.initializeValue();
                     eeprom.initializeValues();
@@ -73,6 +79,9 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         public void dispose()
         {
+            endContinuousSerialization();
+            endSerialization();
+
             clock.dispose();
             timer0.dispose();
             interruptHandler.dispose();
@@ -252,6 +261,60 @@ namespace PIC16F84_Emulator.PIC
         public void resetWDT()
         {
             this.wdt.reset();
+        }
+
+        /// <summary>
+        /// Opens the serial port. Call this before starting continuous or manual serialization.
+        /// When the port is no longer needed close it with endSerialization.
+        /// 
+        /// Note: Nothing happens when COM3 is not available on the user's machine.
+        /// </summary>
+        public void startSerialization()
+        {
+            if (this.portSerializer == null)
+            {
+                portSerializer = new Ports.PortSerialization(registerMap);
+            }
+
+            serialPortIsOpen = portSerializer.openPort();
+        }
+
+        /// <summary>
+        /// Closes the serial port.
+        /// </summary>
+        public void endSerialization()
+        {
+            portSerializer.closePort();
+        }
+
+        /// <summary>
+        /// Writes the current Port and Tris values on COM3
+        /// </summary>
+        public void serialize()
+        {
+            portSerializer.send();
+        }
+
+        /// <summary>
+        /// Writes the current Port and Tris values to COM3 whenever one of these values was changed.
+        /// </summary>
+        public void beginContinuousSerialization()
+        {
+            if (serialPortIsOpen)
+            {
+                portSerializer.startSerialization();
+            }
+        }
+
+        /// <summary>
+        /// Stops the continuous serialization
+        /// </summary>
+        public void endContinuousSerialization()
+        {
+            if (serialPortIsOpen)
+            {
+                portSerializer.endSerialization();
+            }
         }
 
         public enum PicExecutionState
