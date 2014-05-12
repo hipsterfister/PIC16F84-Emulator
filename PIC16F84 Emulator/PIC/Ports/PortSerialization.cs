@@ -69,6 +69,11 @@ namespace PIC16F84_Emulator.PIC.Ports
 
             comPort.Read(comBuffer, 0, bytes);
 
+            if (bytes == 5 && comBuffer[4] == CODE_CARRIAGE_RETURN)
+            {
+                portA.Value = decodeByte(comBuffer[0], comBuffer[1]);
+                portB.Value = decodeByte(comBuffer[2], comBuffer[3]);
+            }
             System.Console.WriteLine(comBuffer);
         }
 
@@ -105,6 +110,14 @@ namespace PIC16F84_Emulator.PIC.Ports
             byte result = (byte)(value >> 4);
             result += CODE_SYMBOL;
             return result;
+        }
+
+        private byte decodeByte(byte lowNibble, byte highNibble)
+        {
+            byte lowResult = (byte)(lowNibble & 0xF);
+            byte highResult = (byte)(highNibble & 0xF);
+            highResult = (byte)(highResult << 4);
+            return (byte)(lowResult + highResult);
         }
 
         private void writeData()
