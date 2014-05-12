@@ -249,6 +249,11 @@ namespace PIC16F84_Emulator.PIC
             executionStatus.DataChanged -= listener;
         }
 
+        public void resetWDT()
+        {
+            this.wdt.reset();
+        }
+
         public enum PicExecutionState
         {
             RUNNING,

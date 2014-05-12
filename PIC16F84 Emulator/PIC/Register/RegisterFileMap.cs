@@ -13,7 +13,7 @@ namespace PIC16F84_Emulator.PIC.Register
 
         public RegisterFileMap()
         {
-            Data = new DataAdapter<byte>[RegisterConstants.REGISTER_FILE_MAP_SIZE];  // Data[256] <= Working Register, 257 <= WDT
+            Data = new DataAdapter<byte>[RegisterConstants.REGISTER_FILE_MAP_SIZE];  // Data[256] <= Working Register
             for (int X = 0; X < Data.Length; X++)
             {
                 Data[X] = new DataAdapter<byte>();

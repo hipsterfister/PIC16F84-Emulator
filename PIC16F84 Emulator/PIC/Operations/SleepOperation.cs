@@ -27,9 +27,10 @@ namespace PIC16F84_Emulator.PIC.Operations
             // STEP 1: Stop
             pic.stopExecution();
             // STEP 2: Set Status Bits
-            registerFileMap.Set(0, Register.RegisterConstants.WDT_REGISTER_ADDRESS);
             registerFileMap.setBit(Register.RegisterConstants.STATUS_ADDRESS, Register.RegisterConstants.STATUS_TO_MASK);
             registerFileMap.clearBit(Register.RegisterConstants.STATUS_ADDRESS, Register.RegisterConstants.STATUS_PD_MASK);
+            // STEP 3: clear WDT
+            pic.resetWDT();
         }
     }
 }

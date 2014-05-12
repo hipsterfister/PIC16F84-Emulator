@@ -12,7 +12,6 @@ namespace PIC16F84_Emulator.PIC.Operations
          *  This OperationClass covers the following instructions:
          *      > CLRF
          *      > CLRW
-         *      > CLRWDT
          *   Simply create a new instance with the corresponding address and call execute
          */
 
@@ -28,19 +27,7 @@ namespace PIC16F84_Emulator.PIC.Operations
         public override void execute()
         {
             registerFileMap.Set(0x00, targetAddress);
-
-            if (targetAddress == RegisterConstants.WDT_REGISTER_ADDRESS)
-            {
-                registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_TO_MASK);
-                registerFileMap.setBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.STATUS_PD_MASK);
-                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS2_MASK);
-                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS1_MASK);
-                registerFileMap.clearBit(RegisterConstants.STATUS_ADDRESS, RegisterConstants.OPTION_PS0_MASK);
-            }
-            else
-            {
-                registerFileMap.setZeroFlag();
-            }
+            registerFileMap.setZeroFlag();
         }
     }
 }

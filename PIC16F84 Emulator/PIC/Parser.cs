@@ -292,8 +292,7 @@ namespace PIC16F84_Emulator.PIC.Parser
                     switch (parameter)
                     {
                         case ParserConstants.CLRWDT:
-                            target = RegisterConstants.WDT_REGISTER_ADDRESS;
-                            return new ClearOperation(target, registerFileMap, address);
+                            return new ClearWdtOperation(pic, registerFileMap, address);
                         case ParserConstants.RETFIE:
                             RetOp = ReturnOperator.RETFIE;
                             return new ReturnOperation(programCounter, operationStack, RetOp, registerFileMap, address);

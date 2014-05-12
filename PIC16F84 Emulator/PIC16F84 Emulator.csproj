@@ -91,6 +91,7 @@
     <Compile Include="PIC\Operations\BaseOperation.cs" />
     <Compile Include="PIC\Operations\BitOperation.cs" />
     <Compile Include="PIC\Operations\BitTestOperation.cs" />
+    <Compile Include="PIC\Operations\ClearWdtOperation.cs" />
     <Compile Include="PIC\Operations\TestOperation.cs" />
     <Compile Include="PIC\Operations\CallOperation.cs" />
     <Compile Include="PIC\Operations\ClearOperation.cs" />

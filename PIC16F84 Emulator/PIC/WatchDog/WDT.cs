@@ -54,6 +54,18 @@ namespace PIC16F84_Emulator.PIC.WatchDog
         }
 
         /// <summary>
+        /// Resets the WDT to 0 if the wdt is already running
+        /// </summary>
+        public void reset()
+        {
+            if (wdtTimer.Enabled)
+            {
+                wdtTimer.Stop();
+                wdtTimer.Start();
+            }
+        }
+
+        /// <summary>
         /// Called whenever a WDT timeout occurs.
         /// Calls PIC's reset method
         /// </summary>
