@@ -23,6 +23,14 @@ namespace PIC16F84_Emulator.PIC.Register
             Data[RegisterConstants.PORTA_ADDRESS] = new IOAdapter(this, RegisterConstants.PORTA_ADDRESS);
             Data[RegisterConstants.PORTB_ADDRESS] = new IOAdapter(this, RegisterConstants.PORTB_ADDRESS);
 
+            // link mirrored registers
+            Data[RegisterConstants.INDF_BANK1_ADDRESS] = Data[RegisterConstants.INDF_ADDRESS];
+            Data[RegisterConstants.PCL_BANK1_ADDRESS] = Data[RegisterConstants.PCL_ADDRESS];
+            Data[RegisterConstants.STATUS_BANK1_ADDRESS] = Data[RegisterConstants.STATUS_ADDRESS];
+            Data[RegisterConstants.FSR_BANK1_ADDRESS] = Data[RegisterConstants.FSR_ADDRESS];
+            Data[RegisterConstants.PCLATH_BANK1_ADDRESS] = Data[RegisterConstants.PCLATH_ADDRESS];
+            Data[RegisterConstants.INTCON_BANK1_ADDRESS] = Data[RegisterConstants.INTCON_ADDRESS];
+
             initializeValues();
         }
 
@@ -32,6 +40,8 @@ namespace PIC16F84_Emulator.PIC.Register
             {
                 Data[X].Value = 0;
             }
+
+
             // initialize Special Function Registers
             // Bank 0
             Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;
@@ -65,50 +75,6 @@ namespace PIC16F84_Emulator.PIC.Register
                 position = Data[RegisterConstants.FSR_ADDRESS].Value;
             }
             this.Data[position].Value = _data;
-
-            // TODO: Überarbeiten (hinter if stecken, prüfen ob für weitere Register notwendig...)
-            // Überlegung: über onChange events?
-            switch (position) // STATUS-Register spiegeln
-            {
-                case RegisterConstants.STATUS_ADDRESS:
-                    this.Data[RegisterConstants.STATUS_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.STATUS_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.STATUS_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.INDF_ADDRESS:
-                    this.Data[RegisterConstants.INDF_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.INDF_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.INDF_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.PCLATH_ADDRESS:
-                    this.Data[RegisterConstants.PCLATH_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.PCLATH_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.PCLATH_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.FSR_ADDRESS:
-                    this.Data[RegisterConstants.FSR_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.FSR_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.FSR_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.PCL_ADDRESS:
-                    this.Data[RegisterConstants.PCL_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.PCL_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.PCL_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.INTCON_ADDRESS:
-                    this.Data[RegisterConstants.INTCON_BANK1_ADDRESS].Value = _data;
-                    break;
-                case RegisterConstants.INTCON_BANK1_ADDRESS:
-                    this.Data[RegisterConstants.INTCON_ADDRESS].Value = _data;
-                    break;
-                default:
-                    break;
-            }
         }
 
         public byte Get(int _position)
