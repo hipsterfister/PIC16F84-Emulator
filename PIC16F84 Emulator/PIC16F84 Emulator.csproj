@@ -108,6 +108,7 @@
     <Compile Include="PIC\ParserConstants.cs" />
     <Compile Include="PIC\PIC.cs" />
     <Compile Include="PIC\Ports\IOAdapter.cs" />
+    <Compile Include="PIC\Ports\PortSerialization.cs" />
     <Compile Include="PIC\Register\ProgramCounter.cs" />
     <Compile Include="PIC\Register\Register.cs" />
     <Compile Include="PIC\Register\RegisterConstants.cs" />
