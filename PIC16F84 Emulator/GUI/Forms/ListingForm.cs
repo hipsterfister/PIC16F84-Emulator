@@ -51,6 +51,10 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         public void changeCursor(short _instructionAddress) {
             int line = programView.getLineByAddress(_instructionAddress);
+            if (line < 0)
+            {
+                return;
+            }
             dataGridView1.Rows[line].Selected = true;
             // is the current line not visible?
             if (dataGridView1.FirstDisplayedScrollingRowIndex < line - numberOfLinesDisplayed || dataGridView1.FirstDisplayedScrollingRowIndex > line + numberOfLinesDisplayed)

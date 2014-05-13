@@ -10,12 +10,17 @@ namespace PIC16F84_Emulator.PIC.Handler
         private PIC pic;
         private Register.RegisterFileMap registerFileMap;
         private Data.DataAdapter<byte>.OnDataChanged valueChangeListener;
+        private Data.DataAdapter<byte>.OnDataChanged portBValueChangeListener;
+
+        private byte oldPortBValue;
 
         public InterruptHandler(PIC _pic, Register.RegisterFileMap _registerFileMap)
         {
             this.pic = _pic;
             this.registerFileMap = _registerFileMap;
+            this.oldPortBValue = registerFileMap.Get(Register.RegisterConstants.PORTB_ADDRESS);
             this.valueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onValueChange);
+            this.portBValueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onPortBValueChange);
             registerSelfWithRegisterFileMap();
         }
 
@@ -30,6 +35,26 @@ namespace PIC16F84_Emulator.PIC.Handler
             {
                 pic.setInterruptIsNext(true); 
             } 
+        }
+
+        private void onPortBValueChange(byte value, object sender)
+        {
+            byte oldPortBBits4to7 = (byte)(oldPortBValue & 0xF0);
+            byte newPortBBits4to7 = (byte)(value & 0xF0);
+            bool oldRB0 = (oldPortBValue & 0x1) != 0;
+            bool newRB0 = (value & 0x1) != 0;
+            oldPortBValue = value;
+
+            if ((oldPortBBits4to7 ^ (byte)(value & 0xF0)) != 0)
+            {
+                // At least one bit in PortB<4:7> changed
+                registerFileMap.setBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_RBIF_MASK);
+            }
+            else if (oldRB0 != newRB0)
+            {
+                // RB0/INT changed
+                registerFileMap.setBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_INTF_MASK);
+            }
         }
 
         private bool checkInterruptCondition()
@@ -58,16 +83,24 @@ namespace PIC16F84_Emulator.PIC.Handler
                     // Check if sleeping
                     if ((registerFileMap.Get(Register.RegisterConstants.STATUS_ADDRESS) & 0x18) == 0x10)
                     {
-                        // TODO: Wake Up auslagern!
-                        // -> Wake up!
-                        registerFileMap.setBit(Register.RegisterConstants.STATUS_ADDRESS, 0x18);
-                        pic.beginExecution();
+                        invokeWakeUp();
                     }
 
                     return true;
                 }
             }
+            if (rbieFlag && rbifFlag || eeieFlag && eeifFlag || inteFlag && intfFlag)
+            {
+                invokeWakeUp();
+            }
             return false;
+        }
+
+        protected void invokeWakeUp()
+        {
+            System.ComponentModel.BackgroundWorker worker = new System.ComponentModel.BackgroundWorker();
+            worker.DoWork += delegate {pic.wakeUpFromSleep();};
+            worker.RunWorkerAsync();
         }
 
         /// <summary>
@@ -84,12 +117,14 @@ namespace PIC16F84_Emulator.PIC.Handler
         {
             registerFileMap.registerDataListener(valueChangeListener, Register.RegisterConstants.INTCON_ADDRESS);
             registerFileMap.registerDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+            registerFileMap.registerDataListener(portBValueChangeListener, Register.RegisterConstants.PORTB_ADDRESS);
         }
 
         private void unregisterSelfWithRegisterFileMap()
         {
             registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.INTCON_ADDRESS);
             registerFileMap.unregisterDataListener(valueChangeListener, Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+            registerFileMap.unregisterDataListener(portBValueChangeListener, Register.RegisterConstants.PORTB_ADDRESS);
         }
     }
 }

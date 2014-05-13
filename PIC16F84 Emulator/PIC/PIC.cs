@@ -128,6 +128,13 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         protected bool executeNextOperation()
         {
+            
+            if (interruptIsNext)
+            {
+                // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
+                interruptHandler.triggerInterrupt(operationStack, programCounter);
+            }
+
             if (programMemory.isBreakpoint(programCounter.value) && !resumeAfterBreakpoint)
             {
                 stopExecution();
@@ -135,22 +142,22 @@ namespace PIC16F84_Emulator.PIC
             }
             
 
-            if (interruptIsNext)
-            {
-                // This approach was chosen to prevent bugs from modifying the programmCounter simultaneously (e.g. executing CallOperation & onInterrupt-Event)
-                interruptHandler.triggerInterrupt(operationStack, programCounter);
-            }
 
+            execute();
+            
+            return true;
+        }
+
+        protected void execute()
+        {
             Operations.BaseOperation operation = parser.getNextOperation(programCounter.value);
             operation.execute();
             programCounter.increment();
-            
+
             cyclesLeftToExecute = operation.cycles;
-            
+
             if (nextInstructionEvent != null)
                 nextInstructionEvent(programCounter.value);
-            
-            return true;
         }
 
         /// <summary>
@@ -284,7 +291,10 @@ namespace PIC16F84_Emulator.PIC
         /// </summary>
         public void endSerialization()
         {
-            portSerializer.closePort();
+            if (this.portSerializer != null)
+            {
+                portSerializer.closePort();
+            }
         }
 
         /// <summary>
@@ -314,6 +324,19 @@ namespace PIC16F84_Emulator.PIC
             if (serialPortIsOpen)
             {
                 portSerializer.endSerialization();
+            }
+        }
+
+        public void wakeUpFromSleep()
+        {
+            if ((registerMap.Get(Register.RegisterConstants.STATUS_ADDRESS) & 0x18) == 0x10)
+            {
+                // Device was sleeping
+                registerMap.setBit(Register.RegisterConstants.STATUS_ADDRESS, 0x18);
+                // The operation following SLEEP is prefetched during SLEEP execution.
+                // => the next operation will be executed immediately on wake up.
+                execute();
+                beginExecution();
             }
         }
 

@@ -53,7 +53,8 @@ namespace PIC16F84_Emulator.PIC.Operations
             // If the result (value) is zero -> skip next operation.
             if (condition)
             {
-                programCounter.increment();
+                programCounter.value = (byte)(programCounter.value + 2);
+                // pc won't be incremented after modifying it here.
                 this.cycles = 2;
             }
 
