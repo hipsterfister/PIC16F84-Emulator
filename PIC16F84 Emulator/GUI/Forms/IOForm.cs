@@ -213,6 +213,12 @@ namespace PIC16F84_Emulator.GUI.Forms
                 bitNumber = Int32.Parse(bit.Name.Substring(bit.Name.Length - 1));
                 portAddress = bit.Name.Substring(bit.Name.Length - 2, 1) == "A" ? RegisterConstants.PORTA_ADDRESS : RegisterConstants.PORTB_ADDRESS;
                 byteMask = (byte)(0x01 << bitNumber);
+
+                if (portAddress == RegisterConstants.PORTB_ADDRESS && byteMask > 0xF)
+                {
+                    // PortB <4:7> change
+                    registerFileMap.setBit(RegisterConstants.INTCON_ADDRESS, RegisterConstants.INTCON_RBIF_MASK);
+                }
                 
                 if (bit.Checked)
                     ((IOAdapter)(registerFileMap.getAdapter(portAddress))).setBit(byteMask);
