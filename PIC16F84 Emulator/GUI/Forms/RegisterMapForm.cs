@@ -43,8 +43,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void createSpecialValueView()
         {
             createNewLabel(5, 5 + TEXT_BOX_INCREASED_HEIGHT, 65, 20, "W-Register:");
-            RegisterItem newRegisterItem = new RegisterItem();
-            newRegisterItem.initRegisterItem(registerFileMap.getAdapter(PIC.Register.RegisterConstants.WORKING_REGISTER_ADDRESS), 75, 5, this);
+            RegisterItem newRegisterItem = new RegisterItem(registerFileMap.getAdapter(PIC.Register.RegisterConstants.WORKING_REGISTER_ADDRESS), 75, 5, this);
         }
 
         private void createMap()
@@ -55,8 +54,7 @@ namespace PIC16F84_Emulator.GUI.Forms
                 createNewLabel(MAP_X_OFFSET - ELEMENT_WIDTH, y * 2 + MAP_Y_OFFSET + TEXT_BOX_INCREASED_HEIGHT, ELEMENT_WIDTH, ELEMENT_HEIGHT, y.ToString("X2"));
                 for (int x = 0; x < 16; x++)
                 {
-                    newRegisterItem = new RegisterItem();
-                    newRegisterItem.initRegisterItem(registerFileMap.getAdapter(x + y), x * (ELEMENT_WIDTH + ELEMENT_MARING) + MAP_X_OFFSET, y * MAP_LINE_HEIGHT + MAP_Y_OFFSET, this);
+                    newRegisterItem = new RegisterItem(registerFileMap.getAdapter(x + y), x * (ELEMENT_WIDTH + ELEMENT_MARING) + MAP_X_OFFSET, y * MAP_LINE_HEIGHT + MAP_Y_OFFSET, this);
                 }
             }
             for (int x = 0; x < 16; x++)

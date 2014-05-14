@@ -24,6 +24,9 @@ namespace PIC16F84_Emulator.GUI.Forms
         CheckBox[] PortA = new CheckBox[8];
         CheckBox[] PortB = new CheckBox[8];
 
+        RegisterItem HexBoxPortA;
+        RegisterItem HexBoxPortB;
+
         public IOForm(RegisterFileMap _registerFileMap)
         {
 
@@ -44,9 +47,9 @@ namespace PIC16F84_Emulator.GUI.Forms
             Disposed += delegate { registerFileMap.unregisterDataListener(portBListener, RegisterConstants.PORTB_ADDRESS); };
             Disposed += delegate { registerFileMap.unregisterDataListener(trisAListener, RegisterConstants.TRISA_BANK1_ADDRESS); };
             Disposed += delegate { registerFileMap.unregisterDataListener(trisBListener, RegisterConstants.TRISB_BANK1_ADDRESS); };
-
+            int i = 0;
             // PORT-Checkboxes dynamisch erstellen
-            for (int i = 0; i < 8; i++)
+            for (i = 0; i < 8; i++)
             {
                 PortA[i] = new CheckBox();
                 PortA[i].Location = new Point(58 + i * 21, 96);
@@ -63,8 +66,12 @@ namespace PIC16F84_Emulator.GUI.Forms
                 PortB[i].Height = 15;
             }
 
+            HexBoxPortA = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS), 58 + i * 21, 96, this);
+            HexBoxPortB = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS), 58 + i * 21, 50, this);
+
             this.Controls.AddRange(PortA);
             this.Controls.AddRange(PortB);
+            this.Controls.Add(HexBoxPortA);
 
             InitializeComponent();
 
