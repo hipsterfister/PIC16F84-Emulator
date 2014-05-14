@@ -13,12 +13,18 @@ namespace PIC16F84_Emulator.PIC.Handler
         private Data.DataAdapter<byte>.OnDataChanged portBValueChangeListener;
 
         private byte oldPortBValue;
+        private byte oldIntconValue;
+        private byte oldEecon1Value;
 
         public InterruptHandler(PIC _pic, Register.RegisterFileMap _registerFileMap)
         {
             this.pic = _pic;
             this.registerFileMap = _registerFileMap;
+
             this.oldPortBValue = registerFileMap.Get(Register.RegisterConstants.PORTB_ADDRESS);
+            this.oldIntconValue = registerFileMap.Get(Register.RegisterConstants.INTCON_ADDRESS);
+            this.oldEecon1Value = registerFileMap.Get(Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+
             this.valueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onValueChange);
             this.portBValueChangeListener = new Data.DataAdapter<byte>.OnDataChanged(onPortBValueChange);
             registerSelfWithRegisterFileMap();
@@ -53,13 +59,23 @@ namespace PIC16F84_Emulator.PIC.Handler
             else if (oldRB0 != newRB0)
             {
                 // RB0/INT changed
-                registerFileMap.setBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_INTF_MASK);
+                bool fallingEdgeActive = (registerFileMap.Get(Register.RegisterConstants.OPTION_REG_BANK1_ADDRESS) & Register.RegisterConstants.OPTION_INTEDG_MASK) == 0;
+                if (newRB0 && !fallingEdgeActive)
+                {
+                    // Rising edge
+                    registerFileMap.setBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_INTF_MASK);
+                }
+                else if (!newRB0 && fallingEdgeActive)
+                {
+                    // Falling edge
+                    registerFileMap.setBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_INTF_MASK);
+                }
             }
         }
 
         private bool checkInterruptCondition()
         {
-            short intconRegister = registerFileMap.Get(Register.RegisterConstants.INTCON_ADDRESS);
+            byte intconRegister = registerFileMap.Get(Register.RegisterConstants.INTCON_ADDRESS);
             // enable Flags
             bool gieFlag = intconRegister > 0x7F;
             bool rbieFlag = (intconRegister & Register.RegisterConstants.INTCON_RBIE_MASK) != 0; 
@@ -71,15 +87,23 @@ namespace PIC16F84_Emulator.PIC.Handler
             bool intfFlag = (intconRegister & Register.RegisterConstants.INTCON_INTF_MASK) != 0;
             bool t0ifFlag = (intconRegister & Register.RegisterConstants.INTCON_T0IF_MASK) != 0;
             bool eeifFlag = (registerFileMap.Get(Register.RegisterConstants.EECON1_BANK1_ADDRESS) & 0x10) != 0;
+            // oldInterruptFlags
+            bool oldRbifFlag = (oldIntconValue & Register.RegisterConstants.INTCON_RBIF_MASK) != 0;
+            bool oldIntfFlag = (oldIntconValue & Register.RegisterConstants.INTCON_INTF_MASK) != 0;
+            bool oldT0ifFlag = (oldIntconValue & Register.RegisterConstants.INTCON_T0IF_MASK) != 0;
+            bool oldEeifFlag = (oldEecon1Value & 0x10) != 0;
+
+            oldEecon1Value = registerFileMap.Get(Register.RegisterConstants.EECON1_BANK1_ADDRESS);
+            oldIntconValue = intconRegister;
 
             if (gieFlag)
             {
-                //      PORTB INTERRUPT  ||     TMR0 INTERRUPT  || DATA EEPROM INTERRUPT
-                if (rbieFlag && rbifFlag || t0eFlag && t0ifFlag || eeieFlag && eeifFlag) {
+                //      PORTB INTERRUPT                  ||     TMR0 INTERRUPT                  ||    DATA EEPROM INTERRUPT
+                if (rbieFlag && rbifFlag && !oldRbifFlag || t0eFlag && t0ifFlag && !oldT0ifFlag || eeieFlag && eeifFlag && !oldEeifFlag) {
                     return true;
                 }
                 // INT INTERRUPT
-                if(inteFlag && intfFlag) {
+                if(inteFlag && intfFlag && !oldIntfFlag) {
                     // Check if sleeping
                     if ((registerFileMap.Get(Register.RegisterConstants.STATUS_ADDRESS) & 0x18) == 0x10)
                     {
@@ -89,7 +113,7 @@ namespace PIC16F84_Emulator.PIC.Handler
                     return true;
                 }
             }
-            if (rbieFlag && rbifFlag || eeieFlag && eeifFlag || inteFlag && intfFlag)
+            if (rbieFlag && rbifFlag && !oldRbifFlag || eeieFlag && eeifFlag && !oldEeifFlag || inteFlag && intfFlag && !oldIntfFlag)
             {
                 invokeWakeUp();
             }
