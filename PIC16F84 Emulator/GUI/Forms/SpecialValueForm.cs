@@ -52,8 +52,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void createWRegisterDisplay()
         {
             PIC.Data.DataAdapter<byte> wAdapter = pic.getRegisterFileMap().getAdapter(PIC.Register.RegisterConstants.WORKING_REGISTER_ADDRESS);
-            RegisterItem item = new RegisterItem();
-            item.initRegisterItem(wAdapter, 27, wRegisterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
+            RegisterItem item = new RegisterItem(wAdapter, 27, wRegisterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
         }
 
         private void createProgramCounterDisplay()
@@ -62,18 +61,15 @@ namespace PIC16F84_Emulator.GUI.Forms
             PIC.Data.DataAdapter<byte> pcLowByteAdapter = pic.getRegisterFileMap().getAdapter(PIC.Register.RegisterConstants.PCL_ADDRESS);
             
             // High Byte
-            RegisterItem item = new RegisterItem();
-            item.initRegisterItem(pcHighByteAdapter, 5, programCounterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
+            RegisterItem item = new RegisterItem(pcHighByteAdapter, 5, programCounterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
             // Low Byte
-            item = new RegisterItem();
-            item.initRegisterItem(pcLowByteAdapter, 27 , programCounterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
+            item = new RegisterItem(pcLowByteAdapter, 27, programCounterLabel.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
         }
 
         private void createTimer0Display()
         {
             PIC.Data.DataAdapter<byte> tmr0Adapter = pic.getRegisterFileMap().getAdapter(PIC.Register.RegisterConstants.TMR0_ADDRESS);
-            RegisterItem item = new RegisterItem();
-            item.initRegisterItem(tmr0Adapter, 27, timer0Label.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
+            RegisterItem item = new RegisterItem(tmr0Adapter, 27, timer0Label.Bounds.Y - TEXT_BOX_Y_OFFSET, this);
         }
 
 

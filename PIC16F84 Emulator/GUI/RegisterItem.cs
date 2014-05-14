@@ -24,7 +24,7 @@ namespace PIC16F84_Emulator.GUI
         ToolTip tt;
         TextBox hexBox;
 
-        public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
+        public RegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
             Parent = _parent;
             this.Text = _dataAdapter.Value.ToString("X2");
