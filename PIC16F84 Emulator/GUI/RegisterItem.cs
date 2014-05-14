@@ -17,7 +17,8 @@ namespace PIC16F84_Emulator.GUI
         protected Helpers.UpdateTimer updateTimer;
 
         protected static System.Drawing.Color passiveColor = System.Drawing.SystemColors.Control;
-        protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
+      //  protected static System.Drawing.Color activeColor = System.Drawing.Color.DeepSkyBlue;
+        protected static System.Drawing.Color activeColor = System.Drawing.Color.OrangeRed;
 
         DataAdapter<byte> dataAdapter;
 
@@ -27,6 +28,9 @@ namespace PIC16F84_Emulator.GUI
         public void initRegisterItem(DataAdapter<byte> _dataAdapter, int _positionX, int _positionY, System.Windows.Forms.Control _parent)
         {
             Parent = _parent;
+            // this.BackColor = backColor;
+            // this.ForeColor = foreColor;
+            
             this.Text = _dataAdapter.Value.ToString("X2");
             this.dataAdapter = _dataAdapter;
             this.value = dataAdapter.Value;

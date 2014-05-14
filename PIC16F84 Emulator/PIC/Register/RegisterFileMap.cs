@@ -30,18 +30,17 @@ namespace PIC16F84_Emulator.PIC.Register
             Data[RegisterConstants.FSR_BANK1_ADDRESS] = Data[RegisterConstants.FSR_ADDRESS];
             Data[RegisterConstants.PCLATH_BANK1_ADDRESS] = Data[RegisterConstants.PCLATH_ADDRESS];
             Data[RegisterConstants.INTCON_BANK1_ADDRESS] = Data[RegisterConstants.INTCON_ADDRESS];
+            
+            for (int X = 0; X < Data.Length; X++)
+            {
+                Data[X].Value = 0;
+            }
 
             initializeValues();
         }
 
         public void initializeValues()
         {
-            for (int X = 0; X < Data.Length; X++)
-            {
-                Data[X].Value = 0;
-            }
-
-
             // initialize Special Function Registers
             // Bank 0
             Data[RegisterConstants.PCL_ADDRESS].Value = RegisterConstants.PCL_INITIAL_VALUE;

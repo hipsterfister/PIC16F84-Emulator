@@ -25,6 +25,16 @@ namespace PIC16F84_Emulator.GUI.Forms
         public PICEmulatorForm()
         {
             InitializeComponent();
+
+            foreach (Control ctl in this.Controls)
+            {
+                if (ctl.GetType() == typeof(MdiClient))
+                {
+                    ctl.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
+                }
+            }
+            this.SizeChanged += delegate { this.Refresh(); };
+            //this.ResizeEnd += delegate { this.Refresh(); };
         }
 
         private void showOpenFileDialog(object sender, EventArgs e)
