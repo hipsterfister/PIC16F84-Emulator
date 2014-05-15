@@ -44,6 +44,7 @@
             this.cOM3AusgabeAktivierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +53,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dateiToolStripMenuItem,
             this.ansichtToolStripMenuItem,
-            this.extrasToolStripMenuItem});
+            this.extrasToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1221, 24);
@@ -72,7 +74,7 @@
             // 
             this.dateiÖffnenToolStripMenuItem.Name = "dateiÖffnenToolStripMenuItem";
             this.dateiÖffnenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.dateiÖffnenToolStripMenuItem.Text = "Datei öffnen";
             this.dateiÖffnenToolStripMenuItem.Click += new System.EventHandler(this.showOpenFileDialog);
             // 
@@ -80,7 +82,7 @@
             // 
             this.dateiSchließenToolStripMenuItem.Enabled = false;
             this.dateiSchließenToolStripMenuItem.Name = "dateiSchließenToolStripMenuItem";
-            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.dateiSchließenToolStripMenuItem.Text = "Datei schließen";
             this.dateiSchließenToolStripMenuItem.Click += new System.EventHandler(this.dateiSchließenToolStripMenuItem_Click);
             // 
@@ -158,6 +160,14 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(24, 20);
+            this.helpToolStripMenuItem.Text = "?";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
             // PICEmulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,5 +206,6 @@
         private System.Windows.Forms.ToolStripMenuItem specialValuesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cOM3AusgabeAktivierenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
     }
 }

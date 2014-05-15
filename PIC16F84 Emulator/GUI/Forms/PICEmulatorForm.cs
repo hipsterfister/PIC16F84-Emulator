@@ -20,6 +20,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected RegisterMapForm registerMapForm;
         protected IOForm ioForm;
         protected SpecialValueForm specialForm;
+        protected HelpForm helpForm;
         protected string file;
 
         public PICEmulatorForm()
@@ -156,6 +157,12 @@ namespace PIC16F84_Emulator.GUI.Forms
             specialForm.Show();
         }
 
+        private void openHelpForm()
+        {
+            helpForm = new HelpForm();
+            helpForm.Show();
+        }
+
         private void toggleListingForm()
         {
             if (listingForm == null || listingForm.Visible == false)
@@ -216,6 +223,18 @@ namespace PIC16F84_Emulator.GUI.Forms
             }
         }
 
+        private void toggleHelpForm()
+        {
+            if (helpForm == null)
+            {
+                openHelpForm();
+            }
+            else
+            {
+                helpForm.BringToFront();
+            }
+        }
+
         private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toggleControlForm();
@@ -272,6 +291,11 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void cOM3AusgabeAktivierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toggleCom3Label();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleHelpForm();
         }
 
         private void toggleCom3Label()
