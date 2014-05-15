@@ -14,9 +14,9 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected GUI.ProgramView programView;
         protected PIC.Data.ProgamMemory programMemory;
 
-        protected static System.Drawing.Color breakpointColor = System.Drawing.Color.Orange;
-        protected static System.Drawing.Color defaultColor = System.Drawing.Color.White;
-        protected static System.Drawing.Color defaultSelectionColor = System.Drawing.SystemColors.Highlight;
+        protected static System.Drawing.Color breakpointColor = System.Drawing.Color.SystemColors.Highlight;
+        protected static System.Drawing.Color defaultColor = System.Drawing.Color.FromArgb(32,32,32);
+        protected static System.Drawing.Color defaultSelectionColor = System.Drawing.Color.OrangeRed;
 
         protected int numberOfLinesDisplayed;
 
