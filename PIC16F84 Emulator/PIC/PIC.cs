@@ -8,7 +8,9 @@ namespace PIC16F84_Emulator.PIC
 {
     public class PIC
     {
-        private const short INTERVAL = 1; // clock interval [ms]
+        private short MS_FACTOR = 1000;
+
+        private short interval = 4; // clock interval [ms]
 
         protected Data.ProgamMemory programMemory = new Data.ProgamMemory();
         protected Register.RegisterFileMap registerMap = new Register.RegisterFileMap();
@@ -24,15 +26,17 @@ namespace PIC16F84_Emulator.PIC
         protected WatchDog.WDT wdt;
         internal Ports.PortSerialization portSerializer;
 
-        private bool isReady = true;
-        private Object isReadyLock = new Object();
+        protected bool isReady = true;
+        protected Object isReadyLock = new Object();
 
-        private bool interruptIsNext = false;
-        private bool resumeAfterBreakpoint = false;
-        private bool serialPortIsOpen = false;
-        private Data.DataAdapter<int> executedCycles;
+        protected bool interruptIsNext = false;
+        protected bool resumeAfterBreakpoint = false;
+        protected bool serialPortIsOpen = false;
 
-        private Data.DataAdapter<PicExecutionState> executionStatus = new Data.DataAdapter<PicExecutionState>();
+        protected Data.DataAdapter<int> executedCycles = new Data.DataAdapter<int>();
+        protected Data.DataAdapter<float> frequencyValue = new Data.DataAdapter<float>();
+        protected Data.DataAdapter<FrequencyUnit> frequencyUnit = new Data.DataAdapter<FrequencyUnit>();
+        protected Data.DataAdapter<PicExecutionState> executionStatus = new Data.DataAdapter<PicExecutionState>();
 
         public delegate void OnCycleEnd();
         public event OnCycleEnd cycleEnded;
@@ -42,7 +46,7 @@ namespace PIC16F84_Emulator.PIC
         public PIC()
         {
             programCounter = new Register.ProgramCounter(registerMap);
-            clock = new Clock(this, INTERVAL);
+            clock = new Clock(this, interval);
             interruptHandler = new Handler.InterruptHandler(this, registerMap);
             parser = new Parser.Parser(this);
             timer0 = new Timer0.Timer0(registerMap, this);
@@ -50,8 +54,13 @@ namespace PIC16F84_Emulator.PIC
             wdt = new WatchDog.WDT(this);
 
             executionStatus.Value = PicExecutionState.STOPPED;
-            executedCycles = new Data.DataAdapter<int>();
             executedCycles.Value = 0;
+
+            frequencyValue.Value = 4;
+            frequencyUnit.Value = FrequencyUnit.MEGA_HZ;
+
+            frequencyUnit.DataChanged += onFrequencyUnitChange;
+            frequencyValue.DataChanged += onFrequencyValueChange;
         }
 
         public void resetPIC()
@@ -85,6 +94,9 @@ namespace PIC16F84_Emulator.PIC
         {
             endContinuousSerialization();
             endSerialization();
+
+            frequencyUnit.DataChanged -= onFrequencyUnitChange;
+            frequencyValue.DataChanged -= onFrequencyValueChange;
 
             clock.dispose();
             timer0.dispose();
@@ -245,7 +257,7 @@ namespace PIC16F84_Emulator.PIC
         /// <returns>value in ms</returns>
         public short getCycleDuration()
         {
-            return INTERVAL;
+            return interval;
         }
 
 
@@ -345,9 +357,14 @@ namespace PIC16F84_Emulator.PIC
             }
         }
 
-        public int getExecutedCycles()
+        public void setFrequencyValue(float value)
         {
-            return this.executedCycles.Value;
+            frequencyValue.Value = value;
+        }
+
+        public void setFrequencyUnit(FrequencyUnit unit)
+        {
+            frequencyUnit.Value = unit;
         }
 
         public void registerExecutedCyclesListener(Data.DataAdapter<int>.OnDataChanged listener)
@@ -360,10 +377,64 @@ namespace PIC16F84_Emulator.PIC
             executedCycles.DataChanged -= listener;
         }
 
+        private void onFrequencyValueChange(float value, object sender)
+        {
+            updateFrequency();
+        }
+
+        private void onFrequencyUnitChange(FrequencyUnit value, object sender)
+        {
+            updateFrequency();
+        }
+
+        private void updateFrequency()
+        {
+            if (frequencyValue.Value <= 0)
+            {
+                return;
+            }
+
+            double newInterval = 0;
+            int power = 0;
+
+            switch (frequencyUnit.Value)
+            {
+                case FrequencyUnit.HZ:
+                    power = 1;
+                    break;
+                case FrequencyUnit.KILO_HZ:
+                    power = 1000;
+                    break;
+                case FrequencyUnit.MEGA_HZ:
+                    power = 1000000;
+                    break;
+                default:
+                    // impossible
+                    break;
+            }
+
+            newInterval = 1 / (frequencyValue.Value * power * 4);
+            newInterval *= MS_FACTOR;
+            if (newInterval < 1)
+            {
+                newInterval = 1;
+            }
+
+            interval = (short) newInterval;
+            clock.changeInterval((short) newInterval);
+        }
+
         public enum PicExecutionState
         {
             RUNNING,
             STOPPED
+        }
+
+        public enum FrequencyUnit
+        {
+            HZ,
+            KILO_HZ,
+            MEGA_HZ
         }
     }
 }

@@ -22,6 +22,9 @@ namespace PIC16F84_Emulator.GUI.Forms
             this.pic = _pic;
             pic.registerExecutionStateListener(onPicExecutionChange);
             Disposed += delegate { pic.unregisterExecutionStateListener(onPicExecutionChange); };
+
+            frequencyTextBox.Text = "4";
+            frequencyUnitBox.SelectedIndex = 2;
         }
 
         /// <summary>
@@ -86,6 +89,38 @@ namespace PIC16F84_Emulator.GUI.Forms
             else
             {
                 PlayButton.Image = (System.Drawing.Bitmap)(resources.GetObject("PauseButton.Image"));
+            }
+        }
+
+        private void frequencyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.KeyCode == Keys.Return)
+            {
+                float newFrequency = 0;
+                if (float.TryParse(frequencyTextBox.Text.Replace(",", "."), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out newFrequency))
+                {
+                    pic.setFrequencyValue(newFrequency);
+                }
+            }
+        }
+
+        private void frequencyUnitBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            switch(frequencyUnitBox.SelectedIndex) {
+                case 0:
+                    pic.setFrequencyUnit(PIC.PIC.FrequencyUnit.HZ);
+                    break;
+                case 1:
+                    pic.setFrequencyUnit(PIC.PIC.FrequencyUnit.KILO_HZ);
+                    break;
+                case 2:
+                    pic.setFrequencyUnit(PIC.PIC.FrequencyUnit.MEGA_HZ);
+                    break;
+                default:
+                    // should not happen, nothing to do here...
+                    break;
             }
         }
 
