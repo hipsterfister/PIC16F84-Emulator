@@ -15,6 +15,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected PIC.Data.ProgamMemory programMemory;
 
         protected static System.Drawing.Color breakpointColor = System.Drawing.SystemColors.Highlight;
+        protected static System.Drawing.Color breakpointForeColor = System.Drawing.Color.WhiteSmoke;
         protected static System.Drawing.Color defaultColor = System.Drawing.Color.FromArgb(32,32,32);
         protected static System.Drawing.Color defaultSelectionColor = System.Drawing.Color.OrangeRed;
 
@@ -103,6 +104,7 @@ namespace PIC16F84_Emulator.GUI.Forms
                 foreach (DataGridViewRow item in dataGridView1.SelectedRows)
                 {
                     item.DefaultCellStyle.BackColor = breakpointColor;
+                    item.DefaultCellStyle.ForeColor = breakpointForeColor;
                     item.DefaultCellStyle.SelectionBackColor = breakpointColor;
                 }
             }
@@ -111,6 +113,7 @@ namespace PIC16F84_Emulator.GUI.Forms
                 foreach (DataGridViewRow item in dataGridView1.SelectedRows)
                 {
                     item.DefaultCellStyle.BackColor = defaultColor;
+                    item.DefaultCellStyle.ForeColor = defaultSelectionColor;
                     item.DefaultCellStyle.SelectionBackColor = defaultSelectionColor;
                 }
             }

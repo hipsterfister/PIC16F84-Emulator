@@ -20,6 +20,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         protected RegisterMapForm registerMapForm;
         protected IOForm ioForm;
         protected SpecialValueForm specialForm;
+        protected PulseGeneratorForm pulseGeneratorForm;
         protected HelpForm helpForm;
         protected string file;
 
@@ -35,7 +36,6 @@ namespace PIC16F84_Emulator.GUI.Forms
                 }
             }
             this.SizeChanged += delegate { this.Refresh(); };
-            //this.ResizeEnd += delegate { this.Refresh(); };
         }
 
         private void showOpenFileDialog(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             file = openFileDialog1.FileName;
              
             initNewPIC(file);
-            enableAnsichtMenu();
+            enableMenuItems();
             enableDateiSchließen();
             enableDefaultView();
         }
@@ -77,7 +77,7 @@ namespace PIC16F84_Emulator.GUI.Forms
             createNewRegisterMapForm();
             createNewListingForm();
             createNewSpecialValueForm();
-
+            createNewPulseGeneratorForm();
             arrangeFormsToDefaultView();
         }
 
@@ -88,6 +88,7 @@ namespace PIC16F84_Emulator.GUI.Forms
                 controlForm.defaultView();
                 ioForm.defaultView(controlForm.Bounds.Bottom);
                 specialForm.defaultView(ioForm.Bounds.Bottom);
+                pulseGeneratorForm.defaultView(specialForm.Bounds.Bottom);
                 registerMapForm.defaultView(controlForm.Bounds.Left < ioForm.Bounds.Left ? controlForm.Bounds.Left : ioForm.Bounds.Left);
                 listingForm.defaultView(registerMapForm.Bounds.Left);
             }
@@ -102,14 +103,16 @@ namespace PIC16F84_Emulator.GUI.Forms
             arrangeFormsToDefaultView();
         }
 
-        private void enableAnsichtMenu()
+        private void enableMenuItems()
         {
             ansichtToolStripMenuItem.Enabled = true;
+            extrasToolStripMenuItem.Enabled = true;
         }
 
-        private void disableAnsichtMenu()
+        private void disableMenuItems()
         {
             ansichtToolStripMenuItem.Enabled = false;
+            extrasToolStripMenuItem.Enabled = false;
         }
 
         private void enableDateiSchließen()
@@ -155,6 +158,13 @@ namespace PIC16F84_Emulator.GUI.Forms
             specialForm = new SpecialValueForm(pic);
             specialForm.MdiParent = this;
             specialForm.Show();
+        }
+
+        private void createNewPulseGeneratorForm()
+        {
+            pulseGeneratorForm = new PulseGeneratorForm(pic);
+            pulseGeneratorForm.MdiParent = this;
+            pulseGeneratorForm.Show();
         }
 
         private void openHelpForm()
@@ -223,6 +233,18 @@ namespace PIC16F84_Emulator.GUI.Forms
             }
         }
 
+        private void togglePulseGeneratorForm()
+        {
+            if (pulseGeneratorForm == null || pulseGeneratorForm.Visible == false)
+            {
+                createNewPulseGeneratorForm();
+            }
+            else
+            {
+                pulseGeneratorForm.Close();
+            }
+        }
+
         private void toggleHelpForm()
         {
             if (helpForm == null)
@@ -272,7 +294,7 @@ namespace PIC16F84_Emulator.GUI.Forms
 
         private void dateiSchließenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            disableAnsichtMenu();
+            disableMenuItems();
             disableDateiSchließen();
             closeAllOpenWindows();
             freeResources();
@@ -286,6 +308,11 @@ namespace PIC16F84_Emulator.GUI.Forms
         private void specialValuesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toggleSpecialValueForm();
+        }
+
+        private void pulseGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            togglePulseGeneratorForm();
         }
 
         private void cOM3AusgabeAktivierenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -313,6 +340,5 @@ namespace PIC16F84_Emulator.GUI.Forms
                 pic.endContinuousSerialization();
             }
         }
-
     }
 }

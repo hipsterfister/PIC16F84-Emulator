@@ -59,6 +59,12 @@
     <Compile Include="GUI\Forms\HelpForm.Designer.cs">
       <DependentUpon>HelpForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\PulseGeneratorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\PulseGeneratorForm.Designer.cs">
+      <DependentUpon>PulseGeneratorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\RegisterMapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\PICEmulatorForm.resx">
       <DependentUpon>PICEmulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\PulseGeneratorForm.resx">
+      <DependentUpon>PulseGeneratorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\RegisterMapForm.resx">
       <DependentUpon>RegisterMapForm.cs</DependentUpon>

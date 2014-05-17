@@ -45,7 +45,16 @@ namespace PIC16F84_Emulator.PIC.Ports
             {
                 // xxxx xxxx AND ~(iiii oooo) = 0000 xxxx
                 _Data = (byte)(value & ~tris);
-                onDataChanged(value, this);
+                onDataChanged(_Data, this);
+            }
+        }
+
+        public byte Input
+        {
+            set
+            {
+                _Data = (byte)(value & tris);
+                onDataChanged(_Data, this);
             }
         }
 
