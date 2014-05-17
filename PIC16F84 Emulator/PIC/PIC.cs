@@ -30,6 +30,7 @@ namespace PIC16F84_Emulator.PIC
         private bool interruptIsNext = false;
         private bool resumeAfterBreakpoint = false;
         private bool serialPortIsOpen = false;
+        private Data.DataAdapter<int> executedCycles;
 
         private Data.DataAdapter<PicExecutionState> executionStatus = new Data.DataAdapter<PicExecutionState>();
 
@@ -49,6 +50,8 @@ namespace PIC16F84_Emulator.PIC
             wdt = new WatchDog.WDT(this);
 
             executionStatus.Value = PicExecutionState.STOPPED;
+            executedCycles = new Data.DataAdapter<int>();
+            executedCycles.Value = 0;
         }
 
         public void resetPIC()
@@ -68,6 +71,7 @@ namespace PIC16F84_Emulator.PIC
                     eeprom.initializeValues();
                     operationStack.initializeValues();
                     cyclesLeftToExecute = 1;
+                    executedCycles.Value = 0;
                     interruptIsNext = false;
                     isReady = true;
                 }
@@ -155,6 +159,7 @@ namespace PIC16F84_Emulator.PIC
             programCounter.increment();
 
             cyclesLeftToExecute = operation.cycles;
+            executedCycles.Value += cyclesLeftToExecute;
 
             if (nextInstructionEvent != null)
                 nextInstructionEvent(programCounter.value);
@@ -338,6 +343,21 @@ namespace PIC16F84_Emulator.PIC
                 execute();
                 beginExecution();
             }
+        }
+
+        public int getExecutedCycles()
+        {
+            return this.executedCycles.Value;
+        }
+
+        public void registerExecutedCyclesListener(Data.DataAdapter<int>.OnDataChanged listener)
+        {
+            executedCycles.DataChanged += listener;
+        }
+
+        public void unregisterExecutedCyclesListener(Data.DataAdapter<int>.OnDataChanged listener)
+        {
+            executedCycles.DataChanged -= listener;
         }
 
         public enum PicExecutionState
