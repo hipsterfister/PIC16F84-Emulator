@@ -14,6 +14,8 @@ namespace PIC16F84_Emulator.GUI.Forms
         private PIC.PIC pic;
         private const int TEXT_BOX_Y_OFFSET = 2;
         private const int STACK_X_OFFSET = 175;
+        private const String SIMULATED_TIME_POSTFIX = " µs";
+        private String temp = "";
 
         private TextBox[] stackBoxes;
 
@@ -24,8 +26,12 @@ namespace PIC16F84_Emulator.GUI.Forms
             pic = _pic;
             stackBoxes = new TextBox[PIC.Data.OperationStack.STACK_SIZE];
             pic.getOperationStack().registerStackUpdateListener(onStackUpdate);
+            pic.registerExecutedCyclesListener(onExecutedCyclesUpdate);
 
-            Disposed += delegate { pic.getOperationStack().unregisterStackUpdateListener(onStackUpdate); };
+            Disposed += delegate { 
+                pic.getOperationStack().unregisterStackUpdateListener(onStackUpdate);
+                pic.unregisterExecutedCyclesListener(onExecutedCyclesUpdate);
+            };
 
             createValueDisplays();
             Paint += drawVerticalLine;
@@ -127,6 +133,33 @@ namespace PIC16F84_Emulator.GUI.Forms
             else
             {
                 updateStackDisplay();
+            }
+        }
+
+        private void updateCycleDisplay(int value)
+        {
+            temp = value.ToString();
+            this.executedCyclesValueLabel.Text = temp;
+            this.simulatedTimeValueLabel.Text = temp + SIMULATED_TIME_POSTFIX;
+        }
+
+        private void onExecutedCyclesUpdate(int value, object sender)
+        {
+            MethodInvoker mi = delegate { updateCycleDisplay(value); };
+            if (InvokeRequired)
+            {
+                try
+                {
+                    this.BeginInvoke(mi); // Async to prohibit deadlock
+                }
+                catch (ObjectDisposedException)
+                {
+                    // ignore, the listener is not yet unregistered...
+                }
+            }
+            else
+            {
+                updateCycleDisplay(value);
             }
         }
     }

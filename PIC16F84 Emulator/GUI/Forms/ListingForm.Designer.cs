@@ -87,6 +87,7 @@
             this.ClientSize = new System.Drawing.Size(379, 359);
             this.Controls.Add(this.dataGridView1);
             this.ForeColor = System.Drawing.Color.OrangeRed;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListingForm";
             this.Text = "ListingForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

@@ -34,6 +34,10 @@
             this.stackLabel = new System.Windows.Forms.Label();
             this.stackIndex0Label = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.executedCyclesLabel = new System.Windows.Forms.Label();
+            this.simulatedTimeLabel = new System.Windows.Forms.Label();
+            this.simulatedTimeValueLabel = new System.Windows.Forms.Label();
+            this.executedCyclesValueLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // wRegisterLabel
@@ -91,11 +95,49 @@
             this.label7.TabIndex = 11;
             this.label7.Text = "7";
             // 
+            // executedCyclesLabel
+            // 
+            this.executedCyclesLabel.AutoSize = true;
+            this.executedCyclesLabel.Location = new System.Drawing.Point(50, 145);
+            this.executedCyclesLabel.Name = "executedCyclesLabel";
+            this.executedCyclesLabel.Size = new System.Drawing.Size(86, 13);
+            this.executedCyclesLabel.TabIndex = 12;
+            this.executedCyclesLabel.Text = "Executed Cycles";
+            // 
+            // simulatedTimeLabel
+            // 
+            this.simulatedTimeLabel.AutoSize = true;
+            this.simulatedTimeLabel.Location = new System.Drawing.Point(50, 167);
+            this.simulatedTimeLabel.Name = "simulatedTimeLabel";
+            this.simulatedTimeLabel.Size = new System.Drawing.Size(79, 13);
+            this.simulatedTimeLabel.TabIndex = 13;
+            this.simulatedTimeLabel.Text = "Simulated Time";
+            // 
+            // simulatedTimeValueLabel
+            // 
+            this.simulatedTimeValueLabel.AutoSize = true;
+            this.simulatedTimeValueLabel.Location = new System.Drawing.Point(5, 167);
+            this.simulatedTimeValueLabel.Name = "simulatedTimeValueLabel";
+            this.simulatedTimeValueLabel.Size = new System.Drawing.Size(0, 13);
+            this.simulatedTimeValueLabel.TabIndex = 15;
+            // 
+            // executedCyclesValueLabel
+            // 
+            this.executedCyclesValueLabel.AutoSize = true;
+            this.executedCyclesValueLabel.Location = new System.Drawing.Point(5, 145);
+            this.executedCyclesValueLabel.Name = "executedCyclesValueLabel";
+            this.executedCyclesValueLabel.Size = new System.Drawing.Size(0, 13);
+            this.executedCyclesValueLabel.TabIndex = 14;
+            // 
             // SpecialValueForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(262, 187);
+            this.Controls.Add(this.simulatedTimeValueLabel);
+            this.Controls.Add(this.executedCyclesValueLabel);
+            this.Controls.Add(this.simulatedTimeLabel);
+            this.Controls.Add(this.executedCyclesLabel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.stackIndex0Label);
             this.Controls.Add(this.stackLabel);
@@ -118,5 +160,9 @@
         private System.Windows.Forms.Label stackLabel;
         private System.Windows.Forms.Label stackIndex0Label;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label executedCyclesLabel;
+        private System.Windows.Forms.Label simulatedTimeLabel;
+        private System.Windows.Forms.Label simulatedTimeValueLabel;
+        private System.Windows.Forms.Label executedCyclesValueLabel;
     }
 }

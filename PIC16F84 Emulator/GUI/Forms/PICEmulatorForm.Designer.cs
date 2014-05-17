@@ -42,9 +42,10 @@
             this.specialValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cOM3AusgabeAktivierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pulseGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,7 +75,7 @@
             // 
             this.dateiÖffnenToolStripMenuItem.Name = "dateiÖffnenToolStripMenuItem";
             this.dateiÖffnenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.dateiÖffnenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.dateiÖffnenToolStripMenuItem.Text = "Datei öffnen";
             this.dateiÖffnenToolStripMenuItem.Click += new System.EventHandler(this.showOpenFileDialog);
             // 
@@ -82,7 +83,7 @@
             // 
             this.dateiSchließenToolStripMenuItem.Enabled = false;
             this.dateiSchließenToolStripMenuItem.Name = "dateiSchließenToolStripMenuItem";
-            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.dateiSchließenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.dateiSchließenToolStripMenuItem.Text = "Datei schließen";
             this.dateiSchließenToolStripMenuItem.Click += new System.EventHandler(this.dateiSchließenToolStripMenuItem_Click);
             // 
@@ -93,7 +94,8 @@
             this.showRegisterMapToolStripMenuItem,
             this.listingToolStripMenuItem,
             this.iOControlToolStripMenuItem,
-            this.specialValuesToolStripMenuItem});
+            this.specialValuesToolStripMenuItem,
+            this.pulseGeneratorToolStripMenuItem});
             this.ansichtToolStripMenuItem.Enabled = false;
             this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
             this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
@@ -102,35 +104,35 @@
             // showControlsToolStripMenuItem
             // 
             this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
-            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.showControlsToolStripMenuItem.Text = "Controls";
             this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
             // 
             // showRegisterMapToolStripMenuItem
             // 
             this.showRegisterMapToolStripMenuItem.Name = "showRegisterMapToolStripMenuItem";
-            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.showRegisterMapToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.showRegisterMapToolStripMenuItem.Text = "Register Map";
             this.showRegisterMapToolStripMenuItem.Click += new System.EventHandler(this.showRegisterMapToolStripMenuItem_Click);
             // 
             // listingToolStripMenuItem
             // 
             this.listingToolStripMenuItem.Name = "listingToolStripMenuItem";
-            this.listingToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.listingToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.listingToolStripMenuItem.Text = "Listing";
             this.listingToolStripMenuItem.Click += new System.EventHandler(this.listingToolStripMenuItem_Click);
             // 
             // iOControlToolStripMenuItem
             // 
             this.iOControlToolStripMenuItem.Name = "iOControlToolStripMenuItem";
-            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.iOControlToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.iOControlToolStripMenuItem.Text = "I/O Control";
             this.iOControlToolStripMenuItem.Click += new System.EventHandler(this.iOControlToolStripMenuItem_Click);
             // 
             // specialValuesToolStripMenuItem
             // 
             this.specialValuesToolStripMenuItem.Name = "specialValuesToolStripMenuItem";
-            this.specialValuesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.specialValuesToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.specialValuesToolStripMenuItem.Text = "Special Values";
             this.specialValuesToolStripMenuItem.Click += new System.EventHandler(this.specialValuesToolStripMenuItem_Click);
             // 
@@ -138,6 +140,7 @@
             // 
             this.extrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cOM3AusgabeAktivierenToolStripMenuItem});
+            this.extrasToolStripMenuItem.Enabled = false;
             this.extrasToolStripMenuItem.Name = "extrasToolStripMenuItem";
             this.extrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.extrasToolStripMenuItem.Text = "Extras";
@@ -148,6 +151,14 @@
             this.cOM3AusgabeAktivierenToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.cOM3AusgabeAktivierenToolStripMenuItem.Text = "COM3 Ausgabe aktivieren";
             this.cOM3AusgabeAktivierenToolStripMenuItem.Click += new System.EventHandler(this.cOM3AusgabeAktivierenToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(24, 20);
+            this.helpToolStripMenuItem.Text = "?";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -160,13 +171,12 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // helpToolStripMenuItem
+            // pulseGeneratorToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(24, 20);
-            this.helpToolStripMenuItem.Text = "?";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            this.pulseGeneratorToolStripMenuItem.Name = "pulseGeneratorToolStripMenuItem";
+            this.pulseGeneratorToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.pulseGeneratorToolStripMenuItem.Text = "Pulse Generator";
+            this.pulseGeneratorToolStripMenuItem.Click += new System.EventHandler(this.pulseGeneratorToolStripMenuItem_Click);
             // 
             // PICEmulatorForm
             // 
@@ -207,5 +217,6 @@
         private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cOM3AusgabeAktivierenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pulseGeneratorToolStripMenuItem;
     }
 }

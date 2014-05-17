@@ -32,7 +32,8 @@
             this.PlayButton = new System.Windows.Forms.Button();
             this.StopButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.frequencyTextBox = new System.Windows.Forms.TextBox();
+            this.frequencyUnitBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // PlayButton
@@ -65,14 +66,26 @@
             this.NextButton.UseVisualStyleBackColor = true;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
-            // button1
+            // frequencyTextBox
             // 
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(195, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(55, 40);
-            this.button1.TabIndex = 3;
-            this.button1.UseVisualStyleBackColor = true;
+            this.frequencyTextBox.Location = new System.Drawing.Point(195, 12);
+            this.frequencyTextBox.Name = "frequencyTextBox";
+            this.frequencyTextBox.Size = new System.Drawing.Size(55, 20);
+            this.frequencyTextBox.TabIndex = 3;
+            this.frequencyTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frequencyTextBox_KeyDown);
+            // 
+            // frequencyUnitBox
+            // 
+            this.frequencyUnitBox.FormattingEnabled = true;
+            this.frequencyUnitBox.Items.AddRange(new object[] {
+            "Hz",
+            "kHz",
+            "MHz"});
+            this.frequencyUnitBox.Location = new System.Drawing.Point(195, 31);
+            this.frequencyUnitBox.Name = "frequencyUnitBox";
+            this.frequencyUnitBox.Size = new System.Drawing.Size(55, 21);
+            this.frequencyUnitBox.TabIndex = 4;
+            this.frequencyUnitBox.SelectedValueChanged += new System.EventHandler(this.frequencyUnitBox_SelectedValueChanged);
             // 
             // ControlForm
             // 
@@ -80,7 +93,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(262, 60);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.frequencyUnitBox);
+            this.Controls.Add(this.frequencyTextBox);
             this.Controls.Add(this.NextButton);
             this.Controls.Add(this.StopButton);
             this.Controls.Add(this.PlayButton);
@@ -91,6 +105,7 @@
             this.ShowIcon = false;
             this.Text = "ControlForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -99,6 +114,7 @@
         private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.Button StopButton;
         private System.Windows.Forms.Button NextButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox frequencyTextBox;
+        private System.Windows.Forms.ComboBox frequencyUnitBox;
     }
 }
