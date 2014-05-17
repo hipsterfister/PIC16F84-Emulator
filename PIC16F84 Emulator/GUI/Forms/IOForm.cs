@@ -52,22 +52,22 @@ namespace PIC16F84_Emulator.GUI.Forms
             for (i = 0; i < 8; i++)
             {
                 PortA[i] = new CheckBox();
-                PortA[i].Location = new Point(58 + i * 21, 96);
+                PortA[i].Location = new Point(58 + i * 21, 50);
                 PortA[i].MouseClick += new MouseEventHandler(CheckboxChanged);
                 PortA[i].Name = "checkBoxBitA" + (7 - i).ToString();
                 PortA[i].Width = 15;
                 PortA[i].Height = 15;
 
                 PortB[i] = new CheckBox();
-                PortB[i].Location = new Point(58 + i * 21, 50);
+                PortB[i].Location = new Point(58 + i * 21, 96);
                 PortB[i].MouseClick += new MouseEventHandler(CheckboxChanged);
                 PortB[i].Name = "checkBoxBitB" + (7 - i).ToString();
                 PortB[i].Width = 15;
                 PortB[i].Height = 15;
             }
 
-            HexBoxPortA = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS), 58 + i * 21, 96, this);
-            HexBoxPortB = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS), 58 + i * 21, 50, this);
+            HexBoxPortA = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTA_ADDRESS), 58 + i * 21, 50, this);
+            HexBoxPortB = new RegisterItem(registerFileMap.getAdapter(RegisterConstants.PORTB_ADDRESS), 58 + i * 21, 96, this);
 
             this.Controls.AddRange(PortA);
             this.Controls.AddRange(PortB);
