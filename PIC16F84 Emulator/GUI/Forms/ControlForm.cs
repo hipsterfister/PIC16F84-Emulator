@@ -32,7 +32,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         /// </summary>
         public void defaultView()
         {
-            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + 5), 0);
+            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + System.Windows.Forms.SystemInformation.FrameBorderSize.Width), 0);
         }
 
         private void PlayButton_Click(object sender, EventArgs e)

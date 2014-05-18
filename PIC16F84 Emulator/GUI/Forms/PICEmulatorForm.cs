@@ -78,17 +78,33 @@ namespace PIC16F84_Emulator.GUI.Forms
             createNewListingForm();
             createNewSpecialValueForm();
             createNewPulseGeneratorForm();
-            arrangeFormsToDefaultView();
         }
 
         private void arrangeFormsToDefaultView()
         {
             try
             {
-                controlForm.defaultView();
-                ioForm.defaultView(controlForm.Bounds.Bottom);
-                specialForm.defaultView(ioForm.Bounds.Bottom);
-                pulseGeneratorForm.defaultView(specialForm.Bounds.Bottom);
+                Form top = null;
+                if (controlForm.Visible)
+                {
+                    controlForm.defaultView();
+                    top = controlForm;
+                }
+                if (ioForm.Visible)
+                {
+                    ioForm.defaultView(top == null ? 0 : top.Bounds.Bottom);
+                    top = ioForm;
+                }
+                if (specialForm.Visible)
+                {
+                    specialForm.defaultView(top == null ? 0 : top.Bounds.Bottom);
+                    top = specialForm;
+                }
+                if (pulseGeneratorForm.Visible)
+                {
+                    pulseGeneratorForm.defaultView(top == null ? 0 : top.Bounds.Bottom);
+                    top = pulseGeneratorForm;
+                }
                 registerMapForm.defaultView(controlForm.Bounds.Left < ioForm.Bounds.Left ? controlForm.Bounds.Left : ioForm.Bounds.Left);
                 listingForm.defaultView(registerMapForm.Bounds.Left);
             }
@@ -99,6 +115,11 @@ namespace PIC16F84_Emulator.GUI.Forms
         }
 
         private void PICEmulatorForm_onClientSizeChanged(object sender, EventArgs e)
+        {
+            arrangeFormsToDefaultView();
+        }
+
+        private void PICEmulatorForm_onMdiChildVisibleChanged(object sender, EventArgs e)
         {
             arrangeFormsToDefaultView();
         }
@@ -129,6 +150,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             listingForm = new ListingForm(file, pic);
             listingForm.MdiParent = this;
+            listingForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             listingForm.Show();
         }
 
@@ -136,6 +158,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             controlForm = new ControlForm(pic);
             controlForm.MdiParent = this;
+            controlForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             controlForm.Show();
         }
 
@@ -143,6 +166,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             registerMapForm = new RegisterMapForm(pic.getRegisterFileMap());
             registerMapForm.MdiParent = this;
+            registerMapForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             registerMapForm.Show();
         }
 
@@ -150,6 +174,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             ioForm = new IOForm(pic.getRegisterFileMap());
             ioForm.MdiParent = this;
+            ioForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             ioForm.Show();
         }
 
@@ -157,6 +182,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             specialForm = new SpecialValueForm(pic);
             specialForm.MdiParent = this;
+            specialForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             specialForm.Show();
         }
 
@@ -164,6 +190,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         {
             pulseGeneratorForm = new PulseGeneratorForm(pic);
             pulseGeneratorForm.MdiParent = this;
+            pulseGeneratorForm.VisibleChanged += PICEmulatorForm_onMdiChildVisibleChanged;
             pulseGeneratorForm.Show();
         }
 

@@ -438,7 +438,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "IOForm";
-            this.Text = "I/O Control";
+            this.Text = "IOForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

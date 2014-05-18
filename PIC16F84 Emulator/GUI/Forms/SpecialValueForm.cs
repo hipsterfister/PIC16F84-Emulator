@@ -43,7 +43,7 @@ namespace PIC16F84_Emulator.GUI.Forms
         /// <param name="_top">control-form height</param>
         public void defaultView(int _top)
         {
-            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + 5), _top);
+            this.Location = new Point(MdiParent.ClientRectangle.Right - (this.Width + System.Windows.Forms.SystemInformation.FrameBorderSize.Width), _top);
         }
 
         private void createValueDisplays()
