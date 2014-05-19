@@ -344,6 +344,11 @@ namespace PIC16F84_Emulator.PIC
             {
                 portSerializer.startSerialization();
             }
+            else
+            {
+                startSerialization();
+                portSerializer.startSerialization();
+            }
         }
 
         /// <summary>

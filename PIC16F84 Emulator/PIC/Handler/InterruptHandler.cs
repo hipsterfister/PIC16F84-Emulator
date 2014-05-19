@@ -134,6 +134,7 @@ namespace PIC16F84_Emulator.PIC.Handler
         {
             operationStack.push(programCounter.value);
             programCounter.value = Register.RegisterConstants.INTERRUPT_VECTOR_ADDRESS;
+            registerFileMap.clearBit(Register.RegisterConstants.INTCON_ADDRESS, Register.RegisterConstants.INTCON_GIE_MASK);
             pic.setInterruptIsNext(false);
         }
 
